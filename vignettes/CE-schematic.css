@@ -1,0 +1,164 @@
+/** plot styles for schematic diagrams **/
+
+/** for schematic showing encodings and graphs **/
+par.schematic.blank {
+  mai: 0.05 0.2 0.15 0.1;
+  mgp: 0 0 0;
+}
+plot.schematic.blank {
+  axes: FALSE;
+  frame: FALSE;
+  xaxs: i;
+  yaxs: i;
+}
+lines.schematic.divider {
+  lwd: 0.5;
+  lty: 2;
+  col: #888888;
+}
+text.schematic.subheading {
+  cex: 1;
+  font: 3;
+  adj: 0 0;
+}
+text.schematic.comment {
+  cex: 1;
+  font: 1;
+  adj: 0 0;
+}
+text.schematic.comment.center {
+  adj: 0.5 0;
+}
+text.schematic.term {
+  cex: 0.85;
+  adj: 0 0;
+  col: #444444;
+}
+
+/** line_header **/
+text.schematic.line_header {
+  adj: 0.5 -0.5;
+  font: 2;
+  cex: 1;
+}
+lines.schematic.line_header {
+  lwd: 1.5;
+  col: #333333;
+}
+/** ontology graph **/
+lines.schematic.ontology {
+  lwd: 1;
+  col: #333333;
+}
+points.schematic.ontology {
+  lwd: 1;
+  cex: 1;
+  pch: 21;
+  bg: #d0d0d0;
+  col: #333333;
+}
+points.schematic.model {
+  lwd: 1;
+  cex: 0.85;
+  pch: 22;
+  bg: #707070;
+  col: #333333;
+}
+text.schematic.model {
+  adj: 1.2 0.5;
+  cex: 0.85;
+  col: #444444;
+}
+
+/** table **/
+text.schematic.table {
+  col: #444444;
+  cex: 0.85;
+}
+text.schematic.table.header {
+  col: #222222;
+}
+lines.schematic.table {
+  lwd: 0.5;
+  col: #222222;
+}
+
+/** heatmap **/
+text.schematic.heatmap.axis {
+  col: #444444;
+  cex: 0.85;
+}
+rect.schematic.heatmap.cell {
+  lwd: 0.25;
+  border: #555555;
+}
+rect.schematic.heatmap.border {
+  lwd: 0.75;
+  border: #333333;
+  col: NA;
+}
+
+
+/** for schematic showing neighbors **/
+knn {
+  n_segments: 5;
+  r_neighbor: 0.13;
+  r_primary: 0.28;
+  r_knn: 0.84;
+}
+knn.legend {
+  r_primary: 0.16;
+  r_neighbor: 0.11;
+  line_height: 0.35; /** for legend **/
+}
+par.schematic {
+  mai: 0.01 0.15 0.05 0.2;
+  mgp: 0 0 0;
+}
+par.schematic.legend {
+  mai: 0.05 0.15 0.01 0.15;
+  mgp: 0 0 0;
+}
+plot.schematic.knn {
+  xaxs: i;
+  yaxs: i;
+}
+lines.schematic.knn {
+  lwd: 0.5;
+}
+polygon.schematic.knn {
+  col: #ffffff;
+  border: #000000;
+  lwd: 0.5;
+  xpd: 1;
+}
+text.schematic.knn.primary {
+  cex: 1;
+}
+text.schematic.knn.primary {
+  cex: 0.85;
+}
+text.schematic.knn.legend {
+  adj: 0 0.5;
+  cex: 0.85;
+}
+polygon.schematic.knn.legend.primary, polygon.schematic.knn.legend.neighbor {
+  col: #ffffff;
+}
+polygon.schematic.knn.primary {
+  lwd: 2;
+}
+polygon.schematic.knn.primary, polygon.schematic.knn.A, rect.schematic.knn.A {
+  col: #ffcccc;
+}
+polygon.schematic.knn.B, rect.schematic.knn.B {
+  col: #ccccff;
+}
+polygon.schematic.knn, rect.schematic.knn {
+  col: #f2f2f2;
+}
+rect.schematic.knn.legend {
+  lwd: 0.5;
+  border: #777777;
+}
+

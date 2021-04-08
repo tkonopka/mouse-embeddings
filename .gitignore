@@ -1,0 +1,27 @@
+# local temporary files
+.idea
+*~
+cross*
+pheno*
+node2vec
+obotools
+aws*
+
+# data files
+*tsv
+*csv
+*gz
+*zip
+data*
+results*
+
+# graphics and compiled vignettes
+*pdf
+*png
+*jpg
+*jpeg
+*tiff
+*tex
+*html
+vignettes/cache*
+

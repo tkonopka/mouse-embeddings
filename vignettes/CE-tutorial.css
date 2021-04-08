@@ -1,0 +1,152 @@
+/** plot styles for tutorial figures **/
+
+
+/** empty plot, e.g. for a manual legend **/
+par.empty {
+  mai: 0.3 0.05 0.15 0.05;
+  xaxs: i;
+  yaxs: i;
+}
+par.empty.colors {
+  mai: 0.05 0.05 0.05 0.05;
+  xaxs: i;
+  yaxs: i;
+}
+
+
+/** embeddings of tutorial datasets **/
+par.embedding.tutorial, par.embedding.colors {
+  mai: 0.26 0.26 0.14 0.14;
+  mgp: 0 0 0;
+}
+plot.embedding.tutorial.colors {
+  xaxs: r;
+  yaxs: r;
+}
+mtext.embedding.tutorial.xlab {
+  line: 0.25;
+}
+mtext.embedding.tutorial.ylab {
+  line: 0.65;
+}
+mtext.embedding.tutorial.main {
+  adj: 0.5;
+  line: -0.2;
+}
+axis.embedding.tutorial {
+  tck: -0.018;
+  cex.axis: 0.75;
+  col.axis: #505050;
+}
+axis.embedding.tutorial.x {
+  line: -0.35;
+}
+axis.embedding.tutorial.y {
+  line: 0.2;
+}
+points.embedding.tutorial {
+  cex: 0.35;
+  pch: 19;
+  col: #ababab;
+  xpd: 0;
+}
+points.embedding.tutorial.A {
+  col: #dd4444;
+}
+points.embedding.bigA, points.embedding.bigB, points.embedding.avg {
+  cex: 0.85;
+}
+points.embedding.bigA {
+  col: #0233ee;
+}
+points.embedding.bigB {
+  col: #0233ee;
+}
+points.embedding.avg {
+  lwd: 2;
+  pch: 4;
+  col: #000000;
+}
+points.embedding.sum {
+  cex: 0.85;
+  lwd: 2;
+  pch: 5;
+  col: #000000;
+}
+points.embedding.tutorial.colors {
+  cex: 0.3;
+  pch: 19;
+  col: #ababab;
+  xpd: 0;
+}
+points.embedding.twoA, points.embedding.twoB, points.embedding.manyA, points.embedding.manyB {
+  lwd: 2;
+  pch: 4;
+  cex: 1.3;
+  col: #000000;
+}
+points.embedding.twoB {
+  pch: 3;
+}
+points.embedding.manyA {
+  pch: 7;
+}
+points.embedding.manyB {
+  pch: 9;
+}
+rect.tutorial.colors {
+  lwd: 0.5;
+  col: #222222;
+}
+
+
+/** scatter plots for tutorial projections **/
+par.scatter.tutorial {
+  mai: 0.3 0.3 0.1 0.15;
+  mgp: 0 0 0;
+}
+mtext.scatter.tutorial.xlab {
+  line: 0.3;
+}
+mtext.scatter.tutorial.ylab {
+  line: 0.7;
+}
+mtext.scatter.tutorial.main {
+  adj: 0.5;
+  line: -0.2;
+}
+axis.scatter.tutorial {
+  tck: -0.05;
+  cex.axis: 0.75;
+  col.axis: #444444;
+}
+axis.scatter.tutorial.x {
+  line: -0.3;
+}
+axis.scatter.tutorial.y {
+  line: 0.2;
+}
+points.scatter.tutorial {
+  cex: 0.35;
+  pch: 19;
+  col: #a0a0a0;
+  xpd: 0;
+}
+points.scatter.tutorial.A {
+  col: #dd4444;
+}
+lines.scatter.tutorial {
+  lwd: 2;
+  lty: 2;
+  col: #222222;
+}
+rect.scatter.tutorial {
+  col: #ededed;
+  border: NA;
+}
+text.tutorial {
+  cex: 0.85;
+  adj: 0;
+  col: #000000;
+}
+

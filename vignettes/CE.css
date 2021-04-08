@@ -1,0 +1,882 @@
+/** plot styles for vignettes **/
+
+
+par {
+  ps: 7;
+  cex: 1;
+}
+par.empty {
+  mai: 0.01 0.01 0.01 0.01;
+}
+
+plot {
+  type: n;
+  axes: FALSE;
+  frame: FALSE;
+  xlab: ;
+  ylab: ;
+  main: ;
+}
+rect, points, text, mtext {
+  xpd: 1;
+}
+axis {
+  las: 1;
+}
+
+
+/** multipanel **/
+
+text.multipanel {
+  cex: 1.72;
+  font: 2;
+  xpd: 1;
+  adj: 0 1.1;
+}
+
+
+/** embedding embeddings **/
+par.embedding, par.histboxes, par.linehist {
+  mai: 0.3 0.3 0.1 0.1;
+  mgp: 0 0 0;
+}
+par.embedding.mp {
+  mai: 0.3 0.3 0.15 0.15;
+}
+par.embedding.large {
+  mai: 0.3 0.35 0.1 0.05;
+  mgp: 0 0 0;
+}
+mtext.embedding.xlab, mtext.enrichment.xlab, mtext.histboxes.xlab, mtext.linehist.xlab {
+  line: 0.4;
+}
+mtext.embedding.ylab, mtext.enrichment.ylab {
+  line: 0.8;
+}
+mtext.embedding.main, mtext.enrichment.main, mtext.histboxes.main, mtext.linehist.main {
+  adj: 0;
+  line: -0.1;
+}
+mtext.embedding.main {
+  line: -0.2;
+}
+mtext.embedding.mp.xlab {
+  line: 0.4;
+}
+mtext.embedding.mp.ylab {
+  line: 0.9;
+}
+mtext.embedding.large.main {
+  adj: 0;
+  line: -0.3;
+}
+mtext.embedding.large.title2.main {
+  adj: 0;
+  line: -0.9;
+}
+mtext.embedding.enrich.main {
+  line: -0.2;
+  adj: 0;
+  cex: 0.85;
+}
+mtext.embedding.large.xlab {
+  line: 0.5;
+}
+mtext.embedding.large.large3.xlab {
+  line: 0.4;
+}
+mtext.embedding.large.ylab {
+  line: 0.9;
+}
+mtext.embedding.large.large3.ylab {
+  line: 0.8;
+}
+axis.embedding, axis.enrichment, axis.histboxes, axis.linehist, axis.scatter {
+  tck: -0.018;
+  cex.axis: 0.85;
+  col.axis: #444444;
+}
+axis.embedding.interactive {
+  cex.axis: 2;
+}
+axis.histboxes.avg, axis.linehist, axis.histboxes.selfgenes {
+  tck: -0.025;
+}
+axis.embedding.mp {
+  cex.axis: 0.85;
+  tck: -0.008;
+}
+axis.embedding.mp.x {
+  line: -0.25;
+}
+axis.embedding.x, axis.enrichment.x, axis.histboxes.x, axis.linehist.x {
+  line: -0.22;
+}
+axis.embedding.y, axis.enrichment.y, axis.histboxes.y, axis.linehist.y {
+  line: 0.2;
+}
+axis.embedding.large {
+  tck: -0.01;
+}
+axis.embedding.large.vlarge {
+  tck: -0.008;
+}
+axis.embedding.large.fullwidth {
+  tck: -0.005;
+}
+axis.embedding.large.x {
+  line: -0.25;
+}
+axis.embedding.large.y {
+  line: 0.25;
+}
+axis.embedding.large.models {
+  tck: -0.012;
+  cex: 0.8;
+}
+axis.embedding.large.models.x {
+  line: -0.25;
+}
+axis.embedding.large.models.y {
+  line: 0.2;
+}
+points.embedding {
+  cex: 0.04;
+  pch: 19;
+  col: #b6b6b666;
+  xpd: 0;
+}
+points.embedding.enrich {
+  cex: 0.08;
+}
+points.embedding.enrich.owlsim, points.embedding.enrich.crossmap {
+  cex: 0.2;
+}
+points.embedding.large, points.embedding.mp {
+  cex: 0.04;
+  pch: 19;
+  col: #b6b6b666;
+  xpd: 0;
+}
+points.embedding.mp {
+  col: #b6b6b6;
+}
+points.embedding.largedots, points.embedding.disease {
+  cex: 0.1;
+}
+points.embedding.hugedots {
+  cex: 1;
+}
+points.embedding.owlsim, points.embedding.crossmap, points.embedding.model {
+  cex: 0.08;
+}
+points.embedding.center.crossmap {
+  cex: 0.3;
+  col: #3454d1;
+}
+points.embedding.interactive {
+  cex: 0.8;
+}
+points.embedding.owlsim {
+  col: #d1345b;
+}
+points.embedding.crossmap {
+  col: #3454d1;
+}
+points.embedding.no_phen {
+  col: #ff4e33;
+}
+/** col: #f15cff; **/
+points.embedding.legend, points.embedding.legend.gene {
+  cex: 0.8;
+  pch: 19;
+}
+points.embedding.gene {
+  col: #2F8DDA;
+  cex: 0.25;
+  xpd: 1;
+}
+legend.embedding {
+  x.intersp: 0.5;
+  y.intersp: 0.6;
+  cex: 0.85;
+  text.col: #000000;
+  bty: n;
+  xpd: 1;
+}
+legend.embedding.bold {
+  cex: 1;
+  text.font: 2;
+}
+lines.embedding.label {
+  lwd: 1.0;
+  lty: 1;
+}
+text.embedding.label, lines.embedding.label {
+  col: #000000;
+}
+text.embedding.adj_left {
+  adj: -0.05 0.5;
+}
+text.embedding.adj_right {
+  adj: 1.05 0.5;
+}
+/** for coloring subsets of points **/
+points.embedding.no {
+  col: #dd0000;
+}
+points.embedding.yes {
+  col: #220066;
+}
+points.embedding.nonMGI {
+  col: #ef7b0b66;
+}
+points.embedding.MGI {
+  col: #00a87866;
+}
+points.embedding.model {
+  col: #2F8DDA;
+}
+points.embedding.range_32_max {
+  col: #00000488;
+}
+points.embedding.range_16_32 {
+  col: #2D116088;
+}
+points.embedding.range_8_16 {
+  col: #721F8188;
+}
+points.embedding.range_4_8 {
+  col: #B6367988;
+}
+points.embedding.range_2_4 {
+  col: #F1605D88;
+}
+points.embedding.range_0_0, points.embedding.range_0_2 {
+  col: #FEAF7788;
+}
+points.embedding.C57BL_6, points.embedding.hom {
+  col: #dd000088;
+}
+points.embedding.C57BL_6N {
+  col: #22008888;
+}
+points.embedding.C57BL_6NJ {
+  col: #f7e73388;
+}
+points.embedding.C57BL_6NCrl {
+  col: #50474688;
+}
+points.embedding.C57BL_6NTac {
+  col: #f6bdd188;
+}
+text.histboxes.label {
+  cex: 0.85;
+}
+lines.histboxes.theory {
+  lwd: 2;
+  lty: 2;
+  col: "#777777";
+}
+
+
+/** for gating **/
+rect.embedding {
+  lwd: 2;
+  lty: 1;
+  border: #000000;
+}
+lines.embedding {
+  lwd: 2;
+  lty: 1;
+  col: #000000;
+}
+
+
+/** for a header panel **/
+par.line_header {
+  mai: 0.05 0.2 0.05 0.1;
+  mgp: 0 0 0;
+}
+lines.line_header {
+  lwd: 1.5;
+  col: #333333;
+  xpd: 1;
+}
+text.line_header {
+  adj: 0.5 0.05;
+  cex: 1;
+  font: 2;
+}
+
+
+/** for enrichment summaries **/
+par.enrichment {
+  mai: 0.3 0.4 0.25 0.1;
+  mgp: 0 0 0;
+}
+points.enrichment {
+  cex: 0.35;
+  pch: 19;
+  col: #222222;
+}
+lines.enrichment.threshold {
+  lwd: 0.4;
+  col: #000000;
+  lty: 2;
+}
+text.enrichment.threshold {
+  adj: 1 -0.5;
+  col: #222222;
+  cex: 0.85;
+}
+mtext.enrichment.main {
+  line: 0.1;
+  adj: 0;
+  col: #000000;
+  cex: 0.85;
+}
+mtext.enrichment.xlab {
+  line: 0.4;
+}
+mtext.enrichment.ylab {
+  line: 1.0;
+}
+
+
+/** for histboxes **/
+par.histboxes {
+  mgp: 0 0 0;
+}
+par.histboxes.errors {
+  mai: 0.35 0.35 0.1 0.1;
+}
+par.histboxes.errors2 {
+  mai: 0.35 0.05 0.1 0.1;
+}
+par.histboxes.selfgenes {
+  mai: 0.3 0.45 0.1 0.1;
+}
+mtext.linehist.ylab, mtext.histboxes.ylab {
+  line: 0.7;
+}
+mtext.histboxes.errors.ylab {
+  line: 1;
+}
+rect.histboxes {
+  col: #000000;
+  lwd: NA;
+}
+lines.histboxes.mid, lines.histboxes.owlsim.mid, lines.histboxes.crossmap.mid, lines.histboxes.model.mid {
+  lwd: 2.5;
+  col: #222222;
+  lend: 1;
+}
+lines.histboxes.errors.mid, lines.histboxes.selfgenes.mid {
+  lwd: 2.5;
+  col: #222222;
+  lend: 1;
+}
+lines.linehist {
+  lwd: 2.5;
+  lend: 1;
+}
+text.linehist.label {
+  cex: 0.85;
+  col: #333333;
+  adj: 0 -2.7;
+}
+lines.histboxes.whisker {
+  lwd: 1;
+}
+rect.histboxes.owlsim, lines.histboxes.owlsim, lines.linehist.owlsim {
+  col: #d1345bbb;
+}
+rect.histboxes.crossmap, lines.histboxes.crossmap, lines.linehist.crossmap {
+  col: #3454d1bb;
+}
+rect.histboxes.model, lines.histboxes.model, lines.linehist.model {
+  col: #2F8DDAbb;
+}
+rect.histboxes.errors, lines.histboxes.errors, rect.histboxes.selfgenes, lines.histboxes.selfgenes {
+  col: #b034d5;
+}
+
+
+/** for lists of phenotypes **/
+list {
+  line.height: 0.07;
+  title.height: 0.1;
+  box: n;
+  padding: 0.02;
+}
+list.model {
+  line.height: 0.095;
+  title.height: 0.13;
+}
+list.model.disease {
+  line.height: 0.1;
+  title.height: 0.135;
+}
+par.list {
+  mai: 0.02 0.05 0.2 0.02;
+  mgp: 0 0 0;
+}
+par.list.model.disease {
+  mai: 0.05 0.05 0.15 0.02;
+}
+text.list {
+  adj: 0 0.5;
+}
+text.list.body {
+  cex: 0.85;
+  col: #222222;
+  adj: 0 0.5;
+}
+text.list.model.largetext.body {
+  cex: 2;
+}
+text.list.title {
+  font: 2;
+  cex: 0.9;
+  xpd: 1;
+}
+text.list.model.title {
+  font: 1;
+  cex: 0.9;
+}
+rect.list {
+  lwd: 0.5;
+}
+rect.list.title, rect.list.body {
+  border: NA;
+  col: #ffffff;
+}
+rect.list.model.title {
+  border: #222222;
+  col: #c0c0c0;
+}
+rect.list.model.body {
+  border: #222222;
+}
+
+
+/** for barplot (waterfall) **/
+par.bars {
+  mai: 0.2 0.65 0.35 0.2;
+  mgp: 0 0 0;
+}
+plot.bars {
+  yaxs: i;
+}
+bars {
+  barwidth: 0.8;
+}
+mtext.bars.xlab {
+  line: 0.8;
+}
+axis.bars {
+  las: 1;
+  cex.axis: 0.85;
+}
+axis.bars.genes {
+  tck: -0.03;
+}
+axis.bars.x {
+  col: #444444;
+}
+axis.bars.genes.x {
+  line: 0.15;
+}
+axis.bars.y {
+  col: #000000;
+  cex.axis: 0.85;
+}
+axis.bars.approaches.genes.y {
+  line: 0.0;
+}
+rect.bars {
+  border: NA;
+  col: #2244cc;
+}
+text.bars.legend {
+  cex: 0.85;
+  adj: 0 0.5;
+}
+legend.bars.approaches {
+  x.intersp: 0.4;
+  y.intersp: 0.5;
+  lwd: 4;
+  seg.len: 0.25;
+  bty: n;
+  cex: 0.85;
+  xpd: 1;
+}
+
+
+/** scatter plot **/
+par.scatter.counts {
+  mai: 0.3 0.35 0.1 0.05;
+  mgp: 0 0 0;
+}
+points.scatter.counts {
+  pch: 19;
+  cex: 0.4;
+  col: #2F8DDA;
+  xpd: 0;
+}
+mtext.scatter.counts.xlab {
+  line: 0.4;
+}
+mtext.scatter.counts.ylab {
+  line: 1.0;
+}
+axis.scatter.counts {
+  tck: -0.018;
+  cex.axis: 0.85;
+  col.axis: #444444;
+}
+axis.scatter.counts.x {
+  line: -0.22;
+}
+axis.scatter.counts.y {
+  line: 0.22;
+}
+text.scatter.counts.label {
+  adj: 0 0.5;
+  cex: 0.85;
+}
+
+
+/** panels with just a disease name **/
+par.disease_name {
+  mai: 0.02 0.3 0.1 0.1;
+  mgp: 0 0 0;
+}
+plot.disease_name {
+  type: n;
+  xaxs: i;
+  yaxs: i;
+}
+text.disease_name {
+  adj: 0 0;
+  xpd: 1;
+}
+
+
+/** panels with error calibration **/
+par.scatter.calibration {
+  mai: 0.35 0.45 0.1 0.05;
+  mgp: 0 0 0;
+}
+par.scatter.calibration.legend {
+  mai: 0.35 0.02 0.1 0.1;
+  mgp: 0 0 0;
+}
+plot.scatter.calibration.legend {
+  xaxs: i;
+  yaxs: i;
+}
+points.scatter.calibration {
+  pch: 19;
+  cex: 0.3;
+  col: #444444;
+}
+axis.scatter.calibration {
+  tck: -0.018;
+}
+mtext.scatter.calibration.xlab {
+  line: 0.4;
+}
+mtext.scatter.calibration.ylab {
+  line: 1.2;
+}
+axis.scatter.calibration {
+  cex.axis: 0.85;
+}
+axis.scatter.calibration.x {
+  line: -0.2;
+}
+axis.scatter.calibration.y {
+  line: 0.2;
+}
+lines.scatter.calibration {
+  lwd: 1.5;
+  col: #cccccc;
+  lend: 1;
+}
+points.scatter.calibration.knn, lines.scatter.calibration.knn, rect.bars.vector_knn, rect.bars.binvector_knn {
+  col: #b034d5;
+}
+points.scatter.calibration.text_concise_knn, lines.scatter.calibration.text_concise_knn {
+  col: #4dAA57;
+}
+points.scatter.calibration.text_complete_knn, lines.scatter.calibration.text_complete_knn {
+  col: #72c07a;
+}
+points.scatter.calibration.text_concise_emb, lines.scatter.calibration.text_concise_emb {
+  col: #F1A208;
+}
+points.scatter.calibration.text_complete_emb, lines.scatter.calibration.text_complete_emb {
+  col: #f9c04d;
+}
+polygon.scatter.calibration {
+  border: NA;
+}
+legend.scatter.calibration {
+  bty: n;
+  x.intersp: 0.55;
+  y.intersp: 0.5;
+  lwd: 4;
+  seg.len: 0.6;
+  cex: 0.85;
+}
+text.scatter.calibration.legend {
+  adj: 0 0;
+}
+
+
+
+/** bar plot comparing phenotype-predicting approaches **/
+bars.approaches {
+  barwidth: 0.8;
+  groupgap: 1;
+}
+par.bars.approaches {
+  mai: 0.35 0.45 0.1 0.05;
+  mgp: 0 0 0;
+}
+par.bars.approaches.genes {
+  mai: 0.15 0.65 0.3 0.2;
+  mgp: 0 0 0;
+  xaxs: i;
+}
+axis.bars.approaches {
+  cex.axis: 0.85;
+  tck: -0.018;
+  col.axis: #444444;
+}
+text.bars.approaches.axis.x {
+  cex: 0.85;
+  srt: 32;
+  adj: 1 0.5;
+}
+text.bars.approaches.axis.y {
+  cex: 0.85;
+  adj: 1 0.5;
+}
+axis.bars.approaches.x {
+  line: 0.8;
+}
+axis.bars.approaches.genes.x {
+  line: 0.05;
+  tck: -0.03;
+}
+axis.bars.approaches.y {
+  line: 0.2;
+}
+axis.bars.approaches.genes.y {
+  line: 0.05;
+}
+mtext.bars.approaches.ylab {
+  line: 1.2;
+}
+mtext.bars.approaches.genes.ylab {
+  line: 0.6;
+}
+mtext.bars.approaches.genes.xlab {
+  line: 0.6;
+}
+rect.bars.vector_knn, rect.bars.binvector_knn, rect.bars.knn, rect.bars.text_concise_diff0_knn, rect.bars.text_complete_diff0_knn {
+  col: #b034d5;
+}
+rect.bars.vector_umap_d2, rect.bars.binvector_umap_d2, rect.bars.umap_d2, rect.bars.text_concise_diff0_umap_d2, rect.bars.text_complete_diff0_umap_d2, points.scatter.calibration.umap_d2, lines.scatter.calibration.umap_d2 {
+  col: #a9c8db;
+}
+rect.bars.vector_umap_d4, rect.bars.binvector_umap_d4, rect.bars.umap_d4, points.scatter.calibration.umap_d4, lines.scatter.calibration.umap_d4 {
+  col: #7eadc9;
+}
+rect.bars.vector_umap_d6, rect.bars.binvector_umap_d6, rect.bars.umap_d6, points.scatter.calibration.umap_d6, lines.scatter.calibration.umap_d6 {
+  col: #5292b7;
+}
+rect.bars.vector_umap_d8, rect.bars.binvector_umap_d8, rect.bars.umap_d8, points.scatter.calibration.umap_d8, lines.calibration.umap_d8 {
+  col: #3c7190;
+}
+rect.bars.vector_umap_d10, rect.bars.binvector_umap_d10, rect.bars.umap_d10, points.scatter.calibration.umap_d10, lines.scatter.calibration.umap_d10 {
+  col: #2a4f65;
+}
+rect.bars.vector_pca_d2, rect.bars.binvector_pca_d2, rect.bars.pca_d2, points.scatter.calibration.pca_d2, lines.scatter.calibration.pca_d2 {
+  col: #cbada4;
+}
+rect.bars.vector_pca_d4, rect.bars.binvector_pca_d4, rect.bars.pca_d4, points.scatter.calibration.pca_d4, lines.scatter.calibration.pca_d4 {
+  col: #b5897d;
+}
+rect.bars.vector_pca_d6, rect.bars.binvector_pca_d6, rect.bars.pca_d6, points.scatter.calibration.pca_d6, lines.scatter.calibration.pca_d6 {
+  col: #9d695a;
+}
+rect.bars.vector_pca_d8, rect.bars.binvector_pca_d8, rect.bars.pca_d8, points.scatter.calibration.pca_d8, lines.scatter.calibration.pca_d8 {
+  col: #754e43;
+}
+rect.bars.vector_pca_d10, rect.bars.binvector_pca_d10, rect.bars.pca_d10, points.scatter.calibration.pca_d10, lines.scatter.calibration.pca_d10 {
+  col: #4e342d;
+}
+rect.bars.mp_avg_d2, rect.bars.avg_d2 {
+  col: #dfecd5;
+}
+rect.bars.mp_avg_d4, rect.bars.avg_d4 {
+  col: #c0d8ab;
+}
+rect.bars.mp_avg_d6, rect.bars.avg_d6 {
+  col: #a0c581;
+}
+rect.bars.mp_avg_d8, rect.bars.avg_d8 {
+  col: #80b257;
+}
+rect.bars.mp_avg_d10, rect.bars.avg_d10 {
+  col: #628c40;
+}
+rect.bars.owlsim {
+  col: #d1345b;
+}
+rect.bars.crossmap {
+  /** col: #ee96ba; **/
+  col: #3454d1;
+}
+
+text.errors.label {
+  cex: 0.85;
+  adj: 0 0.5;
+}
+
+
+
+/** for heatmap of phenotypes **/
+par.heatmap {
+  mai: 0.5 0.2 0.25 1.75;
+  mgp: 0 0 0;
+}
+par.heatmap.tall {
+  mai: 0.5 0.2 0.15 1.0;
+}
+mtext.heatmap.main {
+  line: -0.05;
+  adj: 0.0;
+}
+axis.heatmap.y {
+  cex.axis: 0.85;
+  col: #000000;
+  line: 0.1;
+  lwd: 0;
+}
+text.heatmap.axis.x {
+  srt: 60;
+  col: #000000;
+  adj: 1 0.5;
+}
+rect.heatmap.outer {
+  lwd: 1;
+  border: #111111;
+  col: NA;
+}
+rect.heatmap.cell {
+  border: NA;
+}
+rect.heatmap.cell.prior {
+  col: #ffffff;
+}
+rect.heatmap.cell.annotated {
+  col: #666666;
+}
+rect.heatmap.cell.ancestor_of_annotated {
+  col: #cccccc;
+}
+text.heatmap.legend.scale.main {
+  cex: 0.85;
+  adj: 0 -0.5;
+}
+text.heatmap.legend.main {
+  cex: 0.85;
+  adj: 0 0.2;
+}
+text.heatmap.legend.label {
+  cex: 0.85;
+  adj: 0 0.5;
+}
+text.heatmap.legend.scale.label {
+  cex: 0.85;
+  adj: 0.5 1.5;
+}
+rect.heatmap.legend.scale.cell {
+  border: NA;
+  lwd: 0;
+}
+rect.heatmap.legend.cell {
+  lwd: 0.5;
+  border: #222222;
+}
+
+
+/** for panels with query strings **/
+par.query {
+  mai: 0.1 0.2 0.25 0.1;
+  mgp: 0 0 0 ;
+  xaxs: i;
+  yaxs: i;
+}
+mtext.query.main {
+  adj: 0;
+}
+text.query {
+  adj: 0;
+}
+text.query.label {
+  col: #555555;
+  cex: 0.85;
+  adj: 0 1;
+  xpd: 1;
+}
+text.query.content {
+  col: #000000;
+  cex: 0.85;
+  adj: 0 1;
+  xpd: 1;
+}
+
+
+/** for panel with 2x2 counts table **/
+par.tab2x2 {
+  mai: 0.3 0.7 0.35 0.25;
+  mgp: 0 0 0;
+}
+rect.tab2x2 {
+  lwd: 1;
+  col: #f0f0f0;
+}
+text.tab2x2 {
+  cex: 0.85;
+}
+mtext.tab2x2.xlab {
+  line: 0.6;
+}
+mtext.tab2x2.ylab {
+  line: 1.6;
+}
+mtext.tab2x2.main {
+  line: 0.3;
+}
+axis.tab2x2.x {
+  line: -0.3;
+}
+axis.tab2x2.y {
+  line: 0.2;
+}
+
+
+/** manual annotation **/
+text.manual {
+  cex: 0.85;
+  font: 3;
+  col: #333333;
+  adj: 0 1;
+}
+
