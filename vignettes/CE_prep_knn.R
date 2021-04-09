@@ -22,27 +22,6 @@ prep_umap_knn <- function(template=templates$model_search,
 }
 
 
-if (!assignc("model_knn")) {
-  # wrappers to prepare knn for models
-  prep_model_knn <- function(repr, diff, n=15) {
-    prep_umap_knn(template=templates$model_search,
-                  repr=repr, diff=diff, n=n)
-  }
-
-  # prepare knn object for text-based methods (from crossmap)
-  model_knn <-
-    list(text_concise_diff0=prep_model_knn("concise", diff=0),
-         text_complete_diff0=prep_model_knn("complete", diff=0))
-  # transfer knn objects from umap results
-  assignc("model_vector_umap")
-  model_knn$vector <- model_vector_umap$knn
-  rm(model_vector_umap)
-  assignc("model_binvector_umap")
-  model_knn$binvector <- model_binvector_umap$knn
-  rm(model_binvector_umap)
-  savec(model_knn)
-}
-
 if (!assignc("mp_knn")) {
   mp_knn <- prep_umap_knn(template=templates$mp_search, diff=0, n=15)
   savec(mp_knn)

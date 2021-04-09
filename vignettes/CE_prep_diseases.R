@@ -43,8 +43,9 @@ if (!assignc("disease_phenotypes")) {
     oomap <- fread(hp_mp_translations_files[[translation_method]])
     setnames(oomap, c("term1", "term2"), c("hp", "mp"))
     result <- rbindlist(lapply(disease_raw, function(x) {
-      x_hp <- x$metadata$phenotype_ids
-      if (length(x_hp)==0) return(NULL)
+      x_phens <- x$metadata$phenotype_ids
+      if (length(x_phens)==0) return(NULL)
+      x_hp <- sapply(strsplit(x$metadata$phenotype_ids, " "), head, n=1)
       data.table(id=x$metadata$id, phenotype=oomap[hp %in% x_hp]$mp)
     }))
     unique(result[order(id, phenotype)])
