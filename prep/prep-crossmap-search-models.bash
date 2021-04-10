@@ -20,7 +20,7 @@ fi
 # perform search among mouse models
 for TYPE in concise complete
 do
-  for DIFF in 0 1
+  for DIFF in 0
   do
     OUTSEARCH="search-models-$TYPE--data-models-$TYPE-diff$DIFF.tsv.gz"
     if [ ! -f "$OUTSEARCH" ]
@@ -42,7 +42,7 @@ do
   do
     for DISEASE in orphanet
     do
-      for DIFF in 0 1
+      for DIFF in 0
       do
         OUTSEARCH="search-models-$TYPE--data-$DISEASE-$TRANSLATION-diff$DIFF.tsv.gz"
         if [ ! -f "$OUTSEARCH" ]

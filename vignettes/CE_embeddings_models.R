@@ -1,6 +1,18 @@
 # embeddings for mouse models
 # (includes analysis of diseases projected into the embeddings of models)
 
+#
+# ! Some of these steps require a lot of memory. Recommended 64 GB.
+#
+# It may help not to run all the vignette from scratch.
+# Instead, run previous parts to allow caching. Then quit R, run previous
+# parts again (this will utilize cached objects and use less memory in practice)
+#
+# It may help to run parts of this script in stages as well.
+#
+# After all cache files are generated, re-running this script
+# as part of vignette generation is very fast and uses little memory (< 8GB)
+#
 
 # ############################################################################
 # embeddings based on mouse model MP ontology vectors
@@ -69,7 +81,6 @@ if (!file.exists(canary_file)) {
 
 # ############################################################################
 # embeddings in higher dimensions
-
 
 if (!assignc("model_knn")) {
   source("CE_prep_knn.R")
@@ -153,7 +164,6 @@ if (!assignc("model_avg_embeddings_d")) {
 
 # ############################################################################
 # embeddings using PCA
-
 
 if (!assignc("model_pca_embeddings_d")) {
   make_model_pca_embeddings_d <- function(data_vectors, ENCODING="vector") {
