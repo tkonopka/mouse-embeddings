@@ -319,7 +319,6 @@ if (!assignc("disease_model_knn")) {
                                             levels=model_ids),
       text_complete_diff0=umap_knn_from_long(.text$text_complete_diff0,
                                              levels=model_ids)
-      )
     )
   }
   # this is written like this to cache some results on disk

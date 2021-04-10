@@ -88,7 +88,8 @@ umap_knn_from_long <- function(d, n=15,
   knn_items <- unique(knn$query)
   knn_self <- data.table(query=knn_items, target=knn_items, distance=-1.0)
   knn <- rbind(knn, knn_self)[!(query==target & distance>=0)]
-  knn <- knn[order(distance)][!is.na(distance)]
+  knn <- knn[!is.na(distance)]
+  knn <- knn[order(distance)]
   # get exactly n nearest neighbors for each query, impute if necessary
   topN <- function(x, n) {
     if (nrow(x)>=n) return(head(x, n))
