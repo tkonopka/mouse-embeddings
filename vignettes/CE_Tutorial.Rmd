@@ -1,0 +1,236 @@
+---
+title: "Embeddings - Tutorial"
+author: Correspondence - t.konopka@qmul.ac.uk
+output:
+  pdf_document:
+    keep_tex: true
+header-includes:
+  \usepackage{caption}
+  \usepackage{float}
+  \usepackage{amsmath}
+  \usepackage{graphicx}
+  \floatplacement{figure}{H}
+  \captionsetup[figure]{labelfont={bf}, name={Figure}, labelsep=period}
+---
+
+\renewcommand{\thefigure}{S\arabic{figure}}
+\setcounter{figure}{0}
+
+```{r, prep, echo=FALSE}
+source("config.R")
+source("CE_wrappers.R")
+set.seed(1234)
+#source("CE_prep_ontology.R")
+#source("CE_prep_models.R")
+#source("CE_prep_diseases.R")
+```
+```{r, embeddings, echo=FALSE}
+source("CE_tutorial.R")
+source("CE_colors.R")
+```
+
+# Results
+
+
+
+```{r tutorial.modeling, eval=TRUE, echo=FALSE, fig.width=6.5, fig.height=2.4, fig.cap="\\textbf{Embedding scenarios and effects on post-embedding applications.} All panels represent synthetic datasets designed to illustrate idealized scenarios. Each dataset consists of data points that have been mapped from an original, high-dimensional data space (not shown) into a 2d embedding space. \\textbf{(A-C)} Examples illustrating the relationship between the number groups and number of embedding dimensions (upper panels), and effectiveness of linear models based on embedding coordinates for predicting numeric labels (lower panels). \\textbf{(A)} An example with two groups, i.e. a number of groups comparable to the number of embedding dimensions (upper panel). Modeling can be effective even using linear regression informed by a single embedding coordinate (lower panel). \\textbf{(B)} An example dataset with one group of points larger than the other. Although the separation between groups is less clear-cut than in (A), there exists a linear boundary separating the groups in the two-dimensional embedding. Linear models based on single embedding coordinates are informative, but better fits would be achieved by models using more than one embedding coordinate. \\textbf{(C)} A dataset with a large number of groups compared to the number of embedding dimensions. The groups are well-separated in the embedding, which is effective for visualization (upper panel). Linear models are not effective for predicting labels for an arbitrary group (lower panel). However, other machine-learning techniques, e.g. random forest classifiers, would be able to learn labels from the embedding coordinates."}
+layout(matrix(c(1,3, 4,6, 7,9, 10,
+                2,3, 5,6, 8,9, 10),
+              ncol=7, nrow=2, byrow=T),
+       widths=c(1.6, 0.1, 1.6, 0.1, 1.6, 0.1, 1.4),
+       height=c(1.6, 0.8))
+#
+.emb <- tutorial$orthogonal
+.emb$output <- as.integer(.emb$group == "A")
+.emb2 <- tutorial$spread
+.emb2$output <- as.integer(.emb2$group == "A")
+.emb3 <- tutorial$many
+.emb3$output <- as.integer(.emb3$group == "A")
+# some wrappers for plot functions
+plot_embedding_tutorial <- function(x, style_by="group", ...) {
+  plot_embedding(x, lab_suffix="(a.u.)", style_by=style_by,
+                 xlim=c(-2.5, 8.5), ylim=c(-2.5, 8.5),
+                 xlab="dimension 1", ylab="dimension 2",
+                 Rcssclass="tutorial", detail=1, ...)
+}
+plot_scatter_tutorial <- function(x, ...) {
+  plot_scatter(x, xy=c("UMAP_1", "output"),
+               xlim=c(-2.5, 8.5), ylim=c(-0.05, 1.05),
+               xlab="dimension1 (a.u.)",
+               style_by="group",
+               at=list(x=seq(-2, 8, by=2), y=seq(0, 1, by=0.5)),
+               show_rect=c(-3, 0.5, 9, 1.05),
+               Rcssclass="tutorial", ...)
+  fitline_scatter(x, xy=c("UMAP_1", "output"), Rcssclass="tutorial")
+}
+#
+# Scenario A - two equal-sized groups
+plot_embedding_tutorial(.emb, main="Scenario A")
+multipanelLabel(panel.labels[1])
+plot_scatter_tutorial(.emb)
+par(mai=rep(0.01, 4)); plot.new()
+#
+# Scenario B - a large group and a small group
+plot_embedding_tutorial(.emb2, main="Scenario B")
+multipanelLabel(panel.labels[2])
+plot_scatter_tutorial(.emb2)
+par(mai=rep(0.01, 4)); plot.new()
+#
+# Scenario C - many small groups
+plot_embedding_tutorial(.emb3, main="Scenario C")
+multipanelLabel(panel.labels[3])
+plot_scatter_tutorial(.emb3)
+par(mai=rep(0.01, 4)); plot.new()
+#
+# legend on the right
+parplot(c(0, 1), c(0, 1), Rcssclass="empty")
+text(0, 0.88, "Embedding", Rcssclass="tutorial")
+points(0.08, 0.8, Rcssclass=c("embedding", "tutorial", "A"), cex=0.7)
+text(0.16, 0.8, "objects of interest", Rcssclass="tutorial")
+points(0.08, 0.72, Rcssclass=c("embedding", "tutorial"), cex=0.7)
+text(0.16, 0.72, "other objects", Rcssclass="tutorial")
+text(0, 0.19, "Downstream modeling", Rcssclass="tutorial")
+lines(c(0, 0.12), c(0.12, 0.12), lty=1, Rcssclass=c("scatter", "tutorial"))
+text(0.16, 0.12, "linear regression model", Rcssclass="tutorial")
+rect(0, 0, 0.12, 0.06, Rcssclass=c("scatter", "tutorial"))
+text(0.16, 0.03, "output >0.5", Rcssclass="tutorial")
+```
+
+
+```{r tutorial.composite, eval=TRUE, echo=FALSE, fig.width=6.5, fig.height=5.1, fig.cap="\\textbf{Limitations of composition rules based on embedding coordinates.} All panels are based on synthetic datasets designed to illustrate scenarios that may arise in more complex, realistic datasets. Individual panels show data points (gray dots) embedded into a 2d space. A composite object (a set of raw data elements) is then introduced. Its individual features are embedded naturally into the low-dimensional space (blue dots), and the position of the composite object is constructed using coordinate arithmetic - addition and averaging. \\textbf{(A)} Examples in an embedding with a small number of groups. When the individual features that describe the composite object are close-by in the embedding (top), the average is near the embedding of the original features, whereas the sum may be far away. When the individual features belong to distinct groups (bottom), the mean and the sum may appear in sparse areas of the embedding and far from any previously learned data points. \\textbf{(B)} Further examples with datasets with two groups. \\textbf{(C)} Examples with datasets with many groups. Using both mean and sum as composition rules, the position of the composite object may fall into groups that are disconnected to any of the original features. \\textbf{(D-F)} Practical examples of embeddings of a dataset of color names based on RGB, HSL, and HSV values. Composite objects are descriptions that include several colors, and their positions in the embeddings are computed using coordinate averaging. While some placements may be justifiable post-hoc, most embeddings of the composite objects are questionable, especially when the composite object consists of many colors."}
+layout(matrix(c(1,3, 4,6, 7,9, 10,
+                2,3, 5,6, 8,9, 11,
+                rep(12, 7),
+                13,14, 15,16, 17,18, 19),
+              ncol=7, nrow=4, byrow=T),
+       widths=c(1.6, 0.1, 1.6, 0.1, 1.6, 0.1, 1.4),
+       height=c(1.6, 1.6, 0.3, 1.6))
+#
+.emb <- tutorial$orthogonal
+.emb$output <- as.integer(.emb$group == "A")
+.emb2 <- tutorial$spread
+.emb2$output <- as.integer(.emb2$group == "A")
+.emb3 <- tutorial$many
+.emb3$output <- as.integer(.emb3$group == "A")
+#
+# wrapper to show composite objects in an embedding
+add_composition_points <- function(coordlist) {
+  composite_avg <- c(mean(sapply(coordlist, function(x) { x[1] })),
+                     mean(sapply(coordlist, function(x) { x[2] })))
+  composite_sum <- c(sum(sapply(coordlist, function(x) { x[1] })),
+                     sum(sapply(coordlist, function(x) { x[2] })))
+  for (x in names(coordlist)) {
+    points(coordlist[[x]][1], coordlist[[x]][2], Rcssclass=c("embedding", x))
+  }
+  points(composite_avg[1], composite_avg[2], Rcssclass=c("embedding", "avg"))
+  points(composite_sum[1], composite_sum[2], Rcssclass=c("embedding", "sum"))
+}
+#
+# Averaging in Scenario A
+plot_embedding_tutorial(.emb, main="Scenario A", style_by=NULL)
+add_composition_points(list(bigA=c(4.8, 0.8), bigB=c(3.6, -0.9)))
+multipanelLabel(panel.labels[1])
+plot_embedding_tutorial(.emb, style_by=NULL)
+add_composition_points(list(bigA=c(6.2, 0), bigB=c(0, 6)))
+par(mar=rep(0.01, 4)); plot.new()
+#
+# averaging in Scenario B
+plot_embedding_tutorial(.emb2, main="Scenario B", style_by=NULL)
+add_composition_points(list(bigA=c(2.7, 5.0), bigB=c(0.2, 6.4)))
+multipanelLabel(panel.labels[2])
+plot_embedding_tutorial(.emb2, style_by=NULL)
+add_composition_points(list(bigA=c(4.7, 0), bigB=c(-0.2, 6.4)))
+par(mar=rep(0.01, 4)); plot.new()
+#
+# averaging in Scenario C
+plot_embedding_tutorial(.emb3, main="Scenario C", style_by=NULL)
+add_composition_points(list(bigA=c(1.3, 1.6), bigB=c(2.3, 2.8)))
+multipanelLabel(panel.labels[3])
+plot_embedding_tutorial(.emb3, style_by=NULL)
+add_composition_points(list(bigA=c(4.8, -0.8), bigB=c(-0.8, 4.8)))
+par(mar=rep(0.01, 4)); plot.new()
+#
+# legend on the right
+parplot(c(0, 1), c(0, 1), Rcssclass="empty")
+text(0, 0.9, "Embedding of individual elements", Rcssclass="tutorial")
+points(0.08, 0.78, Rcssclass=c("embedding", "tutorial"), cex=0.7)
+text(0.16, 0.78, "existing embedding", Rcssclass="tutorial")
+points(0.08, 0.66, Rcssclass=c("embedding", "tutorial", "bigA"), cex=0.7)
+text(0.16, 0.66, "predictions for new elements", Rcssclass="tutorial")
+text(0, 0.45, "Embedding of composite objects", Rcssclass="tutorial")
+points(0.08, 0.33, Rcssclass=c("embedding", "tutorial", "avg"), cex=0.7)
+text(0.16, 0.33, "mean of individual predictions", Rcssclass="tutorial")
+points(0.08, 0.21, Rcssclass=c("embedding", "tutorial", "sum"), cex=0.7)
+text(0.16, 0.21, "sum of individual predictions", Rcssclass="tutorial")
+#
+#
+par(mai=rep(0.01, 4)); plot.new();
+par(mai=rep(0.01, 4)); plot.new();
+#
+# embeddings of colors
+.rgb <- colors_embedding[label=="RGB",]
+.hsl <- colors_embedding[label=="HSL",]
+.hsv <- colors_embedding[label=="HSV",]
+color_mixes <- list(twoA=c("Rose red", "Cobalt blue"),
+                    twoB=c("Olive", "Tomato"),
+                    manyA=c("Rose red", "Cobalt blue", "Lawn green", "White"),
+                    manyB=c("Olive", "Tomato",
+                            "Azure", "Lemon"))
+# helper function to add points by avaraging colors
+add_color_composition_points <- function(.emb,
+                                         color_list=list(two=c("Red", "Green"))) {
+  for (x in names(color_list)) {
+    result <- .emb[id %in% color_list[[x]]]
+    composite_avg <- c(mean(result$UMAP_1), mean(result$UMAP_2))
+    points(composite_avg[1], composite_avg[2], Rcssclass=c("embedding", x))
+  }
+}
+#
+plot_embedding(.rgb, main="Embedding of colors (RGB)", detail=1, style_by=NULL, col=.rgb$RGB,
+          qlim=c(0, 1),
+          Rcssclass=c("tutorial", "colors"))
+add_color_composition_points(.rgb, color_mixes)
+multipanelLabel(panel.labels[4])
+par(mar=rep(0.01, 4)); plot.new()
+#
+plot_embedding(.hsl, main="Embedding of colors (HSL)", detail=1, style_by=NULL, col=.hsl$RGB,
+          qlim=c(0, 1),
+          Rcssclass=c("tutorial", "colors"))
+add_color_composition_points(.hsl, color_mixes)
+multipanelLabel(panel.labels[5])
+par(mar=rep(0.01, 4)); plot.new()
+#
+plot_embedding(.hsv, main="Embedding of colors (HSV)", detail=1, style_by=NULL, col=.hsv$RGB,
+          qlim=c(0, 1),
+          Rcssclass=c("tutorial", "colors"))
+add_color_composition_points(.hsv, color_mixes)
+multipanelLabel(panel.labels[6])
+par(mar=rep(0.01, 4)); plot.new()
+#
+parplot(c(0, 1), c(0, 1), Rcssclass=c("empty", "colors"))
+#
+text(0, 1, "(Selected) Individual colors", Rcssclass="tutorial")
+color_selection <- .rgb[id %in% unique(unlist(color_mixes))][order(id)]
+.rect.mid <- rev(seq(0.68, 0.9, length=4))
+rect(rep(0.04, 4), .rect.mid-0.025, rep(0.12, 4), .rect.mid+0.025,
+     col=color_selection$RGB[1:4], Rcssclass=c("tutorial", "tutorial"))
+text(0.16, .rect.mid, color_selection$id[1:4], Rcssclass="tutorial")
+rect(rep(0.54, 4), .rect.mid-0.025, rep(0.62, 4), .rect.mid+0.025,
+     col=color_selection$RGB[5:8], Rcssclass=c("tutorial", "colors"))
+text(0.66, .rect.mid, color_selection$id[5:8], Rcssclass="tutorial")
+#
+text(0, 0.55, "Embedding of color compositions", Rcssclass="tutorial")
+points(0.08, 0.45, Rcssclass=c("embedding", "twoA"), cex=1.0)
+text(0.16, 0.45, "red rose, cobalt blue sky", Rcssclass="tutorial")
+points(0.08, 0.33, Rcssclass=c("embedding", "manyA"), cex=1.0)
+text(0.16, 0.33,
+     "red rose, cobalt blue sky,\ngreen lawn, white clouds",
+     Rcssclass="tutorial")
+points(0.08, 0.21, Rcssclass=c("embedding", "twoB"), cex=1.0)
+text(0.16, 0.21, "Tomatoes, olives",
+     Rcssclass="tutorial")
+points(0.08, 0.09, Rcssclass=c("embedding", "manyB"), cex=1.0)
+text(0.16, 0.09, "Tomatoes, olives,\nlemon slice, azure sea",
+     Rcssclass="tutorial")
+```
+

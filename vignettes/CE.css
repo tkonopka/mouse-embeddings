@@ -739,8 +739,7 @@ rect.bars.owlsim {
   col: #d1345b;
 }
 rect.bars.crossmap {
-  /** col: #ee96ba; **/
-  col: #3454d1;
+  col: #ee96ba;
 }
 
 text.errors.label {

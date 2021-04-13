@@ -21,4 +21,5 @@ if (!assignc("mp_info")) {
 
 if (!assignc("mp_raw")) {
   mp_raw <- read_yaml(mp_raw_file)
+  savec(mp_raw)
 }
