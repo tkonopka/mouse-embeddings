@@ -54,7 +54,7 @@ RcssDefaultStyle <- Rcss(c("CE.css", "CE-tutorial.css", "CE-schematic.css"))
 panel.labels <- LETTERS
 
 # cache directory
-cachedir(paste0("cache"))
+cachedir(file.path("..", "cache"))
 
 # templates for files
 templates <- list(
