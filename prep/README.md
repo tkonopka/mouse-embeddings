@@ -65,19 +65,19 @@ on files generated in previous steps.
 
 - `prep-impc.R` - downloads data about mouse models from IMPC solr servers.
   Prepares data for use with phenoscoring and crossmap.
-
-- `prep-crossmap-disease.R` - use conversion of hp-mp translations to prepare 
-  disease data for crossmap.
-
-- `prep-crossmap-search-models.bash` - builds a crossmap instance with mouse 
-  models and runs searches to get nearest neighbors.
-
+  
 - `prep-phenoscoring.bash` - builds databases using `phenoscoring` which 
   produce vector representations based on complete phenotypes.
 
-- `prep-phenoscoring.R` - uses phenoscoring dbs to create search-like results 
+- `prep-phenoscoring.R` - uses phenoscoring dbs to create search-like results
   that map diseases to models
 
+- `prep-crossmap-disease.R` - use conversion of hp-mp translations to prepare
+  disease data for crossmap.
+
+- `prep-crossmap-search-models.bash` - builds a crossmap instance with mouse
+  models and runs searches to get nearest neighbors.
+  
 - `prep_node2vec.R` - creates data files suitable for processing with node2vec
 
 - `prep_node2vec.bash` - create node2vec embeddings

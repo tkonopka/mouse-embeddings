@@ -6,7 +6,8 @@ cd ../data/crossmap
 
 # build an instance with ontology definitions
 ../../crossmap build --config config-mp.yaml
-
+../../crossmap add --config config-mp.yaml \
+                   --dataset manual --data hpmp-manual.yaml
 
 # perform search for 1-to-1 ontology translation (with and without diffusion)
 for N in 1
@@ -19,7 +20,7 @@ do
       ../../crossmap search --config config-mp.yaml \
                             --dataset mp \
                             --data hp-parents.yaml.gz --n $N --tsv \
-                            --diffusion "{\"mp\":0.$DIFF}" \
+                            --diffusion "{\"mp\":0.$DIFF,\"manual\":$DIFF.0}" \
                             | gzip > $OUTSEARCH
     fi
   done
