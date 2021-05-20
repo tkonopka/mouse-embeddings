@@ -5,6 +5,7 @@ cross*
 pheno*
 node2vec
 obotools
+make*
 aws*
 
 # data files
@@ -14,6 +15,7 @@ aws*
 *zip
 data*
 results*
+cache*
 
 # graphics and compiled vignettes
 *pdf
@@ -23,5 +25,4 @@ results*
 *tiff
 *tex
 *html
-vignettes/cache*
 vignettes/archive*

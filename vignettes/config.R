@@ -48,7 +48,7 @@ rm(.rfile, .rfiles)
 # constants, thesholds, paths, etc
 
 # path to graphics styles
-RcssDefaultStyle <- Rcss(c("CE.css", "CE-tutorial.css", "CE-schematic.css"))
+RcssDefaultStyle <- Rcss(c("ME.css", "ME-tutorial.css", "ME-schematic.css"))
 
 # labels to designate plot panels
 panel.labels <- LETTERS

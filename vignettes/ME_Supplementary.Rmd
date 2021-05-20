@@ -14,24 +14,21 @@ header-includes:
 ---
 
 
-```{r, prep, echo=FALSE}
+```{r, analysis, echo=FALSE}
 source("config.R")
 set.seed(1234)
-source("CE_prep_ontology.R")
-source("CE_prep_models.R")
-source("CE_prep_diseases.R")
-```
-
-```{r, embeddings, echo=FALSE}
-source("CE_embeddings_ontology.R")
-source("CE_embeddings_models.R")
-source("CE_node2vec.R")
-source("CE_predictions.R")
-source("CE_genes.R")
+source("ME_prep_ontology.R")
+source("ME_prep_models.R")
+source("ME_prep_diseases.R")
+source("ME_embeddings_ontology.R")
+source("ME_embeddings_models.R")
+source("ME_node2vec.R")
+source("ME_predictions.R")
+source("ME_genes.R")
 ```
 
 ```{r, graphics.details, echo=FALSE}
-source("CE_wrappers.R")
+source("ME_wrappers.R")
 # optionally set drawing to png
 knitr::opts_chunk$set(dpi=600, dev="png", dev.args=list(type="cairo-png"))
 #
@@ -343,7 +340,7 @@ rm(.emb)
 ```
 
 
-```{r supfig.models.enrichment, eval=TRUE, echo=FALSE, fig.width=6.5, fig.height=7.8, fig.cap="\\textbf{Feature enrichment in embedding regions.} \\textbf{(A)} Embedding of all mouse models based on their phenotypes. Two regions are selected with rectangular gates.  \\textbf{(B)} A detailed view of one of the gated regions from (A). \\textbf{(C)} Enrichment analysis comparing phenotypes observed in animal models shown in (B) compared to all other models outside the gated region. Dots correspond to MP phenotypes. Axes show the fraction of selected models with a given phenotype, and an enrichment significance score for the phenotype computed using a Fisher test (some p-values are truncated). Significance level is $p=0.05$ after Bonferroni correction. The table on the right names the most significant phenotypes. \\textbf{(D, E)} Analogous to (B, C), but treating another gated region. \\textbf{(F-J)} Analogous to (A-J), but based on an embedding of mouse models based on concise text descriptions. "}
+```{r supfig.models.enrichment, eval=FALSE, echo=FALSE, fig.width=6.5, fig.height=7.8, fig.cap="\\textbf{Feature enrichment in embedding regions.} \\textbf{(A)} Embedding of all mouse models based on their phenotypes. Two regions are selected with rectangular gates.  \\textbf{(B)} A detailed view of one of the gated regions from (A). \\textbf{(C)} Enrichment analysis comparing phenotypes observed in animal models shown in (B) compared to all other models outside the gated region. Dots correspond to MP phenotypes. Axes show the fraction of selected models with a given phenotype, and an enrichment significance score for the phenotype computed using a Fisher test (some p-values are truncated). Significance level is $p=0.05$ after Bonferroni correction. The table on the right names the most significant phenotypes. \\textbf{(D, E)} Analogous to (B, C), but treating another gated region. \\textbf{(F-J)} Analogous to (A-J), but based on an embedding of mouse models based on concise text descriptions. "}
 layout(matrix(c(1,1, 16, 2, 2,
                 3,3, 16, 3, 3,
                 4,7, 16, 10,13,

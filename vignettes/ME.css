@@ -218,8 +218,20 @@ text.embedding.label, lines.embedding.label {
 text.embedding.adj_left {
   adj: -0.05 0.5;
 }
+text.embedding.adj_bottomleft {
+  adj: -0.05 -0.05;
+}
+text.embedding.adj_topleft {
+  adj: -0.05 1.05;
+}
 text.embedding.adj_right {
   adj: 1.05 0.5;
+}
+text.embedding.adj_topright {
+  adj: 1.05 1.05;
+}
+text.embedding.adj_bottomright {
+  adj: 1.05 -0.05;
 }
 /** for coloring subsets of points **/
 points.embedding.no {
@@ -384,7 +396,7 @@ lines.linehist {
 text.linehist.label {
   cex: 0.85;
   col: #333333;
-  adj: 0 -2.7;
+  adj: 0 -1.5;
 }
 lines.histboxes.whisker {
   lwd: 1;
@@ -415,8 +427,8 @@ list.model {
   title.height: 0.13;
 }
 list.model.disease {
-  line.height: 0.1;
-  title.height: 0.135;
+  line.height: 0.11;
+  title.height: 0.136;
 }
 par.list {
   mai: 0.02 0.05 0.2 0.02;

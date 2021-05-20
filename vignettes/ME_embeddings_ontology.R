@@ -7,7 +7,7 @@
 canary_file <- glue(templates$mp_embedding,
                     DIM=max(embedding_d), ALGO="umap")
 if (!file.exists(canary_file)) {
-  source("CE_prep_knn.R")
+  source("ME_prep_knn.R")
   make_mp_embedding <- function(d) {
     outfile <- glue(templates$mp_embedding, DIM=d, ALGO="umap")
     if (!file.exists(outfile)) {

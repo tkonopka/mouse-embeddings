@@ -103,7 +103,7 @@ wrap_avg_coordinates <- function(embedding_bg, embedding_avg, item_info,
                 ylab="density",
                 line_label=hist_label, line_label_x=hist_label_x,
                 main="", xlim=c(0, 100), ylim=density_ylim,
-                at=list(x=seq(0, 100, by=30), y=seq(0, 0.1, by=0.1)),
+                at=list(x=seq(0, 100, by=30), y=seq(0, 1, by=0.1)),
                 Rcssclass=Rcssclass)
   multipanelLabel(panel.labels[2])
   # boxplot with distance from center

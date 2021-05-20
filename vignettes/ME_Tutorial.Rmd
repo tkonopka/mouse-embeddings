@@ -18,20 +18,14 @@ header-includes:
 
 ```{r, prep, echo=FALSE}
 source("config.R")
-source("CE_wrappers.R")
+source("ME_wrappers.R")
 set.seed(1234)
-#source("CE_prep_ontology.R")
-#source("CE_prep_models.R")
-#source("CE_prep_diseases.R")
+source("ME_tutorial.R")
+source("ME_colors.R")
 ```
-```{r, embeddings, echo=FALSE}
-source("CE_tutorial.R")
-source("CE_colors.R")
-```
+
 
 # Results
-
-
 
 ```{r tutorial.modeling, eval=TRUE, echo=FALSE, fig.width=6.5, fig.height=2.4, fig.cap="\\textbf{Embedding scenarios and effects on post-embedding applications.} All panels represent synthetic datasets designed to illustrate idealized scenarios. Each dataset consists of data points that have been mapped from an original, high-dimensional data space (not shown) into a 2d embedding space. \\textbf{(A-C)} Examples illustrating the relationship between the number groups and number of embedding dimensions (upper panels), and effectiveness of linear models based on embedding coordinates for predicting numeric labels (lower panels). \\textbf{(A)} An example with two groups, i.e. a number of groups comparable to the number of embedding dimensions (upper panel). Modeling can be effective even using linear regression informed by a single embedding coordinate (lower panel). \\textbf{(B)} An example dataset with one group of points larger than the other. Although the separation between groups is less clear-cut than in (A), there exists a linear boundary separating the groups in the two-dimensional embedding. Linear models based on single embedding coordinates are informative, but better fits would be achieved by models using more than one embedding coordinate. \\textbf{(C)} A dataset with a large number of groups compared to the number of embedding dimensions. The groups are well-separated in the embedding, which is effective for visualization (upper panel). Linear models are not effective for predicting labels for an arbitrary group (lower panel). However, other machine-learning techniques, e.g. random forest classifiers, would be able to learn labels from the embedding coordinates."}
 layout(matrix(c(1,3, 4,6, 7,9, 10,

@@ -21,7 +21,7 @@ canary_file <- glue(templates$model_embedding,
                     WHAT="models", ENCODING="binvector", DIM=2, ALGO="umap")
 if (!file.exists(canary_file)) {
   # ensure that raw data is loaded
-  source("CE_prep_repr.R")
+  source("ME_prep_repr.R")
   # create an embedding based on model representations
   if (!assignc("model_vector_umap")) {
     model_vector_umap <- umap(model_vectors, config=embedding.config)
@@ -52,7 +52,7 @@ canary_file <- glue(templates$model_embedding,
                     WHAT="diseases-owlsim", ENCODING="vector",
                     DIM=2, ALGO="umap")
 if (!file.exists(canary_file)) {
-  source("CE_prep_repr.R")
+  source("ME_prep_repr.R")
   assignc("model_vector_umap")
   sapply(names(disease_vectors), function(translation_type) {
     output_file <- glue(templates$model_embedding,
@@ -83,7 +83,7 @@ if (!file.exists(canary_file)) {
 # embeddings in higher dimensions
 
 if (!assignc("model_knn")) {
-  source("CE_prep_knn.R")
+  source("ME_prep_knn.R")
   # wrapper to prepare knn for models
   prep_model_knn <- function(repr, diff, n=15) {
     prep_umap_knn(template=templates$model_search,
@@ -105,7 +105,7 @@ if (!assignc("model_knn")) {
 
 
 if (!assignc("model_umap_embeddings_d")) {
-  source("CE_prep_knn.R")
+  source("ME_prep_knn.R")
   make_model_umap_embedding_d <- function(d, knn, ENCODING="vector") {
     output_file <- glue(templates$model_embedding,
                     WHAT="models", ENCODING=ENCODING, DIM=d, ALGO="umap")
@@ -204,7 +204,7 @@ canary_file <- glue(templates$model_embedding,
                     WHAT="models", ENCODING=names(text_methods)[1],
                     DIM=2, ALGO="umap")
 if (!file.exists(canary_file)) {
-  source("CE_prep_knn.R")
+  source("ME_prep_knn.R")
   mclapply(text_methods, function(encoding) {
     knn <- model_knn[[encoding]]
     dummy_data <- matrix(0, ncol=1, nrow=nrow(knn$indexes))

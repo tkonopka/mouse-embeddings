@@ -71,7 +71,7 @@ abbreviate <- function(v, abbreviations=plot_list_abbreviations) {
 plot_list <- function(v, main="",
                       xlim=NULL, ylim=NULL,
                       abbreviations=plot_list_abbreviations,
-                      max.width=0.96,
+                      max.width=1,
                       Rcssclass=NULL) {
   RcssCompulsoryClass <- RcssGetCompulsoryClass(c("list", Rcssclass))
 
