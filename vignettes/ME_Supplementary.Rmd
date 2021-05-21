@@ -1,6 +1,6 @@
 ---
-title: "Dimensional reduction of mouse models - Supplementary Figures"
-author: Correspondence - t.konopka@qmul.ac.uk
+title: "Dimensional reduction of phenotypes from 53,000 mouse models reveals a
+        diverse landscape of gene function - Supplementary Figures"
 output:
   pdf_document:
     keep_tex: true
