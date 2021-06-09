@@ -2,10 +2,12 @@
 
 This repository holds an analysis of phenotypes associated with mouse models. 
 
-A snapshot of the repository is available at zenodo ([TO DO](to do)). 
-The snapshot includes raw data files, processed data files, computed results, 
-generated figures, and source code. The github repository holds only the 
-source code, without data files.
+The repository describes analyses of large datasets that are not included
+on github. A bundle that includes the datasets and a copy of the analysis
+code is available on 
+zenodo ([dataset 4916172](https://zenodo.org/record/4916172)).
+The bundle includes raw data files, processed data files, computed results, 
+figures, and source code.  
 
 
 ## Setup
@@ -13,7 +15,7 @@ source code, without data files.
 Directories in the github repository:
 
 - `prep` - directory with scripts that process raw data files and perform
- some one-time computations, e.g. database builds and database queries.
+ one-time computations, e.g. database builds and database queries.
 - `R` - functions used during generation of vignettes
 - `vignettes` - code for Rmarkdown vignettes, and associated helper files.
 

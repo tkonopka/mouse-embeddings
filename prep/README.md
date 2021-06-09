@@ -9,9 +9,9 @@ The scripts rely on some pre-existing files under the `data` folder. Some of
 these files are simply downloaded (e.g. from orpha.net or from obofoundry.org). 
 Other files must be processed manually, e.g. converting from obo format to
 flat tables. A complete set of data files in the correct format are available
-in a data snapshot at zenodo (zenodo repository URL)
+in a data snapshot at zenodo ([dataset 4916172](https://zenodo.org/record/4916172))
 
-Several scripts also require access to executables, assumed to be present 
+Several scripts require access to executables, which are assumed to be present 
 under the repository root. 
 
 - `crossmap` - executable for [crossmap](https://github.com/tkonopka/crossmap). 
@@ -19,8 +19,8 @@ under the repository root.
   knowledge-bases.
 
 - `crossprep` - executable for crossprep, which is a utility distributed 
-under [crossmap](https://github.com/tkonopka/crossmap). Crossprep is a utility
-  that prepares data files for use with crossmap.
+  alongside [crossmap](https://github.com/tkonopka/crossmap). Crossprep is a 
+  utility that prepares data files for use with crossmap.
   
 - `node2vec` - executable for node2vec, distributed under 
   [snap](https://github.com/snap-stanford/snap). Node2vec is a utility to 
@@ -39,8 +39,8 @@ under [crossmap](https://github.com/tkonopka/crossmap). Crossprep is a utility
   is a program that creates and manages databases of model-disease 
   associations.
 
-An 'executable' here means a script that only takes data arguments as inputs
-and internally handles locations of the underlying software. An example 
+An 'executable' here means a script that launches the corresponding software, 
+i.e. internally handles and resolves the location of the software. An example 
 executable script for crossmap might be as follows:
 
 ```
