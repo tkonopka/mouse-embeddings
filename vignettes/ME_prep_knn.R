@@ -26,4 +26,7 @@ if (!assignc("mp_knn")) {
   mp_knn <- prep_umap_knn(template=templates$mp_search, diff=0, n=15)
   savec(mp_knn)
 }
-
+if (!assignc("hp_knn")) {
+  hp_knn <- prep_umap_knn(template=templates$hp_search, diff=0, n=15)
+  savec(hp_knn)
+}

@@ -60,6 +60,9 @@ on files generated in previous steps.
 - `prep-crossmap-search-mp.bash` - builds a crossmap instance for hp-mp 
   translation and runs searches to produce hp-mp translation tables.
 
+- `prep-crossmap-search-hp.bash` - builds a crossmap instance for hp ontology
+  and runs searches using hp terms.
+
 - `prep-crossmap-mp.R` - a follow-up script after `prep-crossmap.bash` that 
   converts hp-mp translations into a format for phenoscoring.
 

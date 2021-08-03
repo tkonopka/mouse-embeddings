@@ -70,6 +70,8 @@ templates <- list(
   # paths to crossmap search results
   mp_search=file.path(data.dir, "crossmap",
                       "search-mp--data-mp-n15-diff{DIFF}"),
+  hp_search=file.path(data.dir, "crossmap",
+                      "search-hp--data-hp-n15-diff{DIFF}"),
   model_search=file.path(data.dir, "crossmap",
                       "search-models-{REPR}--data-models-{REPR}-diff{DIFF}"),
   disease_search=file.path(data.dir, "crossmap",
@@ -77,8 +79,10 @@ templates <- list(
   # paths to tables with embeddings (coordinates)
   mp_embedding=file.path(results.dir,
                          "embedding-of-mp--{ALGO}-d{DIM}-{SETTINGS}"),
+  hp_embedding=file.path(results.dir,
+                         "embedding-of-hp--{ALGO}-d{DIM}-{SETTINGS}"),
   model_embedding=file.path(results.dir,
-                            "embedding-of-mouse-models-{ENCODING}--{ALGO}-d{DIM}-{SETTINGS}-data-{WHAT}"),
+                            "embedding-of-mouse-models-{ENCODING}--{ALGO}-d{DIM}-{SETTINGS}--data-{WHAT}"),
   node2vec_embedding=file.path(results.dir, "{DATASET}-node2vec-d{DIM}-{SETTINGS}"),
   # paths to tables summarizing predictions
   prediction_errors=file.path(results.dir, "prediction-errors-for-{WHAT}--{ERR}-{ENCODING}-d{DIM}")

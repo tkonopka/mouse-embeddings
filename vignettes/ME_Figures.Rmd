@@ -75,7 +75,7 @@ wrap_embedding_labels(.emb, .emb_highlights)
 setnames(.m_info, "model_id", "id")
 wrap_avg_coordinates(.emb[label=="mp"], .emb[label=="model"],
                      item_info=.m_info, main="",
-                     detail_avg=0.05,
+                     detail_bg=1, detail_fg=1,
                      density_ylim=c(0, 0.115),
                      Rcssclass="model",
                      hist_label=paste0(.m_perc, "% models\nassociated\nwith < 5\nphenotypes"),
@@ -91,6 +91,7 @@ par(mai=rep(0.01,4)); plot.new()
 setnames(.d_info, c("disease_id", "disease_num_phenotypes"),
          c("id", "num_phenotypes"))
 wrap_avg_coordinates(.emb[label=="mp"], .emb[label=="crossmap"],
+                     detail_bg=1, detail_fg=1,
                      item_info=.d_info, main="",
                      density_ylim=c(0, 0.115),
                      Rcssclass="crossmap",
@@ -100,6 +101,10 @@ wrap_avg_coordinates(.emb[label=="mp"], .emb[label=="crossmap"],
 #
 rm(.emb, .emb_highlights, .d_info, .m_info, .m_perc)
 ```
+
+Diseases with MP phenotypes: `r length(unique(disease_phenotypes$crossmap$id))`
+Number of distinct HP phenotypes: `r length(unique(disease_phenotypes_hp$phenotype))`
+Number of distinct MP phenotypes: `r length(unique(disease_phenotypes$crossmap$phenotype))`
 
 
 ```{r fig.models, eval=TRUE, echo=FALSE, fig.width=6.5, fig.height=4.9, fig.cap="\\textbf{Embeddings of mouse model phenotypes.} \\textbf{(A)} Embedding of mouse models based on vector representations of their phenotypes. Models are colored by the source of curated data. Labels and the rectangle point to selected models. \\textbf{(B)} Analogous to (A), but with the layout of mouse models produced using semantic similarities of text descriptions. \\textbf{(C)} Lists of phenotypes associated with individual mouse models highlighted in (A). Some lists are truncated for this visualization. All phenotype names match definitions from the ontology (abn.: abnormal, morph.: morphology, incr.: increased, decr.: decreased) \\textbf{(D)} A small region of the embedding in (A). \\textbf{(E)} Enrichment analysis comparing the phenotypes associated with mouse models in (D) against all other models outside the selected region. The significance threshold is Bonferroni-corrected p=0.05. The most significant phenotype is labeled."}

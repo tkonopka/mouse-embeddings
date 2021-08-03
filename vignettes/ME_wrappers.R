@@ -71,17 +71,18 @@ wrap_disease_neighborhood <- function(embedding, disease_id, gate_rect,
 #' - a histogram of number of phenotypes
 #'
 #' @param embedding_bg data table with an embedding of background points
-#' @param embedding_avg data table with an embedding of foregraound points
+#' @param embedding_fg data table with an embedding of foregraound points
 #' @param item_info data table with info about diseases (num phenotypes)
 #' @param main character chart title
-#' @param detail numeric, fraction of embedding_avg to show in
+#' @param detail_bg numeric, fraction of embedding_bg to show in plot
+#' @param detail_fg numeric, fraction of embedding_fg to show in plot
 #' @param legend_pos numeric, coordinates for legend
 #' @param legend_labels named vector with legend contents
 #' @param Rcssclass character, style class
 #' @param panel.labels character, labels for top-left corner
-wrap_avg_coordinates <- function(embedding_bg, embedding_avg, item_info,
+wrap_avg_coordinates <- function(embedding_bg, embedding_fg, item_info,
                                  main="", hist_label="", hist_label_x=0,
-                                 detail_bg=0.5, detail_avg=0.5,
+                                 detail_bg=0.5, detail_fg=0.5,
                                  density_ylim=c(0, 0.1),
                                  legend_pos="topleft", legend_labels=NULL,
                                  Rcssclass="owlsim", panel.labels=c("", "")) {
@@ -93,7 +94,7 @@ wrap_avg_coordinates <- function(embedding_bg, embedding_avg, item_info,
   .emb <- merge(.emb, item_info[, c("id", "num_phenotypes")], by="id")
   # embedding
   plot_embedding(embedding_bg, detail=detail_bg, main=main)
-  points_embedding(embedding_avg, detail=detail_avg, Rcssclass=Rcssclass)
+  points_embedding(embedding_fg, detail=detail_fg, Rcssclass=Rcssclass)
   add_embedding_legend(legend_pos, legend_labels)
   multipanelLabel(panel.labels[1])
   # histogram/density plot of number of phenotypes

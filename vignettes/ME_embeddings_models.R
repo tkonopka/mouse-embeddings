@@ -29,14 +29,14 @@ if (!file.exists(canary_file)) {
     output_file <- glue(templates$model_embedding,
                         WHAT="models", ENCODING="vector",
                         DIM=2, ALGO="umap", SETTINGS=paste0("R", replicate))
-    if (exists(output_file)) return(NULL)
+    if (file.exists(output_file)) return(NULL)
     config <- embedding.config
     model_vector_umap <- umap(model_vectors, config=config,
                               random_state=config$random_state+replicate)
-    write_embedding(model_vector_umap, file=output_file, label="model")
     if (replicate==0) {
       savec(model_vector_umap)
     }
+    write_embedding(model_vector_umap, file=output_file, label="model")
   }
   make_model_vector_umap(replicate=0)
   make_model_vector_umap(replicate=1)
@@ -47,14 +47,14 @@ if (!file.exists(canary_file)) {
     output_file <- glue(templates$model_embedding,
                         WHAT="models", ENCODING="binvector",
                         DIM=2, ALGO="umap", SETTINGS=paste0("R", replicate))
-    if (exists(output_file)) return(NULL)
+    if (file.exists(output_file)) return(NULL)
     config <- embedding.config
     model_binvector_umap <- umap(model_binvectors, config=config,
                                  random_state=config$random_state+replicate)
-    write_embedding(model_binvector_umap, file=output_file, label="model")
     if (replicate==0) {
       savec(model_binvector_umap)
     }
+    write_embedding(model_binvector_umap, file=output_file, label="model")
   }
   make_model_binvector_umap(replicate=0)
   make_model_binvector_umap(replicate=1)
@@ -74,7 +74,8 @@ if (!file.exists(canary_file)) {
   sapply(names(disease_vectors), function(translation_type) {
     output_file <- glue(templates$model_embedding,
                         WHAT=paste0("diseases-", translation_type),
-                        ENCODING="vector", DIM=2, ALGO="umap")
+                        ENCODING="vector",
+                        DIM=2, ALGO="umap", SETTINGS="R0")
     if (!file.exists(output_file)) {
       result <- predict(model_vector_umap, disease_vectors[[translation_type]])
       write_embedding(result, file=output_file, label=translation_type)
@@ -85,7 +86,8 @@ if (!file.exists(canary_file)) {
   sapply(names(disease_binvectors), function(translation_type) {
     output_file <- glue(templates$model_embedding,
                         WHAT=paste0("diseases-", translation_type),
-                        ENCODING="binvector", DIM=2, ALGO="umap")
+                        ENCODING="binvector",
+                        DIM=2, ALGO="umap", SETTINGS="R0")
     if (!file.exists(output_file)) {
       result <- predict(model_binvector_umap, disease_binvectors[[translation_type]])
       write_embedding(result, file=output_file, label=translation_type)
@@ -125,7 +127,8 @@ if (!assignc("model_umap_embeddings_d")) {
   source("ME_prep_knn.R")
   make_model_umap_embedding_d <- function(d, knn, ENCODING="vector") {
     output_file <- glue(templates$model_embedding,
-                    WHAT="models", ENCODING=ENCODING, DIM=d, ALGO="umap")
+                        WHAT="models", ENCODING=ENCODING,
+                        DIM=d, ALGO="umap", SETTINGS="R0")
     if (!file.exists(output_file)) {
       print(paste0("computing umap embedding in d=", d))
       dummy_data <- matrix(0, ncol=1, nrow=nrow(knn$indexes))
@@ -158,9 +161,11 @@ if (!assignc("model_avg_embeddings_d")) {
     result <- list()
     for (d in embedding_d) {
       output_file <- glue(templates$model_embedding,
-                          WHAT="models", ENCODING="mp", DIM=d, ALGO="avg")
+                          WHAT="models", ENCODING="mp",
+                          DIM=d, ALGO="avg", SETTINGS="R0")
       if (!file.exists(output_file)) {
-        mp_embedding <- fread(glue(templates$mp_embedding, DIM=d, ALGO="umap"))
+        mp_embedding <- fread(glue(templates$mp_embedding,
+                                   DIM=d, ALGO="umap", SETTINGS="R0"))
         d_coordinates <- paste0("UMAP_", seq_len(d))
         avg_coordinates <- paste0("AVG_", seq_len(d))
         avg_embedding <- predict_avg_coordinates(mp_embedding,
@@ -190,7 +195,8 @@ if (!assignc("model_pca_embeddings_d")) {
     result <- list()
     for (d in embedding_d) {
       output_file <- glue(templates$model_embedding,
-                          WHAT="models", ENCODING=ENCODING, DIM=d, ALGO="pca")
+                          WHAT="models", ENCODING=ENCODING,
+                          DIM=d, ALGO="pca", SETTINGS="R0")
       if (!file.exists(output_file)) {
         write_embedding(data_pca[, seq_len(d)], file=output_file,
                         label="model", col_prefix="PCA_")
@@ -226,10 +232,15 @@ if (!file.exists(canary_file)) {
     knn <- model_knn[[encoding]]
     dummy_data <- matrix(0, ncol=1, nrow=nrow(knn$indexes))
     rownames(dummy_data) <- rownames(knn$indexes)
-    knn_umap <- umap(dummy_data, config=embedding.config, knn=knn)
-    output_file <- glue(templates$model_embedding,
-                        WHAT="models", ENCODING=encoding, DIM=2, ALGO="umap")
-    write_embedding(knn_umap, file=output_file, label="model")
+    for (replicate in c(0, 1)) {
+      knn_umap <- umap(dummy_data, config=embedding.config, knn=knn,
+                       random_state=embedding.config$random_state+replicate)
+      output_file <- glue(templates$model_embedding,
+                          WHAT="models", ENCODING=encoding,
+                          DIM=2, ALGO="umap", SETTINGS=paste0("R", replicate))
+      write_embedding(knn_umap, file=output_file, label="model")
+    }
+
   }, mc.cores=4)
 }
 

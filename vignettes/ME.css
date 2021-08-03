@@ -181,6 +181,9 @@ points.embedding.crossmap {
 points.embedding.no_phen {
   col: #ff4e33;
 }
+points.embedding.disease {
+  col: #ff4e33;
+}
 /** col: #f15cff; **/
 points.embedding.legend, points.embedding.legend.gene {
   cex: 0.8;

@@ -37,7 +37,7 @@ if (!assignc("disease_info")) {
 }
 
 
-# create mappings from disease to mp phenotypes
+# create mappings from diseases to mp phenotypes
 if (!assignc("disease_phenotypes")) {
   make_disease_phenotypes <- function(translation_method) {
     oomap <- fread(hp_mp_translations_files[[translation_method]])
@@ -52,6 +52,19 @@ if (!assignc("disease_phenotypes")) {
   }
   disease_phenotypes <- lapply(translation_methods, make_disease_phenotypes)
   savec(disease_phenotypes)
+}
+# get a similar table mapping diseases to hp phenotypes (untranslated)
+if (!assignc("disease_phenotypes_hp")) {
+  get_disease_phenotypes_hp <- function() {
+    result <- rbindlist(lapply(disease_raw, function(x) {
+      x_phens <- x$metadata$phenotype_ids
+      if (length(x_phens)==0) return(NULL)
+      x_hp <- sapply(strsplit(x$metadata$phenotype_ids, " "), head, n=1)
+      data.table(id=x$metadata$id, phenotype=x_hp)
+    }))
+  }
+  disease_phenotypes_hp <- get_disease_phenotypes_hp()
+  savec(disease_phenotypes_hp)
 }
 
 

@@ -65,6 +65,7 @@ get_model_phenotypes <- function(model_ids) {
 # subsets of models - based on number of phenotypes
 if (!exists("models_w_phen")) {
   models_w_phen <- list(
+    "all"=model_info[num_phenotypes>=0]$model_id,
     "gt_0"=model_info[num_phenotypes>0]$model_id,
     "gt_1"=model_info[num_phenotypes>1]$model_id
   )
