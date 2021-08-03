@@ -7,6 +7,9 @@ colors.config$min_dist <- 0.2
 colors.config$metric <- "euclidean"
 colors.config$knn_repeats <- 10
 
+templates$color_embedding <- file.path(results.dir,
+                                       "embedding-of-colors-{ENCODING}--{ALGO}-d2"),
+
 # column names that define three color systems - ways of enoding colors
 color_systems <- list(RGB=c("RGB_red", "RGB_blue", "RGB_green"),
                       HSL=c("Hue", "HSL_saturation", "HSL_light"),

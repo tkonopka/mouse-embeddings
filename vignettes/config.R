@@ -35,6 +35,7 @@ results.dir <- file.path("..", "results")
              "plot_general", "plot_embedding", "plot_scatter", "plot_bars",
              "plot_enrichment", "plot_histboxes", "plot_linehist", "plot_list",
              "plot_schematics", "plot_heatmap", "plot_query", "plot_tab2x2",
+             "plot_legend_bars",
              "write_embedding", "read_node2vec")
 for (.rfile in .rfiles) {
   source(file.path(R.dir, paste0(.rfile, ".R")))
@@ -58,28 +59,28 @@ cachedir(file.path("..", "cache"))
 
 # templates for files
 templates <- list(
+  # paths to files with data
   disease_repr=file.path(data.dir, "phenoscoring",
                          paste0("phenoscoring-orphanet-",
                                 "{TRANSLATION}-references_data")),
   model_repr=file.path(data.dir, "phenoscoring",
                        paste0("phenoscoring-orphanet-",
                               "owlsim-models-{PART}_data")),
+  node2vec_nodes=file.path(results.dir, "{DATASET}-nodes"),
+  # paths to crossmap search results
   mp_search=file.path(data.dir, "crossmap",
                       "search-mp--data-mp-n15-diff{DIFF}"),
   model_search=file.path(data.dir, "crossmap",
                       "search-models-{REPR}--data-models-{REPR}-diff{DIFF}"),
-  mp_embedding=file.path(results.dir,
-                         "embedding-of-mp--{ALGO}-d{DIM}"),
-  color_embedding=file.path(results.dir,
-                            "embedding-of-colors-{ENCODING}--{ALGO}-d2"),
-  model_embedding=file.path(results.dir,
-                            "embedding-of-mouse-models-{ENCODING}--{ALGO}-d{DIM}--data-{WHAT}"),
-  disease_embedding=file.path(results.dir,
-                              "embedding-of-diseases-{TRANSLATION}-{ENCODING}--{ALGO}-d{DIM}--data-{WHAT}"),
   disease_search=file.path(data.dir, "crossmap",
                            "search-models-{REPR}--data-{DISEASE}-{TRANSLATION}-diff{DIFF}"),
-  node2vec_nodes=file.path(results.dir, "{DATASET}-nodes"),
+  # paths to tables with embeddings (coordinates)
+  mp_embedding=file.path(results.dir,
+                         "embedding-of-mp--{ALGO}-d{DIM}-{SETTINGS}"),
+  model_embedding=file.path(results.dir,
+                            "embedding-of-mouse-models-{ENCODING}--{ALGO}-d{DIM}-{SETTINGS}-data-{WHAT}"),
   node2vec_embedding=file.path(results.dir, "{DATASET}-node2vec-d{DIM}-{SETTINGS}"),
+  # paths to tables summarizing predictions
   prediction_errors=file.path(results.dir, "prediction-errors-for-{WHAT}--{ERR}-{ENCODING}-d{DIM}")
 )
 templates <- lapply(templates, function(x) { paste0(x, ".tsv.gz") })

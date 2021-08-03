@@ -102,7 +102,7 @@ rm(.emb, .emb_highlights, .d_info, .m_info, .m_perc)
 ```
 
 
-```{r fig.models, eval=TRUE, echo=FALSE, fig.width=6.5, fig.height=4.9, fig.cap="\\textbf{Embeddings of mouse model phenotypes.} \\textbf{(A)} Embedding of mouse models based on vector representations of their phenotypes. Models are colored by the source of curated data. Labels and gate point to selected models. \\textbf{(B)} Analogous to (A), but with the layout of mouse models produced using semantic similarities of text descriptions. \\textbf{(C)} Lists of phenotypes associated to individual mouse models highlighted in (A). Some lists are truncated for this visualization. All phenotype names match definitions from the ontology (abn.: abnormal, morph.: morphology, incr.: increased, decr.: decreased) \\textbf{(D)} A small region of the embedding in (A). \\textbf{(E)} Enrichment analysis comparing the phenotypes associated with mouse models in (D) against all other models outside the gated region. The significance threshold is Bonferroni-corrected p=0.05. The most significant phenotype is labeled."}
+```{r fig.models, eval=TRUE, echo=FALSE, fig.width=6.5, fig.height=4.9, fig.cap="\\textbf{Embeddings of mouse model phenotypes.} \\textbf{(A)} Embedding of mouse models based on vector representations of their phenotypes. Models are colored by the source of curated data. Labels and the rectangle point to selected models. \\textbf{(B)} Analogous to (A), but with the layout of mouse models produced using semantic similarities of text descriptions. \\textbf{(C)} Lists of phenotypes associated with individual mouse models highlighted in (A). Some lists are truncated for this visualization. All phenotype names match definitions from the ontology (abn.: abnormal, morph.: morphology, incr.: increased, decr.: decreased) \\textbf{(D)} A small region of the embedding in (A). \\textbf{(E)} Enrichment analysis comparing the phenotypes associated with mouse models in (D) against all other models outside the selected region. The significance threshold is Bonferroni-corrected p=0.05. The most significant phenotype is labeled."}
 layout(matrix(c(1,1,1,1,1, 10,  2,2,
                 3,3,3,3,3, 3,  3,3,
                 4,5,6,6,7, 11, 8,9),
@@ -269,17 +269,27 @@ text(60, 0.1, "vector\nencoding", Rcssclass=c("errors", "label"))
 multipanelLabel(panel.labels[4])
 #
 # examples of models and their phenotypes
+prediction_example_model_ids <- c("MGI:2653292", "MGI:5692647#hom#early")
 assignc("model_knn")
-assignc("model_vectors_raw")
+if (!assignc("model_vectors_raw_examples")) {
+  assignc("model_vectors_raw")
+  .temp_ids <- model_knn$vector$indexes[prediction_example_model_ids, ]
+  .temp_ids <- rownames(model_knn$vector$indexes)[as.vector(.temp_ids)]
+  .temp_ids <- unique(.temp_ids)
+  model_vectors_raw_examples <- model_vectors_raw[unique(.temp_ids), ]
+  savec(model_vectors_raw_examples)
+  rm(model_vectors_raw)
+  gc()
+}
 par(mai=rep(0.01, 4)); plot.new()
-wrap_prediction("MGI:2653292", model_knn$vector,
-                vectors_raw=model_vectors_raw,
+wrap_prediction(prediction_example_model_ids[1], model_knn$vector,
+                vectors_raw=model_vectors_raw_examples,
                 normalize=normalize_none, label.width=100)
 multipanelLabel(panel.labels[5])
 add_heatmap_scale(c(5, -16.0, 11, -15.2), main="Value")
 par(mai=rep(0.01, 4)); plot.new()
-wrap_prediction("MGI:5692647#hom#early", model_knn$vector,
-                vectors_raw=model_vectors_raw,
+wrap_prediction(prediction_example_model_ids[2], model_knn$vector,
+                vectors_raw=model_vectors_raw_examples,
                 normalize=normalize_none, label.width=100)
 add_heatmap_legend(5.0, -14.5, height=0.8, width=0.8,
                    labels=c(annotated="annotated in model",

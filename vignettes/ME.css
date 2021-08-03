@@ -47,6 +47,9 @@ par.embedding.large {
   mai: 0.3 0.35 0.1 0.05;
   mgp: 0 0 0;
 }
+par.embedding.large.notop {
+  mai: 0.4 0.35 0.0 0.05;
+}
 mtext.embedding.xlab, mtext.enrichment.xlab, mtext.histboxes.xlab, mtext.linehist.xlab {
   line: 0.4;
 }
@@ -96,9 +99,6 @@ axis.embedding, axis.enrichment, axis.histboxes, axis.linehist, axis.scatter {
   cex.axis: 0.85;
   col.axis: #444444;
 }
-axis.embedding.interactive {
-  cex.axis: 2;
-}
 axis.histboxes.avg, axis.linehist, axis.histboxes.selfgenes {
   tck: -0.025;
 }
@@ -141,41 +141,36 @@ axis.embedding.large.models.y {
   line: 0.2;
 }
 points.embedding {
-  cex: 0.04;
-  pch: 19;
+  cex: 0.8;
+  pch: ·;
   col: #b6b6b666;
   xpd: 0;
 }
 points.embedding.enrich {
-  cex: 0.08;
+  cex: 1.6;
 }
 points.embedding.enrich.owlsim, points.embedding.enrich.crossmap {
-  cex: 0.2;
+  cex: 1.6;
 }
-points.embedding.large, points.embedding.mp {
-  cex: 0.04;
-  pch: 19;
-  col: #b6b6b666;
-  xpd: 0;
+points.embedding.large {
+  cex: 0.9;
 }
 points.embedding.mp {
+  cex: 1.0;
   col: #b6b6b6;
 }
-points.embedding.largedots, points.embedding.disease {
-  cex: 0.1;
+points.embedding.disease {
+  cex: 1.0;
 }
-points.embedding.hugedots {
-  cex: 1;
+points.embedding.owlsim, points.embedding.crossmap, points.embedding.no_phen {
+  cex: 1.2;
 }
-points.embedding.owlsim, points.embedding.crossmap, points.embedding.model {
-  cex: 0.08;
+points.embedding.model {
+  cex: 1.2;
 }
 points.embedding.center.crossmap {
-  cex: 0.3;
-  col: #3454d1;
-}
-points.embedding.interactive {
   cex: 0.8;
+  col: #3454d1;
 }
 points.embedding.owlsim {
   col: #d1345b;
@@ -192,8 +187,8 @@ points.embedding.legend, points.embedding.legend.gene {
   pch: 19;
 }
 points.embedding.gene {
-  col: #2F8DDA;
-  cex: 0.25;
+  col: #2f8dda;
+  cex: 1.8;
   xpd: 1;
 }
 legend.embedding {
@@ -240,15 +235,16 @@ points.embedding.no {
 points.embedding.yes {
   col: #220066;
 }
-points.embedding.nonMGI {
-  col: #ef7b0b66;
+points.embedding.nonMGI, points.embedding.large.nonMGI {
+  col: #ef7b0b44;
 }
-points.embedding.MGI {
-  col: #00a87866;
+points.embedding.MGI, points.embedding.large.MGI {
+  col: #00a87844;
 }
 points.embedding.model {
   col: #2F8DDA;
 }
+/**
 points.embedding.range_32_max {
   col: #00000488;
 }
@@ -264,23 +260,48 @@ points.embedding.range_4_8 {
 points.embedding.range_2_4 {
   col: #F1605D88;
 }
-points.embedding.range_0_0, points.embedding.range_0_2 {
+points.embedding.range_0_0, points.embedding.range_0_2, range_2 {
   col: #FEAF7788;
 }
+**/
+points.embedding.range_16_max {
+  col: #280b5466;
+}
+points.embedding.range_8_16 {
+  col: #65156e66;
+}
+points.embedding.range_4_8 {
+  col: #9f2a6366;
+}
+points.embedding.range_2_4 {
+  col: #d4484266;
+}
+points.embedding.range_2 {
+  col: #f57d1566;
+}
+points.embedding.range_1 {
+  col: #fac12766;
+}
+points.embedding.range_0 {
+  col: #888888aa;
+}
 points.embedding.C57BL_6, points.embedding.hom {
-  col: #dd000088;
+  col: #dd000066;
 }
 points.embedding.C57BL_6N {
-  col: #22008888;
+  col: #22008866;
 }
 points.embedding.C57BL_6NJ {
-  col: #f7e73388;
+  col: #f7e73366;
 }
 points.embedding.C57BL_6NCrl {
-  col: #50474688;
+  col: #50474666;
 }
 points.embedding.C57BL_6NTac {
-  col: #f6bdd188;
+  col: #f6bdd166;
+}
+points.embedding.unspecified {
+  col: #e4e4e466;
 }
 text.histboxes.label {
   cex: 0.85;
@@ -889,5 +910,59 @@ text.manual {
   font: 3;
   col: #333333;
   adj: 0 1;
+}
+
+
+
+
+/** legend with a bar graph **/
+legend_bars {
+  points_x: -0.91;
+  labels_x: -0.86;
+  labels_y: 1.9;
+  main_y: 0.8;
+  barwidth: 0.7;
+}
+par.legend_bars {
+  mai: 0.05 1.35 0.25 0.55;
+  mgp: 0 0 0;
+  yaxs: i;
+}
+points.legend_bars {
+  pch: 19;
+  cex: 0.8;
+  xpd: 1;
+}
+rect.legend_bars {
+  border: #333333;
+  col: #f4f4f4;
+  lwd: 0.5;
+}
+axis.legend_bars {
+  lwd: 0.5;
+  tck: -0.08;
+  cex.axis: 0.85;
+  col.axis: #444444;
+}
+axis.legend_bars.long {
+  tck: -0.03;
+}
+text.legend_bars {
+  xpd: 1;
+}
+text.legend_bars.main {
+  adj: 0 0.5;
+}
+text.legend_bars.xlab {
+  adj: 0.5 0.5;
+}
+text.legend_bars.label {
+  adj: 0 0.5;
+  cex: 0.85;
+}
+text.legend_bars.count {
+  adj: 0 0.5;
+  cex: 0.85;
+  col: #444444;
 }
 

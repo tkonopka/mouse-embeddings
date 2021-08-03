@@ -18,29 +18,46 @@
 # embeddings based on mouse model MP ontology vectors
 
 canary_file <- glue(templates$model_embedding,
-                    WHAT="models", ENCODING="binvector", DIM=2, ALGO="umap")
+                    WHAT="models", ENCODING="binvector", DIM=2,
+                    ALGO="umap", SETTINGS="R1")
 if (!file.exists(canary_file)) {
   # ensure that raw data is loaded
   source("ME_prep_repr.R")
-  # create an embedding based on model representations
-  if (!assignc("model_vector_umap")) {
-    model_vector_umap <- umap(model_vectors, config=embedding.config)
+  # create an embedding based on nonbinary vector representations
+  # (create cache object "model_vector_umap" as side effect)
+  make_model_vector_umap <- function(replicate=0) {
     output_file <- glue(templates$model_embedding,
                         WHAT="models", ENCODING="vector",
-                        DIM=2, ALGO="umap")
+                        DIM=2, ALGO="umap", SETTINGS=paste0("R", replicate))
+    if (exists(output_file)) return(NULL)
+    config <- embedding.config
+    model_vector_umap <- umap(model_vectors, config=config,
+                              random_state=config$random_state+replicate)
     write_embedding(model_vector_umap, file=output_file, label="model")
-    savec(model_vector_umap)
+    if (replicate==0) {
+      savec(model_vector_umap)
+    }
   }
-  rm(model_vector_umap)
-  if (!assignc("model_binvector_umap")) {
-    model_binvector_umap <- umap(model_binvectors, config=embedding.config)
+  make_model_vector_umap(replicate=0)
+  make_model_vector_umap(replicate=1)
+  gc()
+  # create embeddings based on binary vectors
+  # (create cache object "model_vector_umap" as side effect)
+  make_model_binvector_umap <- function(replicate=0) {
     output_file <- glue(templates$model_embedding,
                         WHAT="models", ENCODING="binvector",
-                        DIM=2, ALGO="umap")
+                        DIM=2, ALGO="umap", SETTINGS=paste0("R", replicate))
+    if (exists(output_file)) return(NULL)
+    config <- embedding.config
+    model_binvector_umap <- umap(model_binvectors, config=config,
+                                 random_state=config$random_state+replicate)
     write_embedding(model_binvector_umap, file=output_file, label="model")
-    savec(model_binvector_umap)
+    if (replicate==0) {
+      savec(model_binvector_umap)
+    }
   }
-  rm(model_binvector_umap)
+  make_model_binvector_umap(replicate=0)
+  make_model_binvector_umap(replicate=1)
   gc()
 }
 
@@ -223,31 +240,32 @@ if (!file.exists(canary_file)) {
 #' read a set of embeddings based on models
 read_embedding_set <- function(template,
                                ENCODING="vector", TRANSLATION="",
-                               ALGO="umap", DIM=2) {
-  # I wanted to use ... in the function signature, but that
-  # did not seem to be usable inside the lapply?
+                               ALGO="umap", DIM=2, SETTINGS="R0") {
   result <- lapply(translation_methods, function(tt) {
     # this embedding file should hit an actual file for ENCODING="vector"
     # for other ENCODINGs, there will be no files with diseases
     embedding_file <- glue(template,
                            WHAT=paste0("diseases-", tt),
                            ENCODING=ENCODING, TRANSLATION=TRANSLATION,
-                           ALGO=ALGO, DIM=DIM)
+                           ALGO=ALGO, DIM=DIM, SETTINGS=SETTINGS)
     if (!file.exists(embedding_file)) return(NULL)
     fread(embedding_file)
   })
   embedding_file <- glue(template, WHAT="models", ENCODING=ENCODING,
-                         TRANSLATION=TRANSLATION, DIM=DIM, ALGO=ALGO)
+                         TRANSLATION=TRANSLATION, DIM=DIM,
+                         ALGO=ALGO, SETTINGS=SETTINGS)
   result$models <- fread(embedding_file)
   rbindlist(result)
 }
 if (!exists("model_umap_embedding")) {
-  model_umap_embedding <- c("vector", "binvector", names(text_methods))
-  model_umap_embedding <- setNames(model_umap_embedding, model_umap_embedding)
-  model_umap_embedding <- lapply(model_umap_embedding, function(encoding) {
+  .config <- expand.grid(encoding=c("vector", "binvector", names(text_methods)),
+                         settings=c("R0", "R1"))
+  .config <- split(.config, paste0(.config$encoding, "_", .config$settings))
+  model_umap_embedding <- lapply(.config, function(x) {
     read_embedding_set(template=templates$model_embedding,
-                       ENCODING=encoding, DIM=2)
+                       ENCODING=x$encoding, DIM=2, SETTINGS=x$settings)
   })
+  rm(.config)
 }
 
 
