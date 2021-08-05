@@ -95,12 +95,14 @@ embedding.config <- umap.defaults
 embedding.config$min_dist <- 0.2
 embedding.config$knn_repeats <- 3
 embedding.config$random_state <- 12345
+embedding.config$transform_state <- 12345
 
 
 # configuration for umap for computing knn only
 knn.config <- umap.defaults
 knn.config$knn_repeats <- 3
 knn.config$random_state <- 54321
+knn.config$transform_state <- 54321
 # the embedding layout will not be used with this configuration
 # so save time by initializing in a random fashion and avoiding epochs
 knn.config$init <- "random"

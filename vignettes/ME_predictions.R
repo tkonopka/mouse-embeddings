@@ -77,7 +77,7 @@ if (!assignc("model_prediction_stats")) {
       dstr <- paste0("d", d)
       emb <- embdt2matrix(emblist[[ENCODING]][[dstr]][label=="model"])
       emb_knn <- umap(emb, config=knn.config)$knn
-      result <- err_from_knn(emb_knn, raw_data[rownames(emb), ], mc.cores=3)
+      result <- err_from_knn(emb_knn, raw_data[rownames(emb), ], mc.cores=4)
       fwrite(result, file=outfile_emb, sep="\t")
       rm(result, emb, emb_knn)
       gc()

@@ -21,12 +21,12 @@ source("ME_prep_ontology.R")
 source("ME_prep_models.R")
 source("ME_prep_diseases.R")
 source("ME_embeddings_ontology.R")
-#source("ME_embeddings_models.R")
-#source("ME_node2vec.R")
-#source("ME_predictions.R")
-#source("ME_genes.R")
+source("ME_embeddings_models.R")
+source("ME_node2vec.R")
+source("ME_predictions.R")
+source("ME_genes.R")
 set.seed(1234)
-#source("ME_embeddings_comparison.R")
+source("ME_embeddings_comparison.R")
 ```
 
 ```{r, graphics.details, echo=FALSE}

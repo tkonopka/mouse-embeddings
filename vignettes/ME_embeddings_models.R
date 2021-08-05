@@ -67,7 +67,7 @@ if (!file.exists(canary_file)) {
 
 canary_file <- glue(templates$model_embedding,
                     WHAT="diseases-owlsim", ENCODING="vector",
-                    DIM=2, ALGO="umap")
+                    DIM=2, ALGO="umap", SETTINGS="R0")
 if (!file.exists(canary_file)) {
   source("ME_prep_repr.R")
   assignc("model_vector_umap")
@@ -81,7 +81,7 @@ if (!file.exists(canary_file)) {
       write_embedding(result, file=output_file, label=translation_type)
     }
   })
-  rm(model_vector_umap)
+  rm(model_vector_umap, disease_vectors)
   assignc("model_binvector_umap")
   sapply(names(disease_binvectors), function(translation_type) {
     output_file <- glue(templates$model_embedding,
@@ -93,7 +93,7 @@ if (!file.exists(canary_file)) {
       write_embedding(result, file=output_file, label=translation_type)
     }
   })
-  rm(model_binvector_umap)
+  rm(model_binvector_umap, disease_binvectors)
   gc()
 }
 
@@ -120,6 +120,7 @@ if (!assignc("model_knn")) {
   model_knn$binvector <- model_binvector_umap$knn
   rm(model_binvector_umap)
   savec(model_knn)
+  gc()
 }
 
 
@@ -225,7 +226,7 @@ if (!assignc("model_pca_embeddings_d")) {
 
 canary_file <- glue(templates$model_embedding,
                     WHAT="models", ENCODING=names(text_methods)[1],
-                    DIM=2, ALGO="umap")
+                    DIM=2, ALGO="umap", SETTINGS="R1")
 if (!file.exists(canary_file)) {
   source("ME_prep_knn.R")
   mclapply(text_methods, function(encoding) {
@@ -241,7 +242,7 @@ if (!file.exists(canary_file)) {
       write_embedding(knn_umap, file=output_file, label="model")
     }
 
-  }, mc.cores=4)
+  }, mc.cores=2)
 }
 
 
@@ -310,7 +311,8 @@ if (!exists("model_disease_umap_embedding")) {
       rbindlist(lapply(disease_text_methods, function(dtm) {
         search_result <- copy(disease_search[[transl_method]][[dtm]][[tm]])
         setnames(search_result, "query", "id")
-        predict_avg_coordinates(model_umap_embedding[[tm]], search_result,
+        .emb <- model_umap_embedding[[paste0(tm, "_R0")]]
+        predict_avg_coordinates(.emb, search_result,
                                 feature_col="target",
                                 label=paste0(dtm, "-", transl_method))
       }))
