@@ -6,8 +6,8 @@
 # embeddings based on mouse model MP ontology vectors
 
 
-if (!exists("models_w_phen")) {
-  stop("'models_w_phen' not defined")
+if (!exists("model_ids")) {
+  stop("'model_ids' not defined")
 }
 
 
@@ -37,18 +37,17 @@ if (!assignc("model_prediction_stats")) {
     if (!file.exists(outfile_knn)) {
       print(paste(date(), "computing errors (knn):", ENCODING))
       knn <- model_knn[[ENCODING]]
-      if (identical(knn, NULL)) {
-        knn <- model_vector_umap$knn
-      }
-      result <- err_from_knn(knn, raw_data[rownames(knn$indexes), ], mc.cores=3)
+      result <- err_from_knn(knn, raw_data[rownames(knn$indexes), ],
+                             mc.cores=max(2, detectCores()-2))
       fwrite(result, file=outfile_knn, sep="\t")
       rm(result, knn)
       gc()
     }
     outfile_knn
   }
-  lapply(names(model_umap_embedding), comp_errors_from_knn)
-  # compute errors using the embedding (various embedding methods)
+  lapply(names(encoding_methods), comp_errors_from_knn)
+  # compute erry;o
+  # ors using the embedding (various embedding methods)
   comp_errors_from_emb <- function(ENCODING,
                                    emblist=model_umap_embedding,
                                    raw_data=model_vector_umap$data) {
@@ -56,16 +55,17 @@ if (!assignc("model_prediction_stats")) {
                         WHAT="models", ENCODING=ENCODING, ERR="umap", DIM=2)
     if (!file.exists(outfile_emb)) {
       print(paste(date(), "computing errors (emb):", ENCODING))
-      emb <- embdt2matrix(emblist[[ENCODING]][label=="model"])
+      emb <- embdt2matrix(emblist[[paste0(ENCODING, "_R0")]][label=="model"])
       emb_knn <- umap(emb, config=knn.config)$knn
-      result <- err_from_knn(emb_knn, raw_data[rownames(emb), ], mc.cores=3)
+      result <- err_from_knn(emb_knn, raw_data[rownames(emb), ],
+                             mc.cores=max(2, detectCores()-2))
       fwrite(result, file=outfile_emb, sep="\t")
       rm(result, emb, emb_knn)
       gc()
     }
     outfile_emb
   }
-  lapply(names(model_umap_embedding), comp_errors_from_emb)
+  lapply(names(encoding_methods), comp_errors_from_emb)
   # compute errors using the embedding (in various dimensions)
   comp_errors_from_emb_d <- function(d, emblist,
                                      raw_data=model_vector_umap$data,
@@ -77,7 +77,8 @@ if (!assignc("model_prediction_stats")) {
       dstr <- paste0("d", d)
       emb <- embdt2matrix(emblist[[ENCODING]][[dstr]][label=="model"])
       emb_knn <- umap(emb, config=knn.config)$knn
-      result <- err_from_knn(emb_knn, raw_data[rownames(emb), ], mc.cores=4)
+      result <- err_from_knn(emb_knn, raw_data[rownames(emb), ],
+                             mc.cores=max(2, detectCores()-2))
       fwrite(result, file=outfile_emb, sep="\t")
       rm(result, emb, emb_knn)
       gc()
@@ -96,15 +97,15 @@ if (!assignc("model_prediction_stats")) {
          emblist=model_avg_embeddings_d, ENCODING="mp", ERR="avg")
 
   # load summaries of errors and compute summaries/stats
-  summarize_prediction_stats <- function(model_ids) {
-    encodings <- c("vector", "binvector", names(text_methods), "mp")
+  summarize_prediction_stats <- function(ids) {
+    encodings <- c(names(encoding_methods), "mp")
     result <- lapply(encodings, function(ENCODING) {
       comp_err_stats <- function(ERR="knn", DIM=2) {
         err_file <- glue(templates$prediction_errors,
                          WHAT="models", ENCODING=ENCODING, ERR=ERR, DIM=DIM)
         if (!file.exists(err_file)) return(NULL)
         err_data <- fread(err_file)
-        err_data <- err_data[id %in% model_ids]
+        err_data <- err_data[id %in% ids]
         summarize_quantiles_mean(err_data, "error", by="k")
       }
       comp_err_stats_d <- function(ERR="knn") {
@@ -122,10 +123,7 @@ if (!assignc("model_prediction_stats")) {
     names(result) <- encodings
     result
   }
-  model_prediction_stats <- list(
-    phen_gt_0=summarize_prediction_stats(models_w_phen$gt_0),
-    phen_gt_1=summarize_prediction_stats(models_w_phen$gt_1)
-  )
+  model_prediction_stats <- lapply(model_ids, summarize_prediction_stats)
   savec(model_prediction_stats)
 }
 

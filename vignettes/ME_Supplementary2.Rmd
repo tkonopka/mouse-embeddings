@@ -239,17 +239,17 @@ wrap_separate_legend("bottomleft", c(other="mouse model"),
 for (.encoding in names(.encoding_main)) {
   .main <- paste0(" ", .encoding_main[.encoding])
   if (.encoding %in% names(model_umap_embedding)) {
-    plot_embedding(model_umap_embedding[[.encoding]][label=="model" & id %in% models_w_phen$gt_1],
+    plot_embedding(model_umap_embedding[[.encoding]][label=="model" & id %in% model_ids$phen_gt_1],
                    main=.main, detail=EMBEDDING_DETAIL,
                    Rcssclass=c("large", "models"))
   } else if (grepl("pca", .encoding)) {
-    plot_embedding(model_pca_embeddings_d$vector$d2[label=="model" & id %in% models_w_phen$gt_1],
+    plot_embedding(model_pca_embeddings_d$vector$d2[label=="model" & id %in% model_ids$phen_gt_1],
                    xy=c("PCA_1", "PCA_2"),
                    xlab="PCA 1", ylab="PCA 2",
                    main=.main, detail=EMBEDDING_DETAIL,
                    Rcssclass=c("large", "models"))
   } else {
-    plot_embedding(node2vec_embedding[[.encoding]]$mouse_model_concise[label=="model" & id %in% models_w_phen$gt_1],
+    plot_embedding(node2vec_embedding[[.encoding]]$mouse_model_concise[label=="model" & id %in% model_ids$phen_gt_1],
                    xy=c("node2vec_1", "node2vec_2"),
                    xlab="node2vec 1", ylab="node2vec 2",
                    main=.main, detail=EMBEDDING_DETAIL,
@@ -373,7 +373,7 @@ layout(matrix(c(1,1, 16, 2, 2,
        widths=c(1.6, 1.6, 0.1, 1.6, 1.6), height=c(3.2, 0.1, 1.5, 1.5, 1.5))
 #
 # embedding based on vectors
-.emb1 <- model_umap_embedding$vector[label=="model" & id %in% models_w_phen$gt_1]
+.emb1 <- model_umap_embedding$vector[label=="model" & id %in% model_ids$phen_gt_1]
 .emb1 <- merge(.emb1, model_info[, c("model_id", "bin_source")],
               by.x="id", by.y="model_id")
 .emb1_gate1 <- c(-16, 5.5, -13, 8.5)
@@ -394,7 +394,7 @@ multipanelLabel(panel.labels[1])
 #
 # another embedding based on text
 .emb2 <- model_umap_embedding$text_concise_diff0[label=="model" &
-                                                        id %in% models_w_phen$gt_1]
+                                                        id %in% model_ids$phen_gt_1]
 .emb2 <- merge(.emb2, model_info[, c("model_id", "bin_source")],
               by.x="id", by.y="model_id")
 .emb2_gate1 <- c(-5.5, -4, -2.5, -1)
@@ -452,7 +452,7 @@ layout(matrix(c(1,1,2,
 #
 # vector embedding, sub-panels with diseases
 .emb1 <- model_umap_embedding$vector
-.emb1_models <- .emb1[label=="model" & id %in% models_w_phen$gt_0]
+.emb1_models <- .emb1[label=="model" & id %in% model_ids$phen_gt_0]
 .disease_ids <- .emb1[label=="owlsim"]$id
 .qlim <- c(0.02, 0.98)
 #
@@ -496,7 +496,7 @@ assignc("disease_search")
         owlsim_k15 = .owlsim_search[, head(.SD, 15), by="query"]
 )
 .emb2 <- model_umap_embedding$text_concise_diff0
-.emb2_models <- .emb2[label=="model" & id %in% models_w_phen$gt_1]
+.emb2_models <- .emb2[label=="model" & id %in% model_ids$phen_gt_1]
 .emb2_diseases_k <- lapply(
   .disease_search_k,
   function(x) {

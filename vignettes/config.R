@@ -126,6 +126,9 @@ hp_mp_translations_files <- list(
 text_methods <- named_vector(paste0("text_",
                                     c("concise_diff0", "complete_diff0")))
 
+# all encoding methods for models
+encoding_methods <- named_vector(c("vector", "binvector", text_methods))
+
 # text encoding methods for diseases
 disease_text_methods <- named_vector(c("orphanet"))
 

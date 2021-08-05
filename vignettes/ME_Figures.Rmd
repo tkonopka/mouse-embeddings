@@ -116,11 +116,11 @@ layout(matrix(c(1,1,1,1,1, 10,  2,2,
        height=c(3.2, 0.1, 1.6))
 #
 # embedding based on vectors
-.emb <- model_umap_embedding$vector[label=="model" & id %in% models_w_phen$gt_0]
+.emb <- model_umap_embedding$vector[label=="model" & id %in% model_ids$phen_gt_0]
 .emb <- merge(.emb, model_info[, c("model_id", "bin_source", "num_phenotypes")],
               by.x="id", by.y="model_id")
 .qlim <- c(0.013, 0.987)
-plot_embedding(.emb[id %in% models_w_phen$gt_1], show_points=FALSE, qlim=.qlim,
+plot_embedding(.emb[id %in% model_ids$phen_gt_1], show_points=FALSE, qlim=.qlim,
                main=" Embedding of mouse models (phenotype vectors)",
                Rcssclass=c("large", "vlarge"))
 points_embedding(.emb, detail=EMBEDDING_DETAIL, style_by="bin_source",
@@ -140,10 +140,10 @@ add_embedding_legend("topleft",
 wrap_embedding_labels(.emb, .emb_highlights)
 #
 # an alternative embedding of the same models
-.emb2 <- model_umap_embedding$text_concise_diff0[label=="model" & id %in% models_w_phen$gt_0]
+.emb2 <- model_umap_embedding$text_concise_diff0[label=="model" & id %in% model_ids$phen_gt_0]
 .emb2 <- merge(.emb2, model_info[, c("model_id", "bin_source", "num_phenotypes")],
                by.x="id", by.y="model_id")
-plot_embedding(.emb2[id %in% models_w_phen$gt_1], show_points=FALSE, qlim=.qlim,
+plot_embedding(.emb2[id %in% model_ids$phen_gt_1], show_points=FALSE, qlim=.qlim,
                main=" Embedding of mouse models (text descriptions)",
                Rcssclass=c("large", "vlarge"))
 points_embedding(.emb2, detail=EMBEDDING_DETAIL, style_by="bin_source",
@@ -260,7 +260,7 @@ if (!assignc("knn_best")) {
                          WHAT="models", ERR="knn", ENCODING="vector", DIM=2))
   knn_best <- merge(knn_best[k==2],
                     model_info, by.x="id", by.y="model_id")
-  knn_best <- knn_best[id %in% models_w_phen$gt_0]
+  knn_best <- knn_best[id %in% model_ids$phen_gt_0]
   savec(knn_best)
 }
 plot_histboxes(knn_best, xy=c("num_phenotypes", "error"),
@@ -340,7 +340,7 @@ rm(.top_counts)
 par(mai=rep(0.01, 4)); plot.new()
 #
 # panels showing individual genes
-.emb <- model_umap_embedding$vector[label=="model" & id %in% models_w_phen$gt_0]
+.emb <- model_umap_embedding$vector[label=="model" & id %in% model_ids$phen_gt_0]
 .emb <- merge(.emb, model_info[, c("model_id", "marker_id", "marker_symbol")],
               by.x="id", by.y="model_id")
 wrap_embedding_gene(.emb,
@@ -391,11 +391,11 @@ layout(matrix(c(1,1, 2, 3, 9, 10,10,
 #
 # vector embedding, sub-panels with diseases
 .emb <- model_umap_embedding$vector
-.emb_models <- .emb[label=="model" & id %in% models_w_phen$gt_0]
+.emb_models <- .emb[label=="model" & id %in% model_ids$phen_gt_0]
 .emb_diseases <- .emb[label=="crossmap"]
 .emb_diseases_ids <- .emb_diseases$id
 .qlim <- c(0.013, 0.987)
-plot_embedding(.emb_models[id %in% models_w_phen$gt_1], show_points=FALSE,
+plot_embedding(.emb_models[id %in% model_ids$phen_gt_1], show_points=FALSE,
                main=paste0(" Emb. based on non-binary vectors"),
                qlim=.qlim,
                Rcssclass="large")
@@ -411,7 +411,7 @@ par(mai=rep(0.01, 4)); plot.new()
 #
 # second panel with text-based embedding
 .emb2 <- model_umap_embedding$text_concise_diff0
-.emb2_models <- .emb2[id %in% models_w_phen$gt_1]
+.emb2_models <- .emb2[id %in% model_ids$phen_gt_1]
 assignc("disease_search")
 .disease_search <- copy(disease_search$crossmap$orphanet$text_concise_diff0)
 .disease_search$id <- .disease_search$query

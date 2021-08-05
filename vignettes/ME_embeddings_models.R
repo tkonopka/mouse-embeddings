@@ -270,7 +270,7 @@ read_embedding_set <- function(template,
   rbindlist(result)
 }
 if (!exists("model_umap_embedding")) {
-  .config <- expand.grid(encoding=c("vector", "binvector", names(text_methods)),
+  .config <- expand.grid(encoding=names(encoding_methods),
                          settings=c("R0", "R1"))
   .config <- split(.config, paste0(.config$encoding, "_", .config$settings))
   model_umap_embedding <- lapply(.config, function(x) {
@@ -333,7 +333,7 @@ if (!assignc("disease_model_knn")) {
   make_disease_model_knn <- function(tm) {
     print(paste0(date(), " ", tm))
     .text <- disease_search[[tm]]$orphanet
-    model_ids <- rownames(model_vector_umap$data)
+    ids <- rownames(model_vector_umap$data)
     print(paste0(date(), " computing from vector"))
     .vector <- umap_knn_approx(disease_vectors[[tm]],
                                model_vector_umap$data,
@@ -347,9 +347,9 @@ if (!assignc("disease_model_knn")) {
       vector=.vector,
       binvector=.binvector,
       text_concise_diff0=umap_knn_from_long(.text$text_concise_diff0,
-                                            levels=model_ids),
+                                            levels=ids),
       text_complete_diff0=umap_knn_from_long(.text$text_complete_diff0,
-                                             levels=model_ids)
+                                             levels=ids)
     )
   }
   # this is written like this to cache some results on disk
@@ -383,14 +383,12 @@ search_phenoscoring_template <-
 
 if (!assignc("disease_model_alt_knn")) {
   assignc("model_vectors_raw")
-  model_ids <- rownames(model_vectors_raw)
-  rm(model_vectors_raw)
   make_alt_knn <- function(template, TRANSLATION="owlsim", k=15) {
     search_file <- glue(template, TRANSLATION=TRANSLATION)
     scores <- fread(search_file)
     scores <- scores[query %in% disease_info$disease_id]
-    scores <- scores[target %in% model_ids]
-    umap_knn_from_long(scores, n=k, levels=model_ids)
+    scores <- scores[target %in% rownames(model_vectors_raw)]
+    umap_knn_from_long(scores, n=k, levels=rownames(model_vectors_raw))
   }
   disease_model_alt_knn <- list(
     owlsim=list(phenodigm=make_alt_knn(search_phenodigm_file),
@@ -400,4 +398,5 @@ if (!assignc("disease_model_alt_knn")) {
                                             TRANSLATION="crossmap"))
   )
   savec(disease_model_alt_knn)
+  rm(model_vectors_raw)
 }

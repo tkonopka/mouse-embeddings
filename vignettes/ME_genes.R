@@ -50,7 +50,6 @@ if (!assignc("disease_knn_genes")) {
               disease_genes[marker_id %in% model_info$marker_id]$id)
   # identify which diseases link to causative gene at different k
   link_markers_cumself <- function(x) {
-    print(".")
     k <- ncol(x$indexes)
     indexes <- x$indexes
     missing.ids <- setdiff(diseases_with_phen_genes, rownames(indexes))
