@@ -87,7 +87,7 @@ wrap_avg_coordinates <- function(embedding_bg, embedding_fg, item_info,
                                  legend_pos="topleft", legend_labels=NULL,
                                  Rcssclass="owlsim", panel.labels=c("", "")) {
   # prep data
-  .emb <- copy(embedding_avg)
+  .emb <- copy(embedding_fg)
   mean_1 <- mean(.emb$UMAP_1)
   mean_2 <- mean(.emb$UMAP_2)
   .emb$r <- sqrt((.emb$UMAP_1-mean_1)^2 + (.emb$UMAP_2-mean_2)^2)
@@ -165,6 +165,28 @@ wrap_embedding_labels <- function(d, highlights, panel.labels=letters) {
                           Rcssclass=highlights$Rcssclass[i])
     }
   }
+}
+
+
+#' draw a matrix with comparisons of embeddings
+#'
+#' @param m square matrix
+#' @param labels character vector with names, mapping groups to text labels
+#' @param legend.pos bounding coordinates for the legend scale
+#'
+wrap_embedding_comparison <- function(m, labels, col.limits=c(0, 1),
+                                      legend.pos=c(1, -8, 4, -9),
+                                      ...) {
+  groups <- list()
+  for (x in names(labels)) {
+    groups[[x]] <- grep(paste0("^", x), rownames(m), value=TRUE)
+  }
+  plot_matrix(m, groups_x=groups, groups_y=groups,
+              col.limits=col.limits, col.fun=c("#ffffff", "#000000"),
+              labels=labels, ...)
+  add_heatmap_scale(legend.pos, col.fun=c("#ffffff", "#000000"),
+                    col.labels=seq(col.limits[1], col.limits[2], length=3),
+                    main="Mean Jaccard Index of neighbors")
 }
 
 

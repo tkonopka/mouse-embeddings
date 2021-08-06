@@ -35,7 +35,7 @@ results.dir <- file.path("..", "results")
              "plot_general", "plot_embedding", "plot_scatter", "plot_bars",
              "plot_enrichment", "plot_histboxes", "plot_linehist", "plot_list",
              "plot_schematics", "plot_heatmap", "plot_query", "plot_tab2x2",
-             "plot_legend_bars",
+             "plot_legend_bars", "plot_matrix",
              "write_embedding", "read_node2vec")
 for (.rfile in .rfiles) {
   source(file.path(R.dir, paste0(.rfile, ".R")))

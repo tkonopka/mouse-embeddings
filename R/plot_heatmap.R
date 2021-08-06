@@ -80,16 +80,21 @@ plot_heatmap <- function(d, continuous.cols=NULL, categorical.cols=NULL,
 #' add a color scale to a heatmap
 #'
 #' @param scale_rect numeric of length 4, boundaries of rectangle with scale
-#' @param col.limits numeric length 2, threshold limits for color function
 #' @param col.fun function
 #' @param main character, label printed above the scale
 #' @param Rcssclass character, style class
 #'
-add_heatmap_scale <- function(scale_rect, col.limits=c(0, 1), col.fun=magma,
+add_heatmap_scale <- function(scale_rect, col.fun=magma,
                                main="", col.labels=c(0, 0.5, 1),
                                Rcssclass=NULL) {
   RcssCompulsoryClass <- RcssGetCompulsoryClass(c("heatmap", "legend", "scale", Rcssclass))
-  colors <- col.fun(128, begin=0, end=1)
+
+  if (is(col.fun, "function")) {
+    colors <- col.fun(128, begin=0, end=1)
+  } else {
+    colors <- rgb(colorRamp(col.fun)(seq(0, 1, length=128))/255)
+  }
+
   scale_x <- seq(scale_rect[1], scale_rect[3], length=129)
   scale_left <- head(scale_x, -1)
   scale_right <- tail(scale_x, -1)
@@ -101,7 +106,8 @@ add_heatmap_scale <- function(scale_rect, col.limits=c(0, 1), col.fun=magma,
   text(scale_rect[1], max(scale_y), main, Rcssclass="main")
   scale_width <- max(scale_x)-min(scale_x)
   for (i in seq_along(col.labels)) {
-    ix <- min(scale_x) + (col.labels[i]*scale_width)
+    i.fraction <- seq(0, 1, length=length(col.labels))[i]
+    ix <- min(scale_x) + (i.fraction*scale_width)
     text(ix, min(scale_y), col.labels[i], Rcssclass="label")
   }
 }

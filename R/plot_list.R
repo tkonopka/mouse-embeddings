@@ -65,13 +65,15 @@ abbreviate <- function(v, abbreviations=plot_list_abbreviations) {
 #' @param ylim numeric of length 2, use to explicitly set limits for y axis
 #' @param abbreviations data frame with $long and $short, used to abbreviate
 #' strings
-#' @param max.chars integer, number of characters to display on each line
+#' @param max.width integer, width of text
+#' @param show.rect logical, toggle visibility of boundary boxes and shading
 #' @param Rcssclass character, style class
 #'
 plot_list <- function(v, main="",
                       xlim=NULL, ylim=NULL,
                       abbreviations=plot_list_abbreviations,
                       max.width=1,
+                      show.rect=TRUE,
                       Rcssclass=NULL) {
   RcssCompulsoryClass <- RcssGetCompulsoryClass(c("list", Rcssclass))
 
@@ -91,18 +93,20 @@ plot_list <- function(v, main="",
   y <- ylim[2] - (seq_along(v)-1)*line.height
   if (min(y)<ylim[1]) {
     y <- y[y>ylim[1]]
-    num.cut = length(v) - length(y)+1
+    num.cut <- length(v) - length(y)+1
     v <- c(head(v, length(y)-1), paste0("(and ", num.cut, " others)"))
   }
 
   parplot(xlim, ylim, type="n")
-  # draw boxes for the background
-  rect(xlim[1]-padding, min(y)-line.height/2,
-       xlim[2]+padding, y_main+title.height/2,
-       Rcssclass="body")
-  rect(xlim[1]-padding, y_main-title.height/2,
-       xlim[2]+padding, y_main+title.height/2,
-       Rcssclass="title")
+  if (show.rect) {
+    # draw boxes for the background
+    rect(xlim[1]-padding, min(y)-line.height/2,
+         xlim[2]+padding, y_main+title.height/2,
+         Rcssclass="body")
+    rect(xlim[1]-padding, y_main-title.height/2,
+         xlim[2]+padding, y_main+title.height/2,
+         Rcssclass="title")
+  }
   # draw the contents of the list
   text(0, y_main, main, Rcssclass="title")
   text(0, y, shorten(v, max.width), Rcssclass="body")

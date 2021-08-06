@@ -159,14 +159,12 @@ points.embedding.mp {
   cex: 1.0;
   col: #b6b6b6;
 }
-points.embedding.disease {
-  cex: 1.0;
-}
 points.embedding.owlsim, points.embedding.crossmap, points.embedding.no_phen {
   cex: 1.2;
 }
 points.embedding.model {
-  cex: 1.2;
+  cex: 0.6;
+  col: #2f8dda66;
 }
 points.embedding.center.crossmap {
   cex: 0.8;
@@ -182,9 +180,8 @@ points.embedding.no_phen {
   col: #ff4e33;
 }
 points.embedding.disease {
-  col: #ff4e33;
+  col: #3454d166;
 }
-/** col: #f15cff; **/
 points.embedding.legend, points.embedding.legend.gene {
   cex: 0.8;
   pch: 19;
@@ -243,9 +240,6 @@ points.embedding.nonMGI, points.embedding.large.nonMGI {
 }
 points.embedding.MGI, points.embedding.large.MGI {
   col: #00a87844;
-}
-points.embedding.model {
-  col: #2F8DDA;
 }
 /**
 points.embedding.range_32_max {
@@ -403,7 +397,7 @@ rect.histboxes {
   col: #000000;
   lwd: NA;
 }
-lines.histboxes.mid, lines.histboxes.owlsim.mid, lines.histboxes.crossmap.mid, lines.histboxes.model.mid {
+lines.histboxes.mid, lines.histboxes.owlsim.mid, lines.histboxes.crossmap.mid, lines.histboxes.model.mid, lines.histboxes.disease.mid {
   lwd: 2.5;
   col: #222222;
   lend: 1;
@@ -431,6 +425,9 @@ rect.histboxes.owlsim, lines.histboxes.owlsim, lines.linehist.owlsim {
 rect.histboxes.crossmap, lines.histboxes.crossmap, lines.linehist.crossmap {
   col: #3454d1bb;
 }
+rect.histboxes.disease, lines.histboxes.disease, lines.linehist.disease {
+  col: #3454d1bb;
+}
 rect.histboxes.model, lines.histboxes.model, lines.linehist.model {
   col: #2F8DDAbb;
 }
@@ -443,7 +440,6 @@ rect.histboxes.errors, lines.histboxes.errors, rect.histboxes.selfgenes, lines.h
 list {
   line.height: 0.07;
   title.height: 0.1;
-  box: n;
   padding: 0.02;
 }
 list.model {
@@ -454,12 +450,19 @@ list.model.disease {
   line.height: 0.11;
   title.height: 0.136;
 }
+list.counts {
+  line.height: 0.033;
+  title.height: 0.15;
+}
 par.list {
   mai: 0.02 0.05 0.2 0.02;
   mgp: 0 0 0;
 }
 par.list.model.disease {
   mai: 0.05 0.05 0.15 0.02;
+}
+par.list.counts {
+  mai: 0.2 0.05 0.5 0.02;
 }
 text.list {
   adj: 0 0.5;
@@ -920,14 +923,14 @@ text.manual {
 
 /** legend with a bar graph **/
 legend_bars {
-  points_x: -0.91;
-  labels_x: -0.86;
-  labels_y: 1.9;
-  main_y: 0.8;
+  points_x: -1.25;
+  labels_x: -1.2;
+  labels_y: 2;
+  main_y: 0.9;
   barwidth: 0.7;
 }
 par.legend_bars {
-  mai: 0.05 1.35 0.25 0.55;
+  mai: 0.05 1.3 0.25 0.35;
   mgp: 0 0 0;
   yaxs: i;
 }
@@ -969,3 +972,49 @@ text.legend_bars.count {
   col: #444444;
 }
 
+
+/** matrix heatmap **/
+matrix {
+  group_padding: 0.15;
+}
+par.matrix {
+  mai: 0.5 1.2 1.1 0.4;
+}
+plot.matrix {
+  xaxs: i;
+  yaxs: i;
+}
+axis.matrix {
+  cex.axis: 0.85;
+}
+rect.matrix.cell {
+  lwd: 0;
+  border: NA;
+}
+rect.matrix.outer {
+  lwd: 1;
+  border: #222222;
+}
+lines.matrix.group {
+  lwd: 1.5;
+  col: #444444;
+  xpd: 1;
+  lend: 1;
+}
+axis.matrix.x {
+  line: 0.6;
+}
+axis.matrix.y {
+  line: 0.6;
+}
+text.matrix.axis.x {
+  cex: 0.85;
+  adj: 0 0.5;
+  srt: 45;
+  col: #222222;
+}
+text.matrix.axis.y {
+  adj: 1 0.5;
+  cex: 0.85;
+  col: #222222;
+}

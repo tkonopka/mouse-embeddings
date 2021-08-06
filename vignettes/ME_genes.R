@@ -36,7 +36,7 @@ if (!assignc("disease_knn_genes")) {
   rm(model_knn_genes)
   assignc("disease_model_knn")
   assignc("model_vectors_raw")
-  model_ids <- rownames(model_vectors_raw)
+  .ids <- rownames(model_vectors_raw)
   rm(model_vectors_raw)
   assignc("disease_vectors_raw")
   gc()
@@ -59,12 +59,12 @@ if (!assignc("disease_knn_genes")) {
       indexes <- rbind(indexes, x_missing)
     }
     indexes <- indexes[diseases_with_phen_genes, ]
-    ids_genes <- merge(data.table(index=seq_along(model_ids),
-                                  model_id=model_ids),
+    ids_genes <- merge(data.table(index=seq_along(.ids),
+                                  model_id=.ids),
                        model_info[, c("model_id", "marker_id")],
                        by="model_id", all.x=TRUE)
     ids_genes <- ids_genes[order(index)]
-    stopifnot(identical(ids_genes$model_id, model_ids))
+    stopifnot(identical(ids_genes$model_id, .ids))
     markers <- ids_genes$marker_id
     result <- matrix(markers[indexes], ncol=k)
     rownames(result) <- rownames(indexes)
@@ -94,6 +94,7 @@ if (!assignc("disease_knn_genes")) {
   disease_knn_genes$crossmap$phenoscoring <-
     link_markers_cumself(disease_model_alt_knn$crossmap$phenoscoring)
   savec(disease_knn_genes)
+  rm(.ids)
 }
 
 

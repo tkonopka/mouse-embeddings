@@ -45,7 +45,7 @@ layout(matrix(c(1,2,3,4,
               ncol=4, nrow=3, byrow=T),
        widths=c(3.0, 1.56, 0.97, 0.97), height=c(1.56, 0.08, 1.56))
 #
-.emb <- mp_embedding$d2
+.emb <- mp_embedding$d2_R0
 #
 # crossmap and umap embedding
 plot_embedding(.emb[label=="mp"],
@@ -94,10 +94,10 @@ wrap_avg_coordinates(.emb[label=="mp"], .emb[label=="crossmap"],
                      detail_bg=1, detail_fg=1,
                      item_info=.d_info, main="",
                      density_ylim=c(0, 0.115),
-                     Rcssclass="crossmap",
+                     Rcssclass="disease",
                      panel.labels=panel.labels[5:7],
                      legend_pos=c(-14, 17),
-                     legend_labels=c(crossmap="disease", mp="MP term"))
+                     legend_labels=c(disease="disease", mp="MP term"))
 #
 rm(.emb, .emb_highlights, .d_info, .m_info, .m_perc)
 ```
@@ -116,7 +116,7 @@ layout(matrix(c(1,1,1,1,1, 10,  2,2,
        height=c(3.2, 0.1, 1.6))
 #
 # embedding based on vectors
-.emb <- model_umap_embedding$vector[label=="model" & id %in% model_ids$phen_gt_0]
+.emb <- model_umap_embedding$vector_R0[label=="model" & id %in% model_ids$phen_gt_0]
 .emb <- merge(.emb, model_info[, c("model_id", "bin_source", "num_phenotypes")],
               by.x="id", by.y="model_id")
 .qlim <- c(0.013, 0.987)
@@ -140,7 +140,7 @@ add_embedding_legend("topleft",
 wrap_embedding_labels(.emb, .emb_highlights)
 #
 # an alternative embedding of the same models
-.emb2 <- model_umap_embedding$text_concise_diff0[label=="model" & id %in% model_ids$phen_gt_0]
+.emb2 <- model_umap_embedding$text_concise_diff0_R0[label=="model" & id %in% model_ids$phen_gt_0]
 .emb2 <- merge(.emb2, model_info[, c("model_id", "bin_source", "num_phenotypes")],
                by.x="id", by.y="model_id")
 plot_embedding(.emb2[id %in% model_ids$phen_gt_1], show_points=FALSE, qlim=.qlim,
@@ -304,7 +304,7 @@ add_heatmap_legend(5.0, -14.5, height=0.8, width=0.8,
 ```
 
 
-```{r fig.heterogeneity, eval=TRUE, echo=FALSE, fig.width=3.2, fig.height=3.3, fig.cap="\\textbf{Phenotype heterogeneity.} \\textbf{(A)} Summary of the multiplicity of models available for individual genes. The most represented genes are listed in the inset. \\textbf{(B)} Embeddings of mouse models highlighting the location of models with selected genes knocked-out. Highlighted models are jittered to better display the number of models. \\textbf{(C)} Summary of the proportion of genes for which the nearest-neighbors of a mouse model contain another model with the same gene knocked-out. The summary is stratified by the number of models available for a gene. Boxes represent 25\\%-75\\% intervals, whiskers represent 5\\%-95\\% intervals. Dashed line indicates an expected level under a null hypothesis that neighbors are selected at random."}
+```{r fig.heterogeneity, eval=TRUE, echo=FALSE, fig.width=3.2, fig.height=3.3, fig.align="center", out.width="50%", fig.cap="\\textbf{Phenotype heterogeneity.} \\textbf{(A)} Summary of the multiplicity of models available for individual genes. The most represented genes are listed in the inset. \\textbf{(B)} Embeddings of mouse models highlighting the location of models with selected genes knocked-out. Highlighted models are jittered to better display the number of models. \\textbf{(C)} Summary of the proportion of genes for which the nearest-neighbors of a mouse model contain another model with the same gene knocked-out. The summary is stratified by the number of models available for a gene. Boxes represent 25\\%-75\\% intervals, whiskers represent 5\\%-95\\% intervals. Dashed line indicates an expected level under a null hypothesis that neighbors are selected at random."}
 layout(matrix(c(1,1,5,
                 2,2,2,
                 3,4,4),
@@ -340,7 +340,7 @@ rm(.top_counts)
 par(mai=rep(0.01, 4)); plot.new()
 #
 # panels showing individual genes
-.emb <- model_umap_embedding$vector[label=="model" & id %in% model_ids$phen_gt_0]
+.emb <- model_umap_embedding$vector_R0[label=="model" & id %in% model_ids$phen_gt_0]
 .emb <- merge(.emb, model_info[, c("model_id", "marker_id", "marker_symbol")],
               by.x="id", by.y="model_id")
 wrap_embedding_gene(.emb,
@@ -390,7 +390,7 @@ layout(matrix(c(1,1, 2, 3, 9, 10,10,
        height=c(1.15, 0.95, 0.1, 1.15, 0.95))
 #
 # vector embedding, sub-panels with diseases
-.emb <- model_umap_embedding$vector
+.emb <- model_umap_embedding$vector_R0
 .emb_models <- .emb[label=="model" & id %in% model_ids$phen_gt_0]
 .emb_diseases <- .emb[label=="crossmap"]
 .emb_diseases_ids <- .emb_diseases$id
@@ -410,7 +410,7 @@ multipanelLabel(panel.labels[1])
 par(mai=rep(0.01, 4)); plot.new()
 #
 # second panel with text-based embedding
-.emb2 <- model_umap_embedding$text_concise_diff0
+.emb2 <- model_umap_embedding$text_concise_diff0_R0
 .emb2_models <- .emb2[id %in% model_ids$phen_gt_1]
 assignc("disease_search")
 .disease_search <- copy(disease_search$crossmap$orphanet$text_concise_diff0)

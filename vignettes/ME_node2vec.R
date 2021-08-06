@@ -20,9 +20,15 @@ if (!assignc("node2vec_embedding")) {
     setcolorder(result, c("label", "id"))
     result
   }
-  .snap <- lapply(node2vec_datasets, parse_node2vec_embedding, settings="snap")
-  .short <- lapply(node2vec_datasets, parse_node2vec_embedding, settings="short")
-  .defaults <- lapply(node2vec_datasets, parse_node2vec_embedding, settings="defaults")
-  node2vec_embedding <- list(snap=.snap, short=.short, defaults=.defaults)
+  .config <- expand.grid(encoding=c("snap", "python_defaults", "python_short"),
+                         settings=c("R0", "R1"))
+  .config <- paste0(.config$encoding, "_", .config$settings)
+  .config <- setNames(.config, .config)
+  node2vec_embedding <- lapply(node2vec_datasets, function(dataset) {
+    lapply(.config, function(settings) {
+      parse_node2vec_embedding(dataset, settings)
+    })
+  })
   savec(node2vec_embedding)
+  rm(.config)
 }
