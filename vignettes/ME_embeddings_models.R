@@ -125,7 +125,6 @@ if (!assignc("model_knn")) {
 
 
 if (!assignc("model_umap_embeddings_d")) {
-  source("ME_prep_knn.R")
   make_model_umap_embedding_d <- function(d, knn, ENCODING="vector") {
     output_file <- glue(templates$model_embedding,
                         WHAT="models", ENCODING=ENCODING,
@@ -228,7 +227,6 @@ canary_file <- glue(templates$model_embedding,
                     WHAT="models", ENCODING=names(text_methods)[1],
                     DIM=2, ALGO="umap", SETTINGS="R1")
 if (!file.exists(canary_file)) {
-  source("ME_prep_knn.R")
   mclapply(text_methods, function(encoding) {
     knn <- model_knn[[encoding]]
     dummy_data <- matrix(0, ncol=1, nrow=nrow(knn$indexes))
@@ -241,7 +239,6 @@ if (!file.exists(canary_file)) {
                           DIM=2, ALGO="umap", SETTINGS=paste0("R", replicate))
       write_embedding(knn_umap, file=output_file, label="model")
     }
-
   }, mc.cores=2)
 }
 
@@ -366,9 +363,11 @@ if (!assignc("disease_model_knn")) {
     crossmap=disease_model_knn_crossmap
   )
   savec(disease_model_knn)
+  rm(model_vector_umap, model_binvector_umap)
+  rm(disease_vectors, disease_binvectors)
+  rm(disease_model_knn_owlsim, disease_model_knn_crossmap)
+  gc()
 }
-
-gc()
 
 
 # ############################################################################
@@ -400,3 +399,4 @@ if (!assignc("disease_model_alt_knn")) {
   savec(disease_model_alt_knn)
   rm(model_vectors_raw)
 }
+

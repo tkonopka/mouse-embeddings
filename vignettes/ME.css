@@ -182,6 +182,9 @@ points.embedding.no_phen {
 points.embedding.disease {
   col: #3454d166;
 }
+points.embedding.disease_hp {
+  col: #b034d5;
+}
 points.embedding.legend, points.embedding.legend.gene {
   cex: 0.8;
   pch: 19;

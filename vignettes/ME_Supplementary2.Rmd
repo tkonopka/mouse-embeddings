@@ -600,9 +600,9 @@ plot_embedding(.emb_hp[label=="hp"], detail=1,
                main="", qlim=c(0.005, 0.995),
                Rcssclass="mp")
 points_embedding(.emb_hp[id %in% disease_phenotypes_hp$phenotype], detail=1,
-                 Rcssclass="disease")
+                 Rcssclass="disease_hp")
 add_embedding_legend("topleft",
-                     c(disease="HP term appearing in a disease", mp="other HP term"))
+                     c(disease_hp="HP term appearing in a disease", mp="other HP term"))
 multipanelLabel(panel.labels[3])
 #
 # panel with disease profiles (by coordinate averaging)
@@ -610,9 +610,9 @@ plot_embedding(.emb_hp[label=="hp"], detail=1,
                main="", qlim=c(0.005, 0.995),
                Rcssclass="mp")
 points_embedding(.emb_hp[label=="disease"], detail=1,
-                 Rcssclass="disease")
+                 Rcssclass="disease_hp")
 add_embedding_legend("topleft",
-                     c(disease="disease profile", mp="HP term"))
+                     c(disease_hp="disease profile", mp="HP term"))
 multipanelLabel(panel.labels[4])
 #
 rm(.emb_mp, .emb_hp)
