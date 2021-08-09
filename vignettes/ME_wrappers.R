@@ -95,7 +95,7 @@ wrap_avg_coordinates <- function(embedding_bg, embedding_fg, item_info,
   # embedding
   plot_embedding(embedding_bg, detail=detail_bg, main=main)
   points_embedding(embedding_fg, detail=detail_fg, Rcssclass=Rcssclass)
-  add_embedding_legend(legend_pos, legend_labels)
+  add_embedding_legend(legend_pos, labels=legend_labels)
   multipanelLabel(panel.labels[1])
   # histogram/density plot of number of phenotypes
   plot_linehist(.emb$num_phenotypes,
@@ -216,7 +216,7 @@ wrap_embedding_gene <- function(d, marker_ids,
     d_gene$x <- d_gene[, xy[1], with=FALSE] + rnorm(nrow(d_gene), 0, noise_sd)
     d_gene$y <- d_gene[, xy[2], with=FALSE] + rnorm(nrow(d_gene), 0, noise_sd)
     points_embedding(d_gene, xy=c("x", "y"), detail=1, Rcssclass="gene", ...)
-    add_embedding_legend(legend_pos, c(gene=marker_symbol, other="other"))
+    add_embedding_legend(legend_pos, labels=c(gene=marker_symbol, other="other"))
     multipanelLabel(panel.labels[i])
   }
 }
@@ -299,6 +299,48 @@ wrap_separate_legend <- function(legend_pos, labels, main, width=0.35) {
   par(mai=c(0.1, 0.3, 0.3, 0.2));
   plot(c(0, 1), c(0, 1), xaxs="i", yaxs="i")
   text(0.02, 0.75, main, cex=0.85, adj=c(0, 0), col="#333333")
-  add_embedding_legend(legend_pos, labels)
+  add_embedding_legend(legend_pos, labels=labels)
   rect(0, 0, width, 1.3, border="#aaaaaa", col=NA, lwd=0.5)
 }
+
+
+
+#' draw several panels summarizing models that diseases link to
+#'
+#' @param info table with summary information, must have $variable, $value, $percent
+#'
+wrap_disease_models <- function(info) {
+  par(mai=rep(0.01, 4)); plot(c(0, 1), c(0, 1), type="n", axes=FALSE);
+  plot_bargroups(info[variable=="bin_source"],
+                 value.col="percent", group.col="value",
+                 group.labels=c(MGI="MGI", nonMGI="IMPC"),
+                 style.by="label", horiz=TRUE,
+                 Rcssclass=c("approaches", "diseases"),
+                 xlab="Proportion of models (%)", ylab="Source")
+  plot_bargroups(info[variable=="discrete_zygosity"],
+                 value.col="percent", group.col="value",
+                 group.labels=c(hom="homozygous", other="other"),
+                 style.by="label", horiz=TRUE,
+                 Rcssclass=c("approaches", "diseases"),
+                 xlab="", ylab="Zygosity")
+  plot_bargroups(info[variable=="discrete_bg"],
+                 value.col="percent", group.col="value",
+                 group.labels=c(C57BL_6="involves C57BL/6", C57BL_6N="C57BL/6N",
+                                C57BL_6NCrl="C57BL/6NCrl", C57BL_6NJ="C57BL/6NJ",
+                                C57BL_6NTac="C57BL/6NTac",
+                                other="other", unspecified="not specified"),
+                 style.by="label", horiz=TRUE,
+                 Rcssclass=c("approaches", "diseases", "long"),
+                 xlab="", ylab="Genetic background")
+  plot_bargroups(info[variable=="discrete_phens"],
+                 value.col="percent", group.col="value",
+                 group.labels=c(range_0="0", range_1="1", range_2="2",
+                                range_2_4="(2, 4]",
+                                range_4_8="(4, 8]", range_8_16="(8, 16]",
+                                range_16_max="(16, inf]"),
+                 style.by="label", horiz=TRUE,
+                 Rcssclass=c("approaches", "diseases", "long"),
+                 xlab="", ylab="Num. phenotypes")
+  #
+}
+

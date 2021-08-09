@@ -301,7 +301,7 @@ plot_embedding(.emb, style_by="bin_source",
                main="Data source",
                detail=EMBEDDING_DETAIL, Rcssclass=c("large", "vlarge"))
 add_embedding_legend("topleft",
-                     c(MGI="MGI mouse model", nonMGI="IMPC mouse model"))
+                     labels=c(MGI="MGI mouse model", nonMGI="IMPC mouse model"))
 multipanelLabel(panel.labels[1])
 par(mai=rep(0.01, 4)); plot.new()
 #
@@ -310,7 +310,7 @@ plot_embedding(.emb, style_by="discrete_phens",
                main="Number of phenotypes",
                detail=EMBEDDING_DETAIL, Rcssclass=c("large", "vlarge"))
 add_embedding_legend("topleft",
-                     c(range_0_2="(0, 2]", range_2_4="(2, 4]",
+                     labels=c(range_0_2="(0, 2]", range_2_4="(2, 4]",
                        range_4_8="(4, 8]", range_8_16="(8, 16]",
                        range_16_32="(16, 32]", range_32_max="(32, inf]"))
 multipanelLabel(panel.labels[2])
@@ -321,7 +321,7 @@ plot_embedding(.emb, style_by="discrete_bg",
                main="Genetic background",
                detail=EMBEDDING_DETAIL, Rcssclass=c("large", "vlarge"))
 add_embedding_legend("topleft",
-                     c(C57BL_6="involves C57BL/6", C57BL_6N="C57BL/6N",
+                     labels=c(C57BL_6="involves C57BL/6", C57BL_6N="C57BL/6N",
                        C57BL_6NCrl="C57BL/6NCrl", C57BL_6NJ="C57BL/6NJ",
                        C57BL_6NTac="C57BL/6NTac", other="other"),
                      Rcssclass="large")
@@ -333,7 +333,7 @@ plot_embedding(.emb, style_by="discrete_zygosity",
                main="Zygosity",
                detail=EMBEDDING_DETAIL, Rcssclass=c("large", "vlarge"))
 add_embedding_legend("topleft",
-                     c(hom="homozygous", other="other"),
+                     labels=c(hom="homozygous", other="other"),
                      Rcssclass="large")
 multipanelLabel(panel.labels[4])
 rm(.emb)
@@ -366,7 +366,8 @@ rect(.emb1_gate1[1], .emb1_gate1[2], .emb1_gate1[3], .emb1_gate1[4],
      Rcssclass="embedding")
 rect(.emb1_gate2[1], .emb1_gate2[2], .emb1_gate2[3], .emb1_gate2[4],
      Rcssclass="embedding")
-add_embedding_legend("bottomleft", c(MGI="MGI mouse model", nonMGI="IMPC mouse model"))
+add_embedding_legend("bottomleft",
+                     labels=c(MGI="MGI mouse model", nonMGI="IMPC mouse model"))
 multipanelLabel(panel.labels[1])
 #
 # another embedding based on text
@@ -386,7 +387,8 @@ rect(.emb2_gate1[1], .emb2_gate1[2], .emb2_gate1[3], .emb2_gate1[4],
      Rcssclass="embedding")
 rect(.emb2_gate2[1], .emb2_gate2[2], .emb2_gate2[3], .emb2_gate2[4],
      Rcssclass="embedding")
-add_embedding_legend("bottomleft", c(MGI="MGI mouse model", nonMGI="IMPC mouse model"))
+add_embedding_legend("bottomleft",
+                     labels=c(MGI="MGI mouse model", nonMGI="IMPC mouse model"))
 multipanelLabel(panel.labels[6])
 #
 # spacer
@@ -450,7 +452,7 @@ multipanelLabel(panel.labels[2])
 #
 par(mai=rep(0.2, 4)); plot(c(0, 1), c(0, 1), type="n", axes=FALSE);
 add_embedding_legend(legend_pos="topleft",
-                     c(other="Mouse model",
+                     labels=c(other="Mouse model",
                        owlsim="Human disease (owlsim HP-MP translation)",
                        crossmap="Human disease (crossmap HP-MP translation)")
 )

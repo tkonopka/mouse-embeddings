@@ -47,6 +47,9 @@ par.embedding.large {
   mai: 0.3 0.35 0.1 0.05;
   mgp: 0 0 0;
 }
+par.embedding.large3 {
+  mai: 0.3 0.35 0.3 0.05;
+}
 par.embedding.large.notop {
   mai: 0.4 0.35 0.0 0.05;
 }
@@ -143,6 +146,7 @@ axis.embedding.large.models.y {
 points.embedding {
   cex: 0.8;
   pch: ·;
+  /** pch: o; **/
   col: #b6b6b666;
   xpd: 0;
 }
@@ -171,7 +175,8 @@ points.embedding.center.crossmap {
   col: #3454d1;
 }
 points.embedding.owlsim {
-  col: #d1345b;
+  /** col: #d1345b; **/
+  col: #2f8dda;
 }
 points.embedding.crossmap {
   col: #3454d1;
@@ -328,7 +333,7 @@ lines.embedding {
 
 /** for a header panel **/
 par.line_header {
-  mai: 0.05 0.2 0.05 0.1;
+  mai: 0.08 0.2 0.02 0.1;
   mgp: 0 0 0;
 }
 lines.line_header {
@@ -534,9 +539,6 @@ axis.bars.y {
   col: #000000;
   cex.axis: 0.85;
 }
-axis.bars.approaches.genes.y {
-  line: 0.0;
-}
 rect.bars {
   border: NA;
   col: #2244cc;
@@ -693,6 +695,12 @@ par.bars.approaches.genes {
   mgp: 0 0 0;
   xaxs: i;
 }
+par.bars.approaches.diseases {
+  mai: 0.05 1.0 0.15 0.1;
+  mgp: 0 0 0;
+  yaxs: i;
+  xaxs: i;
+}
 axis.bars.approaches {
   cex.axis: 0.85;
   tck: -0.018;
@@ -714,14 +722,28 @@ axis.bars.approaches.genes.x {
   line: 0.05;
   tck: -0.03;
 }
+axis.bars.approaches.diseases.x {
+  line: 0.05;
+  tck: -0.08;
+}
+axis.bars.approaches.diseases.long.x {
+  line: 0.05;
+  tck: -0.03;
+}
 axis.bars.approaches.y {
   line: 0.2;
 }
 axis.bars.approaches.genes.y {
-  line: 0.05;
+  line: 0.8;
+}
+axis.bars.approaches.diseases.y {
+  line: 1;
 }
 mtext.bars.approaches.ylab {
   line: 1.2;
+}
+mtext.bars.approaches.diseases.ylab {
+  line: 3.8;
 }
 mtext.bars.approaches.genes.ylab {
   line: 0.6;
@@ -777,11 +799,19 @@ rect.bars.mp_avg_d8, rect.bars.avg_d8 {
 rect.bars.mp_avg_d10, rect.bars.avg_d10 {
   col: #628c40;
 }
-rect.bars.owlsim {
-  col: #d1345b;
+rect.bars.owlsim, points.embedding.owlsim {
+  col: #2f8dda;
 }
-rect.bars.crossmap {
-  col: #ee96ba;
+rect.bars.crossmap, rect.bars.crossmap_phen_gt_0, points.embedding.crossmap_phen_gt_0 {
+  col: #3454d1;
+}
+rect.bars.crossmap_phen_eq_0, points.embedding.crossmap_phen_eq_0 {
+  col: #ff4e33;
+}
+rect.bars.all {
+  col: #cccccc;
+  border: #aaaaaa;
+  lwd: 0.25;
 }
 
 text.errors.label {
@@ -927,7 +957,7 @@ text.manual {
 /** legend with a bar graph **/
 legend_bars {
   points_x: -1.25;
-  labels_x: -1.2;
+  labels_x: -1.18;
   labels_y: 2;
   main_y: 0.9;
   barwidth: 0.7;

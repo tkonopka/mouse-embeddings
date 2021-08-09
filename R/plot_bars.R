@@ -69,6 +69,8 @@ plot_bargroups <- function(x, value.col="value", group.col="group",
   if (is.null(group.labels)) {
     group.labels <- unique(x[[group.col]])
     group.labels <- setNames(group.labels, group.labels)
+  } else {
+    group.labels <- rev(group.labels)
   }
   xparts <- split(x, x[[group.col]])[names(group.labels)]
 
@@ -101,7 +103,7 @@ plot_bargroups <- function(x, value.col="value", group.col="group",
         }
       }
       group.right <- group.left + nrow(xparts[[i]]) + groupgap
-      text(xlim[1]-strheight("a")*y_line, (group.left + group.right)/2,
+      text(xlim[1]-strwidth("a")*y_line, (group.left + group.right)/2,
            group.labels[[i]], Rcssclass=c("axis", "y"))
       group.left <- group.right
     }

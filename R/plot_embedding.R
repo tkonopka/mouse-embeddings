@@ -137,8 +137,8 @@ plot_centered_embedding <- function(d, center=c(0,0), r=0.3, ...) {
 
 
 #' add a legend to an existing embedding plot
-add_embedding_legend <- function(legend_pos=c(0,0),
-                                 labels=c(mp="MP terms", disease="disease"),
+add_embedding_legend <- function(legend_pos=c(0,0), legend_shift=c(0, 0),
+                                 labels=NULL,
                                  Rcssclass=NULL) {
   if (identical(labels, NULL)) {
     return(NULL)
@@ -148,7 +148,7 @@ add_embedding_legend <- function(legend_pos=c(0,0),
 
   if (identical(legend_pos, "topleft")) {
     usr <- graphics::par()$usr
-    legend_pos <- usr[c(1,4)]
+    legend_pos <- usr[c(1,4)] + legend_shift
   } else if (identical(legend_pos, "bottomleft")) {
     usr <- graphics::par()$usr
     temp <- legend(0, 0, as.character(labels), plot=FALSE)

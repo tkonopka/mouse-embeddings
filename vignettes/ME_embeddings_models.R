@@ -14,6 +14,12 @@
 # as part of vignette generation is very fast and uses little memory (< 8GB)
 #
 
+
+if (!assignc("model_vectors_ids")) {
+  source("ME_prep_repr.R")
+}
+
+
 # ############################################################################
 # embeddings based on mouse model MP ontology vectors
 

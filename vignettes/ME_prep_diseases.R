@@ -77,3 +77,14 @@ if (!assignc("disease_genes")) {
   savec(disease_genes)
 }
 
+
+# subsets of diseases, e.g. based on number of phenotypes
+if (!exists("disease_ids")) {
+  disease_ids <- list(
+    "all"=disease_info$disease_id,
+    "phen_eq_0"=disease_info[disease_num_phenotypes==0]$disease_id,
+    "phen_gt_0"=disease_info[disease_num_phenotypes>0]$disease_id,
+    "phen_gt_0_gene_gt_0"=disease_info[disease_num_phenotypes>0 & disease_num_mgi_genes>0]$disease_id
+  )
+}
+

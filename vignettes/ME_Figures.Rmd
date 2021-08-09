@@ -52,7 +52,7 @@ plot_embedding(.emb[label=="mp"],
                main=" Embedding of MP ontology terms", qlim=c(0.005, 0.995),
                detail=max(0.5, EMBEDDING_DETAIL),
                Rcssclass="mp")
-add_embedding_legend("topleft", c(mp="MP term"))
+add_embedding_legend("topleft", labels=c(mp="MP term"))
 multipanelLabel(panel.labels[1])
 .emb_highlights <- data.table(id=c("MP:0000001",
                                    "MP:0000477",
@@ -102,10 +102,6 @@ wrap_avg_coordinates(.emb[label=="mp"], .emb[label=="crossmap"],
 rm(.emb, .emb_highlights, .d_info, .m_info, .m_perc)
 ```
 
-Diseases with MP phenotypes: `r length(unique(disease_phenotypes$crossmap$id))`
-Number of distinct HP phenotypes: `r length(unique(disease_phenotypes_hp$phenotype))`
-Number of distinct MP phenotypes: `r length(unique(disease_phenotypes$crossmap$phenotype))`
-
 
 ```{r fig.models, eval=TRUE, echo=FALSE, fig.width=6.5, fig.height=4.9, fig.cap="\\textbf{Embeddings of mouse model phenotypes.} \\textbf{(A)} Embedding of mouse models based on vector representations of their phenotypes. Models are colored by the source of curated data. Labels and the rectangle point to selected models. \\textbf{(B)} Analogous to (A), but with the layout of mouse models produced using semantic similarities of text descriptions. \\textbf{(C)} Lists of phenotypes associated with individual mouse models highlighted in (A). Some lists are truncated for this visualization. All phenotype names match definitions from the ontology (abn.: abnormal, morph.: morphology, incr.: increased, decr.: decreased) \\textbf{(D)} A small region of the embedding in (A). \\textbf{(E)} Enrichment analysis comparing the phenotypes associated with mouse models in (D) against all other models outside the selected region. The significance threshold is Bonferroni-corrected p=0.05. The most significant phenotype is labeled."}
 layout(matrix(c(1,1,1,1,1, 10,  2,2,
@@ -132,7 +128,7 @@ rect(.emb_gate1[1], .emb_gate1[2], .emb_gate1[3], .emb_gate1[4],
      Rcssclass="embedding")
 # label individual points
 add_embedding_legend("topleft",
-                     c(MGI="MGI mouse model", nonMGI="IMPC mouse model"))
+                     labels=c(MGI="MGI mouse model", nonMGI="IMPC mouse model"))
 .emb_highlights <- data.table(id=c("MGI:2170796", "MGI:6423510", "MGI:3041829"),
                               label_1=c(2.0, -13.5, -0.1),
                               label_2=c(-9.2, 10, -12.5),
@@ -149,7 +145,7 @@ plot_embedding(.emb2[id %in% model_ids$phen_gt_1], show_points=FALSE, qlim=.qlim
 points_embedding(.emb2, detail=EMBEDDING_DETAIL, style_by="bin_source",
                  Rcssclass="large")
 add_embedding_legend("topleft",
-                     c(MGI="MGI mouse model", nonMGI="IMPC mouse model"))
+                     labels=c(MGI="MGI mouse model", nonMGI="IMPC mouse model"))
 .emb2_highlights <- data.table(id=.emb_highlights$id,
                               label_1=c(-3, 2.2, 5.0),
                               label_2=c(-8.0, -10, 5.9),
@@ -332,8 +328,8 @@ plot_scatter(.num_models_counts[num_models<=120],
                      y=c("1"=0, "10"=1, "100"=2, "1000"=3)),
              Rcssclass="counts")
 .top_counts <- .num_models[num_models>120]
-text(20, seq(3.8, 2.3, length=1+nrow(.top_counts)),
-     c("Genes with most models", paste0(.top_counts$marker_symbol, " (", .top_counts$num_models, " models)")),
+text(18, seq(3.6, 2.1, length=1+nrow(.top_counts)),
+     c("Genes/Markers with most models", paste0(.top_counts$marker_symbol, " (", .top_counts$num_models, " models)")),
      Rcssclass=c("scatter", "counts", "label"))
 multipanelLabel(panel.labels[1])
 rm(.top_counts)
@@ -403,8 +399,7 @@ points_embedding(.emb_models, detail=max(0.1, EMBEDDING_DETAIL))
 points_embedding(.emb[label=="crossmap"], detail=max(0.5, EMBEDDING_DETAIL),
                  Rcssclass="crossmap")
 add_embedding_legend(legend_pos="topleft",
-                     c(crossmap="Human disease",
-                       other="mouse model"))
+                     labels=c(crossmap="Human disease", other="mouse model"))
 multipanelLabel(panel.labels[1])
 #
 par(mai=rep(0.01, 4)); plot.new()
@@ -426,8 +421,7 @@ points_embedding(.emb2_diseases[id %in% .emb_diseases_ids],
                  detail=max(0.5, EMBEDDING_DETAIL),
                  Rcssclass="crossmap")
 add_embedding_legend(legend_pos="topleft",
-                     c(crossmap="Human disease",
-                       other="mouse model"))
+                     labels=c(crossmap="Human disease", other="mouse model"))
 multipanelLabel(panel.labels[2])
 #
 par(mai=rep(0.01, 4)); plot.new()
@@ -440,8 +434,8 @@ points_embedding(.emb2_diseases[!(id %in% .emb_diseases_ids)],
                  detail=max(0.5, EMBEDDING_DETAIL),
                  Rcssclass="no_phen")
 add_embedding_legend(legend_pos="topleft",
-                     c(no_phen="Human disease (wo. HP annotations)",
-                       other="mouse model"))
+                     labels=c(no_phen="Human disease (wo. HP annotations)",
+                              other="mouse model"))
 multipanelLabel(panel.labels[5])
 #
 # summary of achieved error disease-gene matching for all attempted approaches

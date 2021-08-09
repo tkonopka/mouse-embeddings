@@ -23,11 +23,18 @@ prep_model_vectors <- function(feature_names=NULL, ids=NULL) {
   do.call(rbind, result)[ids, ]
 }
 
+
+if (!assignc("model_vectors_ids")) {
+  model_vectors_ids <- unique(model_phenotypes$concise$id)
+  savec(model_vectors_ids)
+}
+
+
 # model_vectors is what is needed downstream, but is a large file on disk
 if (!assignc("model_vectors")) {
   model_vectors_raw <-
     prep_model_vectors(feature_names=mp_info$names$id,
-                       ids=unique(model_phenotypes$concise$id))
+                       ids=model_vectors_ids)
   savec(model_vectors_raw)
   model_vectors <- normalize_by_row(model_vectors_raw)
   savec(model_vectors)
@@ -57,7 +64,7 @@ prep_model_binvectors <- function(feature_names=NULL, ids=NULL) {
 if (!assignc("model_binvectors")) {
   model_binvectors_raw <-
     prep_model_binvectors(feature_names=mp_info$names$id,
-                          ids=unique(model_phenotypes$concise$id))
+                          ids=model_vectors_ids)
   model_binvectors <- normalize_by_row(model_binvectors_raw)
   savec(model_binvectors)
 }
