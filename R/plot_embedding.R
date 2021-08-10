@@ -72,11 +72,14 @@ plot_embedding <- function(d, xy=c("UMAP_1", "UMAP_2"),
 #' @param d data table with at least two numeric columns
 #' @param xy character, two columns in d
 #' @param detail numeric, proportion of points to show (downsampling)
-#' @param col_by character, column in x to extract style class
+#' @param style_by character, column in x to extract style class
+#' @param style_groups character vector, style classes in order for plotting;
+#' leave NULL to get a default ordering determined via split()
 #' @param Rcssclass character, style class
 #'
 points_embedding <- function(d, xy=c("UMAP_1", "UMAP_2"),
-                             detail=0.5, style_by=NULL, Rcssclass=NULL, ...) {
+                             detail=0.5, style_by=NULL, style_groups=NULL,
+                             Rcssclass=NULL, ...) {
   Rcssclass <- gsub("-", "_", Rcssclass)
   RcssCompulsoryClass <- RcssGetCompulsoryClass(c("embedding", Rcssclass))
   if (detail<1) {
@@ -88,7 +91,10 @@ points_embedding <- function(d, xy=c("UMAP_1", "UMAP_2"),
     points(d[[xy[1]]], d[[xy[2]]], ...)
   } else {
     d2 <- split(d, d[[style_by]])
-    for (style in names(d2)) {
+    if (is.null(style_groups)) {
+      style_groups <- names(d2)
+    }
+    for (style in style_groups) {
       points(d2[[style]][[xy[1]]], d2[[style]][[xy[2]]], Rcssclass=style, ...)
     }
   }

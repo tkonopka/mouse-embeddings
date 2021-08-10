@@ -43,6 +43,9 @@ par.embedding, par.histboxes, par.linehist {
 par.embedding.mp {
   mai: 0.3 0.3 0.15 0.15;
 }
+par.embedding.gene_par {
+  mai: 0.3 0.3 0.05 0.05;
+}
 par.embedding.large {
   mai: 0.3 0.35 0.1 0.05;
   mgp: 0 0 0;
@@ -100,7 +103,7 @@ mtext.embedding.large.large3.ylab {
 axis.embedding, axis.enrichment, axis.histboxes, axis.linehist, axis.scatter {
   tck: -0.018;
   cex.axis: 0.85;
-  col.axis: #444444;
+  col.axis: #555555;
 }
 axis.histboxes.avg, axis.linehist, axis.histboxes.selfgenes {
   tck: -0.025;
@@ -146,7 +149,6 @@ axis.embedding.large.models.y {
 points.embedding {
   cex: 0.8;
   pch: ·;
-  /** pch: o; **/
   col: #b6b6b666;
   xpd: 0;
 }
@@ -158,6 +160,9 @@ points.embedding.enrich.owlsim, points.embedding.enrich.crossmap {
 }
 points.embedding.large {
   cex: 0.9;
+}
+points.embedding.large.vlarge {
+  cex: 0.7;
 }
 points.embedding.mp {
   cex: 1.0;
@@ -175,7 +180,6 @@ points.embedding.center.crossmap {
   col: #3454d1;
 }
 points.embedding.owlsim {
-  /** col: #d1345b; **/
   col: #2f8dda;
 }
 points.embedding.crossmap {
@@ -190,14 +194,24 @@ points.embedding.disease {
 points.embedding.disease_hp {
   col: #b034d5;
 }
-points.embedding.legend, points.embedding.legend.gene {
+points.embedding.legend, points.embedding.legend.gene, points.embedding.legend.gene_dominant {
   cex: 0.8;
   pch: 19;
 }
 points.embedding.gene {
   col: #2f8dda;
-  cex: 1.8;
+  cex: 0.15;
+  pch: 19;
   xpd: 1;
+}
+points.embedding.gene_dominant {
+  col: #b034d5;
+  cex: 0.15;
+  pch: 19;
+  xpd: 1;
+}
+points.embedding.large.gene, points.embedding.large.gene_dominant {
+  cex: 0.3;
 }
 legend.embedding {
   x.intersp: 0.5;
@@ -249,43 +263,23 @@ points.embedding.nonMGI, points.embedding.large.nonMGI {
 points.embedding.MGI, points.embedding.large.MGI {
   col: #00a87844;
 }
-/**
-points.embedding.range_32_max {
-  col: #00000488;
-}
-points.embedding.range_16_32 {
-  col: #2D116088;
-}
-points.embedding.range_8_16 {
-  col: #721F8188;
-}
-points.embedding.range_4_8 {
-  col: #B6367988;
-}
-points.embedding.range_2_4 {
-  col: #F1605D88;
-}
-points.embedding.range_0_0, points.embedding.range_0_2, range_2 {
-  col: #FEAF7788;
-}
-**/
 points.embedding.range_16_max {
-  col: #280b5466;
+  col: #00000466;
 }
 points.embedding.range_8_16 {
-  col: #65156e66;
+  col: #3b0f7066;
 }
 points.embedding.range_4_8 {
-  col: #9f2a6366;
+  col: #8c298166;
 }
 points.embedding.range_2_4 {
-  col: #d4484266;
+  col: #de496866;
 }
 points.embedding.range_2 {
-  col: #f57d1566;
+  col: #fe9f6d66;
 }
 points.embedding.range_1 {
-  col: #fac12766;
+  col: #fcfdbf66;
 }
 points.embedding.range_0 {
   col: #888888aa;
@@ -307,6 +301,9 @@ points.embedding.C57BL_6NTac {
 }
 points.embedding.unspecified {
   col: #e4e4e466;
+}
+points.embedding.other {
+  col: #b6b6b644;
 }
 text.histboxes.label {
   cex: 0.85;
@@ -393,13 +390,16 @@ par.histboxes.errors2 {
   mai: 0.35 0.05 0.1 0.1;
 }
 par.histboxes.selfgenes {
-  mai: 0.3 0.45 0.1 0.1;
+  mai: 0.3 0.45 0.1 0.12;
 }
 mtext.linehist.ylab, mtext.histboxes.ylab {
   line: 0.7;
 }
 mtext.histboxes.errors.ylab {
   line: 1;
+}
+mtext.histboxes.selfgenes.ylab {
+  line: 0.9;
 }
 rect.histboxes {
   col: #000000;
@@ -530,7 +530,7 @@ axis.bars.genes {
   tck: -0.03;
 }
 axis.bars.x {
-  col: #444444;
+  col: #222222;
 }
 axis.bars.genes.x {
   line: 0.15;
@@ -578,7 +578,7 @@ mtext.scatter.counts.ylab {
 axis.scatter.counts {
   tck: -0.018;
   cex.axis: 0.85;
-  col.axis: #444444;
+  col.axis: #555555;
 }
 axis.scatter.counts.x {
   line: -0.22;
@@ -704,7 +704,7 @@ par.bars.approaches.diseases {
 axis.bars.approaches {
   cex.axis: 0.85;
   tck: -0.018;
-  col.axis: #444444;
+  col.axis: #555555;
 }
 text.bars.approaches.axis.x {
   cex: 0.85;
@@ -981,7 +981,7 @@ axis.legend_bars {
   lwd: 0.5;
   tck: -0.08;
   cex.axis: 0.85;
-  col.axis: #444444;
+  col.axis: #555555;
 }
 axis.legend_bars.long {
   tck: -0.03;

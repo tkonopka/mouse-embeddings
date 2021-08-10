@@ -197,26 +197,42 @@ wrap_embedding_comparison <- function(m, labels, col.limits=c(0, 1),
 #' @param main character, label for title
 #' @param model_ids character vector with model ids
 #' @param noise_sd numeric, noise to add to the highlighted models' coordinates
-#' @param detail numeric, downsampling detail for the background models
+#' @param highlight_dominant_group character, column in d; when not NULL,
+#' the dominant value in column is plotted with style class gene_dominant
 #' @param legend.pos numeric of length 2, coordinates for legend
 #' @param panel.labels character vector with panel labels
 #' @param ... other arguments passed to plot_embedding
 #'
-wrap_embedding_gene <- function(d, marker_ids,
+wrap_embedding_gene <- function(d, marker_symbols,
                                 detail=0.5, xy=c("UMAP_1", "UMAP_2"),
                                 main="Mouse models",
                                 panel.labels=letters,
                                 noise_sd=1,
-                                legend_pos="topleft", ...) {
-  for (i in seq_along(marker_ids)) {
-    marker <- marker_ids[i]
-    marker_symbol <- d[marker_id==marker]$marker_symbol[1]
-    plot_embedding(d, detail=detail, main=main, ...)
-    d_gene <- d[marker_id==marker, ]
+                                highlight_dominant_group=NULL,
+                                legend_pos="topleft", Rcssclass=NULL, ...) {
+  for (i in seq_along(marker_symbols)) {
+    .marker <- marker_symbols[i]
+    plot_embedding(d, detail=detail, main=main, Rcssclass=c("gene_par", Rcssclass), ...)
+    d_gene <- d[marker_symbol==.marker, ]
     d_gene$x <- d_gene[, xy[1], with=FALSE] + rnorm(nrow(d_gene), 0, noise_sd)
     d_gene$y <- d_gene[, xy[2], with=FALSE] + rnorm(nrow(d_gene), 0, noise_sd)
-    points_embedding(d_gene, xy=c("x", "y"), detail=1, Rcssclass="gene", ...)
-    add_embedding_legend(legend_pos, labels=c(gene=marker_symbol, other="other"))
+    if (is.null(highlight_dominant_group)) {
+      points_embedding(d_gene, xy=c("x", "y"), detail=1, Rcssclass=c("gene", Rcssclass), ...)
+      add_embedding_legend(legend_pos, labels=c(gene=.marker, other="other"))
+    } else {
+      group_values <- d_gene[[highlight_dominant_group]]
+      group_counts <- sort(table(group_values), decreasing=TRUE)
+      group_dominant <- names(group_counts)[1]
+      points_embedding(d_gene[group_values!=group_dominant],
+                       xy=c("x", "y"), detail=1, Rcssclass=c("gene", Rcssclass), ...)
+      points_embedding(d_gene[group_values==group_dominant],
+                       xy=c("x", "y"), detail=1, Rcssclass=c("gene_dominant", Rcssclass), ...)
+      .gene_lab <- paste0(.marker, " (other ", highlight_dominant_group, ")")
+      add_embedding_legend(legend_pos,
+                           labels=c(gene_dominant=paste0(.marker, " (", group_dominant, ")"),
+                                    gene=gsub("_", " ", .gene_lab),
+                                    other="other model"))
+    }
     multipanelLabel(panel.labels[i])
   }
 }

@@ -358,6 +358,8 @@ plot_legend_bars(counts=.emb[, list(count=nrow(.SD)), by="discrete_bg"],
                  Rcssclass="long")
 multipanelLabel(panel.labels[3])
 plot_embedding(.emb, style_by="discrete_bg", main="",
+               style_groups=c("C57BL_6", "other", "unspecified",
+                              "C57BL_6N", "C57BL_6BCrl", "C57BL_6NJ", "C57BL_6NTac"),
                detail=EMBEDDING_DETAIL, Rcssclass=c("large", "vlarge", "notop"))
 #
 # zygosity
@@ -475,6 +477,32 @@ rm(.emb1, .emb2, .emb1_gate1, .emb1_gate2, .emb2_gate1, .emb2_gate2, .qlim)
 \textbf{Feature enrichment in embedding regions.} \textbf{(A)} Embedding of all mouse models based on their phenotypes. Two regions are selected with rectangles. \textbf{(B)} A detailed view of one of the selected regions from (A). \textbf{(C)} Enrichment analysis comparing phenotypes observed in animal models shown in (B) compared to all other models outside the selected region. Dots correspond to MP phenotypes. Axes show the fraction of selected models with a given phenotype, and an enrichment significance score for the phenotype computed using a Fisher test (some p-values are truncated). Significance level is $p=0.05$ after Bonferroni correction. The table on the right names the most significant phenotypes. \textbf{(D, E)} Analogous to (B, C), but treating another region. \textbf{(F-J)} Analogous to (A-J), but based on an embedding of mouse models based on concise text descriptions.
 
 \clearpage
+
+
+```{r supfig.genes, eval=TRUE, echo=FALSE, fig.align="center", fig.width=6.5, fig.height=6.5, fig.cap="\\textbf{Effect of genetic background for selected genes.} All panels show embeddings of mouse models based on non-binary vectors. In each panel, models with a single gene are highlighted: \\textbf{(A)} Tyr, \\textbf{(B)} Trp53, \\textbf{(C)} Kit, and \\textbf{(D)} Ednrb. One set of highlighted models reveals the most common genetic background (for that gene). The other highlighted set includes models with other genetic backgrounds (for that gene). The position of highlighted models are jittered to better reveal the number of models in dense areas."}
+layout(matrix(c(1,6,2,
+                5,5,5,
+                3,7,4),
+              ncol=3, nrow=3, byrow=T),
+       widths=c(3.2, 0.1, 3.2), height=c(3.2, 0.1, 3.2))
+#
+.emb <- model_umap_embedding$vector_R0[label=="model" & id %in% model_ids$phen_gt_0]
+.emb <- merge(.emb, model_info[, c("model_id", "marker_id", "marker_symbol", "genetic_background")],
+              by.x="id", by.y="model_id")
+wrap_embedding_gene(.emb, marker_symbols=c("Tyr", "Trp53", "Kit", "Ednrb"),
+                    detail=EMBEDDING_DETAIL,
+                    main="",
+                    noise_sd=0.35,
+                    highlight_dominant_group="genetic_background",
+                    legend_pos="topleft",
+                    panel.labels=panel.labels[1:4],
+                    Rcssclass=c("large", "vlarge"))
+#
+# filler panels
+par(mai=rep(0.01, 4)); plot.new();
+par(mai=rep(0.01, 4)); plot.new();
+par(mai=rep(0.01, 4)); plot.new();
+```
 
 
 ```{r supfig.models.diseases, eval=TRUE, echo=FALSE, fig.width=6.5, fig.height=8.3, fig.cap="\\textbf{Embeddings of diseases.}"}

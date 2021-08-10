@@ -38,7 +38,7 @@ EMBEDDING_DETAIL <- 1
 ```
 
 
-```{r fig.mp, eval=TRUE, echo=FALSE, fig.width=6.5, fig.height=3.2, fig.cap="\\textbf{Embeddings of mammalian phenotypes.} \\textbf{(A)} Embedding of mammalian phenotype (MP) ontology terms based on text similarity. Labels point to selected ontology terms. (phen.: phenotype, abn.: abnormal, morph.: morphology, phys.: physiology) \\textbf{(B)} Projection of mouse models into an embedding of ontology terms via averaging of coordinates of their annotated phenotypes. \\textbf{(C)} Histogram of the number of phenotypes for all mouse models. \\textbf{(D)} A summary of the position of mouse models in the projections in (B), stratified by the number of annotated phenotypes. Boxes represent 25\\%-75\\% intervals, whiskers represent 5\\%-95\\% intervals.  \\textbf{(E-G)} Analogous to (B-D) using phenotype profiles of human diseases translated into the mammalian phenotype ontology."}
+```{r fig.mp, eval=TRUE, echo=FALSE, fig.width=6.5, fig.height=3.2, fig.cap="\\textbf{Embeddings of mammalian phenotypes.} \\textbf{(A)} Embedding of mammalian phenotype (MP) ontology terms based on text similarity. Labels point to selected ontology terms. (phen.: phenotype, abn.: abnormal, morph.: morphology, phys.: physiology) \\textbf{(B)} Projection of mouse models into an embedding of ontology terms via averaging of coordinates of their annotated phenotypes. \\textbf{(C)} Histogram of the number of phenotypes for all mouse models. \\textbf{(D)} A summary of the position of mouse models in the projections in (B), stratified by the number of annotated phenotypes. Boxes represent 25\\%-75\\% intervals, whiskers represent 5\\%-95\\% intervals, middle line represents the median.  \\textbf{(E-G)} Analogous to (B-D) using phenotype profiles of human diseases translated into the mammalian phenotype ontology."}
 layout(matrix(c(1,2,3,4,
                 1,5,5,5,
                 1,6,7,8),
@@ -300,7 +300,7 @@ add_heatmap_legend(5.0, -14.5, height=0.8, width=0.8,
 ```
 
 
-```{r fig.heterogeneity, eval=TRUE, echo=FALSE, fig.width=3.2, fig.height=3.3, fig.align="center", out.width="50%", fig.cap="\\textbf{Phenotype heterogeneity.} \\textbf{(A)} Summary of the multiplicity of models available for individual genes. The most represented genes are listed in the inset. \\textbf{(B)} Embeddings of mouse models highlighting the location of models with selected genes knocked-out. Highlighted models are jittered to better display the number of models. \\textbf{(C)} Summary of the proportion of genes for which the nearest-neighbors of a mouse model contain another model with the same gene knocked-out. The summary is stratified by the number of models available for a gene. Boxes represent 25\\%-75\\% intervals, whiskers represent 5\\%-95\\% intervals. Dashed line indicates an expected level under a null hypothesis that neighbors are selected at random."}
+```{r fig.heterogeneity, eval=TRUE, echo=FALSE, fig.width=3.2, fig.height=3.3, fig.align="center", out.width="50%", fig.cap="\\textbf{Phenotype heterogeneity.} \\textbf{(A)} Summary of the multiplicity of models available for individual genes. The most represented genes are listed in the inset. \\textbf{(B)} Embeddings of mouse models with selected genes highlighted in color. Highlighted models all contain mutations in a single gene. Highlighted models are jittered to better display the number of models in each region. \\textbf{(C)} Proportion of genes for which the nearest-neighbors of a mouse model contain another model with the same gene knocked-out. The summary is stratified by the number of models available for a gene. Boxes represent 25\\%-75\\% intervals, whiskers represent 5\\%-95\\% intervals, middle lines represents the median. Dashed line indicates an expected level under a null hypothesis that neighbors are selected at random."}
 layout(matrix(c(1,1,5,
                 2,2,2,
                 3,4,4),
@@ -340,11 +340,11 @@ par(mai=rep(0.01, 4)); plot.new()
 .emb <- merge(.emb, model_info[, c("model_id", "marker_id", "marker_symbol")],
               by.x="id", by.y="model_id")
 wrap_embedding_gene(.emb,
-                    .num_models[marker_symbol %in% c("Tyr", "Trp53")]$marker_id,
+                    marker_symbols=c("Tyr", "Trp53"),
                     detail=EMBEDDING_DETAIL,
                     main="",
                     noise_sd=0.3,
-                    legend_pos=c(-26, 24),
+                    legend_pos=c(-28, 24),
                     panel.labels=c(panel.labels[2], ""))
 rm(.emb, .num_models, .num_models_counts)
 #
@@ -375,7 +375,7 @@ rm(.marker_self_summary, .marker_self)
 ```
 
 
-```{r fig.diseases, eval=TRUE, echo=FALSE, fig.width=6.5, fig.height=4.3, fig.cap="\\textbf{Embedding of human disease in the mouse phenotypic space.} \\textbf{(A)} Projection of human diseases into an embedding of mouse models created using phenotype vectors. \\textbf{(B)} Analogous to (A), but with the underlying embedding produced using semantic similarities of text-based descriptions. \\textbf{(C)} Summary of causal-gene extraction from 15 nearest neighbors. \\textbf{(D)} Summary of ORPHANET disease annotations in terms of phenotype ontology terms and causative genes. \\textbf{(E)} Projection of human diseases without HP annotation into an embedding of mouse models based on text similarity. \\textbf{(F,G)} Examples of text-based disease descriptions along with two mouse models, selected manually from among the top five search hits."}
+```{r fig.diseases, eval=TRUE, echo=FALSE, fig.width=6.5, fig.height=4.3, fig.cap="\\textbf{Embedding of human disease in the mouse phenotypic space.} \\textbf{(A)} Projection of human diseases into an embedding of mouse models based on phenotype vectors. \\textbf{(B)} Analogous to (A), but with the underlying embedding produced based on semantic similarities of text-based descriptions. \\textbf{(C)} Summary of causal-gene extraction. Percentage captures the proportion of diseases for which one of 15 most-similar mouse models contains a mutation in the disease-associated gene. \\textbf{(D)} Summary of ORPHANET disease annotations in terms of phenotype ontology terms and causative genes. \\textbf{(E)} Projection of human diseases without any HP annotations into an embedding of mouse models based on text similarity. \\textbf{(F,G)} Examples of text-based disease descriptions along with two mouse models, selected manually from among the top five search hits."}
 layout(matrix(c(1,1, 2, 3, 9, 10,10,
                 1,1, 2, 3, 9, 11,12,
                 rep(4, 7),
