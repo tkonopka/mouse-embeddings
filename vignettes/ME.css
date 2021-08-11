@@ -205,13 +205,13 @@ points.embedding.gene {
   xpd: 1;
 }
 points.embedding.gene_dominant {
-  col: #b034d5;
+  col: #ff4e33;
   cex: 0.15;
   pch: 19;
   xpd: 1;
 }
 points.embedding.large.gene, points.embedding.large.gene_dominant {
-  cex: 0.3;
+  cex: 0.33;
 }
 legend.embedding {
   x.intersp: 0.5;
@@ -267,19 +267,19 @@ points.embedding.range_16_max {
   col: #00000466;
 }
 points.embedding.range_8_16 {
-  col: #3b0f7066;
+  col: #440f7666;
 }
 points.embedding.range_4_8 {
-  col: #8c298166;
+  col: #962c8066;
 }
 points.embedding.range_2_4 {
-  col: #de496866;
+  col: #df4b6866;
 }
 points.embedding.range_2 {
-  col: #fe9f6d66;
+  col: #fd926666;
 }
 points.embedding.range_1 {
-  col: #fcfdbf66;
+  col: #fdd99b66;
 }
 points.embedding.range_0 {
   col: #888888aa;

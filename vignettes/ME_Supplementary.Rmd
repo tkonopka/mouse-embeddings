@@ -25,6 +25,8 @@ source("ME_embeddings_models.R")
 source("ME_node2vec.R")
 source("ME_predictions.R")
 source("ME_genes.R")
+set.seed(1234)
+source("ME_embeddings_comparison.R")
 ```
 
 ```{r, graphics.details, echo=FALSE}
@@ -160,14 +162,15 @@ plot_schematic_methods2 <- function() {
 ```
 
 
-
-```{r supfig.mp, eval=TRUE, echo=FALSE, fig.width=6.5, fig.height=4.1, fig.cap="\\textbf{Embeddings of mammalian phenotype ontology terms.} \\textbf{(A)} Schematic of ontology data, possibilities for numerical encoding, and algorithms for creating embeddings. \\textbf{(B)} Embedding based on text descriptions (name, definition, synonyms, comments, and name of parent term). Similarities computed using crossmap and layout generated with UMAP. \\textbf{(C)} Embedding based on the hierarchy relations between ontology terms, generated using snap implementation of node2vec with default settings. \\textbf{(D)} Embedding based on the ontology hierarchy graph, generated using python implementation of node2vec with default settings. \\textbf{(E)} Similar to E, generated with non-default settings with walk-length and num-walks set to 5."}
+```{r supfig.mp, eval=TRUE, echo=FALSE, fig.width=6.5, fig.height=5.7, fig.cap="\\textbf{Embeddings of mammalian phenotype ontology terms.}"}
 layout(matrix(c(1,1,1,1,1,1,1,
                 2,2,2,2,2,2,2,
-                3,7,4,7,5,7,6),
-              ncol=7, nrow=3, byrow=T),
+                3,7,4,8,9,9,9,
+                5,7,6,8,9,9,9),
+              ncol=7, nrow=4, byrow=T),
        widths=c(1.6, 0.04, 1.6, 0.04, 1.6, 0.04, 1.6),
-       height=c(1.8, 0.7, 1.6))
+       height=c(1.8, 0.7, 1.6, 1.6))
+#
 plot_schematic_methods1()
 multipanelLabel(panel.labels[1])
 #
@@ -183,13 +186,14 @@ multipanelLabel(panel.labels[2])
 #
 # node2vec embedding
 .n2v_encodings <- c("snap", "python_defaults", "python_short")
+.encoding_main <- c(
+  text="Text descriptions",
+  snap="Graph (snap, default)",
+  python_defaults="Graph (python, default)",
+  python_short="Graph (python, short walks)"
+)
 for (.encoding in .n2v_encodings) {
-  .main <- "Graph (snap, default)"
-  if (.encoding=="defaults") {
-    .main <- "Graph (python, default)"
-  } else if (.encoding=="short") {
-    .main <- "Graph (python, short walks)"
-  }
+  .main <- .encoding_main[.encoding]
   plot_embedding(node2vec_embedding$mp_ontology[[paste0(.encoding, "_R0")]][label=="mp",],
                  xy=c("node2vec_1", "node2vec_2"),
                  xlab="node2vec 1", ylab="node2vec 2",
@@ -198,19 +202,31 @@ for (.encoding in .n2v_encodings) {
                  Rcssclass="mp")
   multipanelLabel(panel.labels[2+which(.n2v_encodings==.encoding)])
 }
-rm(.encoding, .main, .n2v_encodings)
-par(mai=rep(0.1, 4)); plot(c(0,1), c(0, 1), type="n")
+par(mai=rep(0.01, 4)); plot(c(0,1), c(0, 1), type="n")
+par(mai=rep(0.01, 4)); plot(c(0,1), c(0, 1), type="n")
+wrap_embedding_comparison(mp_embedding_comparison,
+                          xlim=c(-2, 14), ylim=c(-14, 2),
+                          labels=c(.encoding_main, "random"="Random layout"),
+                          col.limits=c(0, 0.7),
+                          legend.pos=c(0.5, -12, 8.5, -12.8))
+rm(.encoding, .main, .n2v_encodings, .encoding_main)
+multipanelLabel(panel.labels[6], x=-9, y=9)
 ```
 
+\textbf{Embeddings of mammalian phenotype ontology terms.} \textbf{(A)} Schematic of ontology data, possibilities for data encodings, and algorithms for creating embeddings. \textbf{(B)} Embedding of mammalian phenotype (MP) ontology terms based on text descriptions (name, definition, synonyms, comments, and name of parent term). Similarities computed using crossmap and layout generated with UMAP. \textbf{(C)} Embedding based on the hierarchy relations between ontology terms, generated using snap implementation of node2vec with default settings. \textbf{(D)} Embedding based on the ontology hierarchy graph, generated using python implementation of node2vec with default settings. \textbf{(E)} Similar to (D), generated with settings walk-length and num-walks set to 5. \textbf{(F)} Comparison of embedding strategies. For each MP term, sets of 15 nearest neighbors were computed in all embeddings. The similarity of neighborhoods were computed using the Jaccard Index. The similarity for a pair of embeddings was defined as the mean Jaccard index for all MP terms. All approaches were analyzed in duplicate (two embeddings produced with different seeds for random number generators) and compared with a random layout with MP terms arranged uniformly at random in two dimensions.
 
-```{r supfig.models.encodings, eval=TRUE, echo=FALSE, fig.width=6.5, fig.height=6.9, fig.cap="\\textbf{Embeddings of mouse models.} \\textbf{(A)} Schematic of phenotype data for mouse models, data encoding possibilities, and algorithms for creating embeddings. \\textbf{(B)} UMAP embedding based on non-binary vector representations. \\textbf{(C)} PCA based on non-binary vector representations. \\textbf{(D)} UMAP embedding based on binary vector representations.  \\textbf{(E)} Node2vec embedding based on a graph connecting mouse models to their ontology phenotypes, generated using snap implementation of node2vec with default settings. \\textbf{(F)} Similar to (E), generated using python implementation of node2vec with default settings. \\textbf{(G)} Similar to (E), generated with python implementation of node2vec with non-default settings using walk-length and num-walks set to 5. \\textbf{(H)} Embedding based on text descriptions of mouse phenotypes. \\textbf{(I)} Similar to (H), but using text descriptions of complete phenotypes."}
+\clearpage
+
+
+```{r supfig.models.encodings, eval=TRUE, echo=FALSE, fig.width=6.5, fig.height=8.4, fig.cap="\\textbf{Embeddings of mouse models.}"}
 layout(matrix(c(1,1,1,1,1,1,1,
                 2,2,2,2,2,2,2,
-                3,11,4,11,5,11,6,
-                rep(11,7),
-                7,11,8,11,9,11,10),
+                3,11,4,12,5,13,6,
+                7,11,8,12, 14,14,14,
+                9,11,10,12, 14,14,14),
               ncol=7, nrow=5, byrow=T),
-       widths=c(1.6, 0.04, 1.6, 0.04, 1.6, 0.04, 1.6), height=c(2.9, 0.7, 1.6, 0.1, 1.6))
+       widths=c(1.6, 0.04, 1.6, 0.04, 1.6, 0.04, 1.6),
+       height=c(2.9, 0.7, 1.6, 1.6, 1.6))
 #
 plot_schematic_methods2()
 multipanelLabel(panel.labels[1])
@@ -250,33 +266,51 @@ for (.encoding in names(.encoding_main)) {
   }
   multipanelLabel(panel.labels[1+which(names(.encoding_main)==.encoding)])
 }
+# filler panels
+par(mai=rep(0.01, 4)); plot(1:10, type="n")
+par(mai=rep(0.01, 4)); plot(1:10, type="n")
+par(mai=rep(0.01, 4)); plot(1:10, type="n")
+#
+# embedding comparison panel
+wrap_embedding_comparison(model_embedding_comparison,
+                          labels=c(.encoding_main, "random"="Random layout"),
+                          col.limits=c(0, 0.7),
+                          legend.pos=c(0.5, -18, 8.5, -18.8))
+multipanelLabel(panel.labels[10], x=-8, y=8)
 rm(.encoding, .main, .encoding_main)
 ```
 
+\textbf{Embeddings of mouse models.} \textbf{(A)} Schematic of phenotype data for mouse models, possibilities for data encodings, and algorithms for creating embeddings. \textbf{(B)} UMAP embedding based on non-binary vector representations. \textbf{(C)} PCA based on non-binary vector representations. \textbf{(D)} UMAP embedding based on binary vector representations. \textbf{(E)} Node2vec embedding based on a graph connecting mouse models to their ontology phenotypes, generated using snap implementation of node2vec with default settings. \textbf{(F)} Similar to (E), generated using python implementation of node2vec with default settings. \textbf{(G)} Similar to (E), generated with python implementation of node2vec with settings walk-length and num-walks set to 5. \textbf{(H)} Embedding based on text descriptions of mouse phenotypes. \textbf{(I)} Similar to (H), but using text descriptions of complete phenotypes. \textbf{(J)} Comparison of embedding strategies. For each mouse model, sets of 15 nearest neighbors were computed in all embeddings. The similarity of neighborhoods were computed using the Jaccard Index. The similarity for a pair of embeddings was defined as the mean Jaccard index for all mouse models. All approaches were analyzed in duplicate (two embeddings produced with different seeds for random number generators) and compared with a random layout with mouse models arranged uniformly at random in two dimensions.
 
-```{r supfig.models.covariates, eval=TRUE, echo=FALSE, fig.width=6.4, fig.height=6.4, fig.cap="\\textbf{Mouse model covariates.} All panels show embeddings of mouse models based on non-binary vectors of phenotypes. Panels differ by stratification strategy: \\textbf{(A)} phenotyping source; \\textbf{(B)} number of registered phenotypes; \\textbf{(C)} animal genetic background; \\textbf{(D)} zygosity of gene knock-out."}
-layout(matrix(c(1,2,3,
-                4,4,4,
-                5,6,7),
-              ncol=3, nrow=3, byrow=T),
-       widths=c(3.15, 0.1, 3.15), height=c(3.15, 0.1, 3.15))
+\clearpage
+
+
+```{r supfig.models.covariates, eval=TRUE, echo=FALSE, fig.width=6.5, fig.height=6.5, fig.cap="\\textbf{Mouse model covariates.}"}
+layout(matrix(c(1,3,10,
+                2,4,10,
+                5,5,10,
+                6,8,11,
+                7,9,11),
+              ncol=3, nrow=5, byrow=T),
+       widths=c(2.5, 2.5, 1.7),
+       height=c(0.3+(0.09*2), 2.5, 0.1, 0.3+(0.09*7), 2.5))
 #
 # sub-panels with different encodings
-.emb <- model_umap_embedding$vector_R0[label=="model" & id %in% model_ids$phen_gt_1]
+.emb <- model_umap_embedding$vector_R0[label=="model"]
 .emb <- merge(.emb, model_info, by.x="id", by.y="model_id")
 discretize_base2 <- function(x) {
-  result <- rep("range_0_0", length(x))
-  result[x>0 & x<=2] <- "range_0_2"
+  result <- rep("range_0", length(x))
+  result[x==1] <- "range_1"
+  result[x==2] <- "range_2"
   result[x>2 & x<=4] <- "range_2_4"
   result[x>4 & x<=8] <- "range_4_8"
   result[x>8 & x<=16] <- "range_8_16"
-  result[x>16 & x<=32] <- "range_16_32"
-  result[x>32 ] <- "range_32_max"
+  result[x>16] <- "range_16_max"
   result
 }
 discretize_bg <- function(x) {
   result <- rep("other", length(x))
-  result[grep("Not.Specified", x)] <- "not_specified"
+  result[grep("Not.Specified", x)] <- "unspecified"
   result[grep("C57BL.6", x)] <- "C57BL_6"
   result[grep("C57BL.6N$", x)] <- "C57BL_6N"
   result[grep("C57BL.6NJ$", x)] <- "C57BL_6NJ"
@@ -297,50 +331,76 @@ discretize_zygosity <- function(x) {
 .emb$discrete_zygosity <- discretize_zygosity(.emb$model_description)
 #
 # data sources (MGI/IMPC)
-plot_embedding(.emb, style_by="bin_source",
-               main="Data source",
-               detail=EMBEDDING_DETAIL, Rcssclass=c("large", "vlarge"))
-add_embedding_legend("topleft",
-                     labels=c(MGI="MGI mouse model", nonMGI="IMPC mouse model"))
+plot_legend_bars(counts=.emb[, list(count=nrow(.SD)), by="bin_source"],
+                 labels=c(MGI="MGI mouse model", nonMGI="IMPC mouse model"),
+                 xlab="Number of models", main="Data source")
 multipanelLabel(panel.labels[1])
-par(mai=rep(0.01, 4)); plot.new()
+plot_embedding(.emb, style_by="bin_source", main="",
+               detail=EMBEDDING_DETAIL, Rcssclass=c("large", "vlarge", "notop"))
 #
 # number of phenotypes
-plot_embedding(.emb, style_by="discrete_phens",
-               main="Number of phenotypes",
-               detail=EMBEDDING_DETAIL, Rcssclass=c("large", "vlarge"))
-add_embedding_legend("topleft",
-                     labels=c(range_0_2="(0, 2]", range_2_4="(2, 4]",
-                       range_4_8="(4, 8]", range_8_16="(8, 16]",
-                       range_16_32="(16, 32]", range_32_max="(32, inf]"))
+plot_legend_bars(counts=.emb[, list(count=nrow(.SD)), by="discrete_zygosity"],
+                 labels=c(hom="homozygous", other="other"),
+                 xlab="Number of models", main="Zygosity")
 multipanelLabel(panel.labels[2])
+plot_embedding(.emb, style_by="discrete_zygosity", main="",
+               detail=EMBEDDING_DETAIL, Rcssclass=c("large", "vlarge", "notop"))
+#
 par(mai=rep(0.01, 4)); plot.new()
 #
-# genetic background
-plot_embedding(.emb, style_by="discrete_bg",
-               main="Genetic background",
-               detail=EMBEDDING_DETAIL, Rcssclass=c("large", "vlarge"))
-add_embedding_legend("topleft",
-                     labels=c(C57BL_6="involves C57BL/6", C57BL_6N="C57BL/6N",
-                       C57BL_6NCrl="C57BL/6NCrl", C57BL_6NJ="C57BL/6NJ",
-                       C57BL_6NTac="C57BL/6NTac", other="other"),
-                     Rcssclass="large")
+#  genetic background
+plot_legend_bars(counts=.emb[, list(count=nrow(.SD)), by="discrete_bg"],
+                 labels=c(C57BL_6N="C57BL/6N",
+                          C57BL_6NCrl="C57BL/6NCrl",
+                          C57BL_6NJ="C57BL/6NJ",
+                          C57BL_6NTac="C57BL/6NTac",
+                          C57BL_6="involves C57BL/6",
+                          other="other",
+                          unspecified="not specified"),
+                 xlab="Number of models", main="Genetic background",
+                 Rcssclass="long")
 multipanelLabel(panel.labels[3])
-par(mai=rep(0.01, 4)); plot.new()
+plot_embedding(.emb, style_by="discrete_bg", main="",
+               style_groups=c("C57BL_6", "other", "unspecified",
+                              "C57BL_6N", "C57BL_6BCrl", "C57BL_6NJ", "C57BL_6NTac"),
+               detail=EMBEDDING_DETAIL, Rcssclass=c("large", "vlarge", "notop"))
 #
 # zygosity
-plot_embedding(.emb, style_by="discrete_zygosity",
-               main="Zygosity",
-               detail=EMBEDDING_DETAIL, Rcssclass=c("large", "vlarge"))
-add_embedding_legend("topleft",
-                     labels=c(hom="homozygous", other="other"),
-                     Rcssclass="large")
+plot_legend_bars(counts=.emb[, list(count=nrow(.SD)), by="discrete_phens"],
+                 labels=c(range_0="0", range_1="1", range_2="2",
+                          range_2_4="(2, 4]",
+                          range_4_8="(4, 8]", range_8_16="(8, 16]",
+                          range_16_max="(16, inf]"),
+                 xlab="Number of models", main="Num. phenotypes",
+                 Rcssclass="long")
 multipanelLabel(panel.labels[4])
-rm(.emb)
+plot_embedding(.emb, style_by="discrete_phens", main="",
+               detail=EMBEDDING_DETAIL, Rcssclass=c("large", "vlarge", "notop"))
+#
+#
+par(mai=rep(0.01, 4)); plot.new()
+#
+#
+.model_phen1 <- model_info[num_phenotypes==1]$model_id
+.phen1_counts <- table(model_phenotypes$concise[id %in% .model_phen1]$phenotype)
+.phen1_counts <- data.table(id=names(.phen1_counts),
+                            count=as.integer(.phen1_counts))
+.phen1_counts <- merge(.phen1_counts, mp_info$names, by="id")[order(-count)]
+.phen1_counts$text <- paste0(.phen1_counts$count, " - ", .phen1_counts$name)
+plot_list(.phen1_counts$text, xlim=c(0, 1), show.rect=FALSE,
+          Rcssclass="counts")
+text(0, 1.06, "Single phenotypes", adj=c(0, 0.5),
+     Rcssclass=c("list", "main"))
+multipanelLabel(panel.labels[5])
+rm(.emb, .model_phen1, .phen1_counts)
 ```
 
+\textbf{Mouse model covariates.} Embeddings of mouse models based on non-binary vectors of phenotypes. Four panels differ by stratification strategy: \textbf{(A)} phenotyping source; \textbf{(B)} zygosity of gene knock-out; \textbf{(C)} animal genetic background; \textbf{(D)} number of phenotypes. \textbf{(E)} Listing of the most frequent MP terms present among models with a single phenotype. Leading numbers indicate the number of models that are annotated only with the stated term.
 
-```{r supfig.models.enrichment, eval=TRUE, echo=FALSE, fig.width=6.5, fig.height=7.8, fig.cap="\\textbf{Feature enrichment in embedding regions.} \\textbf{(A)} Embedding of all mouse models based on their phenotypes. Two regions are selected with rectangular gates. \\textbf{(B)} A detailed view of one of the gated regions from (A). \\textbf{(C)} Enrichment analysis comparing phenotypes observed in animal models shown in (B) compared to all other models outside the gated region. Dots correspond to MP phenotypes. Axes show the fraction of selected models with a given phenotype, and an enrichment significance score for the phenotype computed using a Fisher test (some p-values are truncated). Significance level is $p=0.05$ after Bonferroni correction. The table on the right names the most significant phenotypes. \\textbf{(D, E)} Analogous to (B, C), but treating another gated region. \\textbf{(F-J)} Analogous to (A-J), but based on an embedding of mouse models based on concise text descriptions."}
+\clearpage
+
+
+```{r supfig.models.enrichment, eval=TRUE, echo=FALSE, fig.width=6.5, fig.height=7.8, fig.cap="\\textbf{Feature enrichment in embedding regions.}"}
 layout(matrix(c(1,1, 16, 2, 2,
                 3,3, 16, 3, 3,
                 4,7, 16, 10,13,
@@ -354,7 +414,7 @@ layout(matrix(c(1,1, 16, 2, 2,
 .emb1 <- merge(.emb1, model_info[, c("model_id", "bin_source")],
               by.x="id", by.y="model_id")
 .emb1_gate1 <- c(-16, 5.5, -13, 8.5)
-.emb1_gate2 <- c(-3, -1.5, 0, 1.5)
+.emb1_gate2 <- c(-10, -1, -7, 2)
 .qlim <- c(0.015, 0.985)
 #
 plot_embedding(.emb1, show_points=FALSE, qlim=.qlim,
@@ -417,95 +477,254 @@ wrap_embedding_enrichment(.emb2, gate_rect=.emb2_gate2,
 rm(.emb1, .emb2, .emb1_gate1, .emb1_gate2, .emb2_gate1, .emb2_gate2, .qlim)
 ```
 
+\textbf{Feature enrichment in embedding regions.} \textbf{(A)} Embedding of all mouse models based on their phenotypes. Two regions are selected with rectangles. \textbf{(B)} A detailed view of one of the selected regions from (A). \textbf{(C)} Enrichment analysis comparing phenotypes observed in animal models shown in (B) compared to all other models outside the selected region. Dots correspond to MP phenotypes. Axes show the fraction of selected models with a given phenotype, and an enrichment significance score for the phenotype computed using a Fisher test (some p-values are truncated). Significance level is $p=0.05$ after Bonferroni correction. The table at the bottom names the most significant phenotypes. \textbf{(D, E)} Analogous to (B, C), but treating another region. \textbf{(F-J)} Analogous to (A-E), but based on an embedding of mouse models based on concise text descriptions.
 
-```{r supfig.models.diseases, eval=TRUE, echo=FALSE, fig.width=6.5, fig.height=6.9, fig.cap="\\textbf{Embeddings of diseases.} \\textbf{(A)} Projection of human disease phenotype profiles (colored points) into an embedding of mouse models (gray dots). The embedding was created based on non-binary vectors with mouse model phenotypes, without information about diseases. Disease phenotype profiles were translated into mammalian phenotype (MP) ontology terms using owlsim, encoded into vectors, and projected into the embedding using UMAP. \\textbf{(B)} Similar to (A), but with the translations between human and mouse phenotypes carried out using crossmap. \\textbf{(C)} Series of three embeddings where human diseases are projected into an embedding of mouse models based on text descriptions. Descriptions of human diseases consisted of a clinical summary, and translations of phenotypes into mammalian phenotype ontology terms using owlsim. Disease description were projected into the embedding by searching for k=1, k=2, k=5 mouse models and then averaging their coordinates. \\textbf{(D)} Similar to (C), but with translations between human and mouse phenotype carried out using crossmap. "}
-layout(matrix(c(1,1,2,
-                3,4,5,
-                6,6,6,
-                7,7,7,
-                8,9,10,
-                11,11,11,
-                12,13,14),
-              ncol=3, nrow=7, byrow=T),
-       widths=c(2.1, 2.1, 2.1), height=c(0.2, 2.1, 0.2, 0.2, 2.1, 0.1, 2.1))
+\clearpage
+
+
+```{r supfig.genes, eval=TRUE, echo=FALSE, fig.align="center", fig.width=6.5, fig.height=6.5, fig.cap="\\textbf{Effect of genetic background for selected genes.} All panels show embeddings of mouse models based on non-binary vectors. In each panel, models with a single gene are highlighted: \\textbf{(A)} Tyr; \\textbf{(B)} Trp53; \\textbf{(C)} Kit; and \\textbf{(D)} Ednrb. One set of highlighted models reveals the most common genetic background (for that gene). The other highlighted set includes models with other genetic backgrounds (for that gene). The position of highlighted models are jittered to better reveal the number of models in dense areas."}
+layout(matrix(c(1,6,2,
+                5,5,5,
+                3,7,4),
+              ncol=3, nrow=3, byrow=T),
+       widths=c(3.2, 0.1, 3.2), height=c(3.2, 0.1, 3.2))
+#
+.emb <- model_umap_embedding$vector_R0[label=="model" & id %in% model_ids$phen_gt_0]
+.emb <- merge(.emb, model_info[, c("model_id", "marker_id", "marker_symbol", "genetic_background")],
+              by.x="id", by.y="model_id")
+wrap_embedding_gene(.emb, marker_symbols=c("Tyr", "Trp53", "Kit", "Ednrb"),
+                    detail=EMBEDDING_DETAIL,
+                    main="",
+                    noise_sd=0.35,
+                    highlight_dominant_group="genetic_background",
+                    legend_pos="topleft",
+                    panel.labels=panel.labels[1:4],
+                    Rcssclass=c("large", "vlarge"))
+#
+# filler panels
+par(mai=rep(0.01, 4)); plot.new();
+par(mai=rep(0.01, 4)); plot.new();
+par(mai=rep(0.01, 4)); plot.new();
+```
+
+
+```{r supfig.models.diseases, eval=TRUE, echo=FALSE, fig.width=6.5, fig.height=8.3, fig.cap="\\textbf{Analyses of diseases.}"}
+.disease_layout <- matrix(c(1,1,1, # header
+                            2,3,4, # legend
+                            2,3,5,  # xlab
+                            2,3,6, # source
+                            2,3,7, # zygosity
+                            2,3,8, # genetic background
+                            10,10,8, #
+                            10,10,9), # number of phenotypes
+                           nrow=8, ncol=3, byrow=TRUE)
+layout(rbind(.disease_layout,
+             matrix(rep(11, 3), ncol=3),
+             .disease_layout+11),
+       widths=c(2.15, 2.15, 2.2),
+       height=c(0.2, 0.5, 0.2, 0.46, 0.46, 0.73, 0.38, 1.11,
+                0.22,
+                0.2, 0.5, 0.2, 0.46, 0.46, 0.73, 0.38, 1.11))
 #
 # vector embedding, sub-panels with diseases
 .emb1 <- model_umap_embedding$vector_R0
-.emb1_models <- .emb1[label=="model" & id %in% model_ids$phen_gt_0]
+.emb1_models <- .emb1[label=="model"]
 .disease_ids <- .emb1[label=="owlsim"]$id
-.qlim <- c(0.02, 0.98)
+.qlim <- c(0.013, 0.987)
+#
+make_discrete_summary <- function(ids, label="") {
+  ids <- unique(ids[!is.na(ids)])
+  result <- model_info[model_id %in% ids]
+  result$discrete_phens <- discretize_base2(result$num_phenotypes)
+  result$discrete_bg <- discretize_bg(result$genetic_background)
+  result$discrete_zygosity <- discretize_zygosity(result$model_description)
+  result <- result[, c("model_id", "discrete_phens", "discrete_zygosity",
+                       "discrete_bg", "bin_source")]
+  n_models <- nrow(result)
+  result <- melt(result, id.vars="model_id")
+  result <- result[, list(count=nrow(.SD), percent=100*nrow(.SD)/n_models),
+                     by=c("variable", "value")]
+  result$label <- label
+  setcolorder(result, c("label", "variable", "value", "count"))
+  result
+}
+.info1 <- rbind(
+        make_discrete_summary(model_ids$all, label="all"),
+        make_discrete_summary(model_vectors_ids[as.vector(disease_model_knn$owlsim$vector$indexes)],
+                              label="owlsim"),
+        make_discrete_summary(model_vectors_ids[as.vector(disease_model_knn$crossmap$vector$indexes)],
+                              label="crossmap")
+)
 #
 #
-plot_line_header("Emeddings based on non-binary vectors of MP terms");
-par(mai=rep(0.01, 4)); plot.new();
+plot_line_header("Analyses based on non-binary vectors of MP terms");
 #
-plot_embedding(.emb1_models, detail=max(0.1, EMBEDDING_DETAIL),
+plot_embedding(.emb1_models[id %in% model_ids$phen_gt_1],
+               detail=max(0.1, EMBEDDING_DETAIL),
                main="", qlim=.qlim, Rcssclass=c("large", "large3"))
 points_embedding(.emb1[label=="owlsim"], detail=max(0.2, EMBEDDING_DETAIL),
                  Rcssclass="owlsim")
+add_embedding_legend(legend_pos="topleft", legend_shift=c(-1, 5.5),
+                     labels=c(other="Mouse model",
+                              owlsim="Human disease (owlsim HP-MP transl.)")
+)
 multipanelLabel(panel.labels[1])
-plot_embedding(.emb1_models, detail=max(0.1, EMBEDDING_DETAIL),
+plot_embedding(.emb1_models[id %in% model_ids$phen_gt_1],
+               detail=max(0.1, EMBEDDING_DETAIL),
                main="", qlim=.qlim, Rcssclass=c("large", "large3"))
 points_embedding(.emb1[label=="crossmap"], detail=max(0.2, EMBEDDING_DETAIL),
                  Rcssclass="crossmap")
+add_embedding_legend(legend_pos="topleft", legend_shift=c(-1, 5.5),
+                     labels=c(other="Mouse model",
+                              crossmap="Human disease (crossmap HP-MP transl.)")
+)
 multipanelLabel(panel.labels[2])
 #
-par(mai=rep(0.2, 4)); plot(c(0, 1), c(0, 1), type="n", axes=FALSE);
-add_embedding_legend(legend_pos="topleft",
-                     labels=c(other="Mouse model",
-                       owlsim="Human disease (owlsim HP-MP translation)",
-                       crossmap="Human disease (crossmap HP-MP translation)")
-)
+par(mai=c(0.02, 0.2, 0.12, 0.2)); plot(c(0, 1), c(0, 1), type="n", axes=FALSE);
+text(0, 1, "Properties of mouse models that appear\nas neighbors (k=15) to human diseases",
+     Rcssclass=c("embedding", "label"), adj=c(0, 0.5))
+add_embedding_legend(legend_pos=c(0.0, 0.8),
+                     labels=c(owlsim="owlsim transl.", crossmap="crossmap transl."))
+add_embedding_legend(legend_pos=c(0.5, 0.8), labels=c(all="All models"))
+multipanelLabel(panel.labels[3])
+wrap_disease_models(.info1)
 #
-# horizontal spacer panel
-par(mai=rep(0.01, 4)); plot.new()
+par(mai=rep(0.1, 4)); plot(c(0, 1), c(0, 1), type="n", axes=FALSE);
+#
 #
 # text-based embeddings
 assignc("disease_search")
 .crossmap_search <- disease_search$crossmap$orphanet$text_concise_diff0
 .owlsim_search <- disease_search$owlsim$orphanet$text_concise_diff0
-.disease_search_k <- list(
-        crossmap_k1 = .crossmap_search[, head(.SD, 1), by="query"],
-        crossmap_k2 = .crossmap_search[, head(.SD, 2), by="query"],
-        crossmap_k5 = .crossmap_search[, head(.SD, 5), by="query"],
-        crossmap_k15 = .crossmap_search[, head(.SD, 15), by="query"],
-        owlsim_k1 = .owlsim_search[, head(.SD, 1), by="query"],
-        owlsim_k2 = .owlsim_search[, head(.SD, 2), by="query"],
-        owlsim_k5 = .owlsim_search[, head(.SD, 5), by="query"],
-        owlsim_k15 = .owlsim_search[, head(.SD, 15), by="query"]
+.disease_search_1 <- list(
+  crossmap = .crossmap_search[, head(.SD, 1), by="query"],
+  owlsim = .owlsim_search[, head(.SD, 1), by="query"]
 )
 .emb2 <- model_umap_embedding$text_concise_diff0_R0
-.emb2_models <- .emb2[label=="model" & id %in% model_ids$phen_gt_1]
-.emb2_diseases_k <- lapply(
-  .disease_search_k,
+.emb2_models <- .emb2[label=="model"]
+.emb2_diseases <- lapply(
+  .disease_search_1,
   function(x) {
     x$id <- x$query
     predict_avg_coordinates(.emb2, x, feature_col="target", label="disease")
   }
 )
+.info2 <- rbind(
+        make_discrete_summary(model_ids$all, label="all"),
+        make_discrete_summary(.crossmap_search[query %in% disease_ids$phen_eq_0]$target,
+                              label="crossmap_phen_eq_0"),
+        make_discrete_summary(.crossmap_search[query %in% disease_ids$phen_gt_0]$target,
+                              label="crossmap_phen_gt_0"),
+        make_discrete_summary(.owlsim_search[query %in% disease_ids$phen_gt_0]$target,
+                              label="owlsim")
+)
 #
-wrap_models_diseases <- function(main, klab, Rcssclass="crossmap") {
-  plot_embedding(.emb2_models, detail=max(0.1, EMBEDDING_DETAIL),
-                 main=main, qlim=.qlim, Rcssclass=c("large", "large3"))
-  points_embedding(.emb2_diseases_k[[klab]][id %in% .disease_ids],
-                   detail=max(0.2, EMBEDDING_DETAIL),
-                   Rcssclass=Rcssclass)
-}
+par(mai=rep(0.02, 4)); plot(c(0, 1), c(0, 1), type="n", axes=FALSE);
 #
-plot_line_header("Embeddings based on text descriptions");
+plot_line_header("Analyses based on text descriptions");
 # row with owlsim results
-wrap_models_diseases(" (k=1)", "owlsim_k1", Rcssclass="owlsim")
-multipanelLabel(panel.labels[3])
-wrap_models_diseases(" (k=2)", "owlsim_k2", Rcssclass="owlsim")
-wrap_models_diseases(" (k=5)", "owlsim_k5", Rcssclass="owlsim")
-# row with crossmap results
-par(mai=rep(0.01, 4)); plot.new()
-wrap_models_diseases(" (k=1)", "crossmap_k1", Rcssclass="crossmap")
+plot_embedding(.emb2_models[id %in% model_ids$phen_gt_1],
+               detail=max(0.1, EMBEDDING_DETAIL),
+               main="", qlim=.qlim, Rcssclass=c("large", "large3"))
+points_embedding(.emb2_diseases$owlsim[id %in% .disease_ids],
+                 detail=max(0.2, EMBEDDING_DETAIL),
+                 Rcssclass="owlsim")
+add_embedding_legend(legend_pos="topleft", legend_shift=c(-0.5, 3.5),
+                     labels=c(other="Mouse model",
+                              owlsim="Human disease (owlsim HP-MP transl.)"))
 multipanelLabel(panel.labels[4])
-wrap_models_diseases(" (k=2)", "crossmap_k2", Rcssclass="crossmap")
-wrap_models_diseases(" (k=5)", "crossmap_k5", Rcssclass="crossmap")
+#
+plot_embedding(.emb2_models[id %in% model_ids$phen_gt_1],
+               detail=max(0.1, EMBEDDING_DETAIL),
+               main="", qlim=.qlim, Rcssclass=c("large", "large3"))
+points_embedding(.emb2_diseases$crossmap[id %in% .disease_ids],
+                 detail=max(0.2, EMBEDDING_DETAIL),
+                 Rcssclass="crossmap")
+add_embedding_legend(legend_pos="topleft", legend_shift=c(-0.5, 3.5),
+                     labels=c(other="Mouse model",
+                              crossmap="Human disease (crossmap HP-MP transl.)"))
+multipanelLabel(panel.labels[5])
+#
+par(mai=c(0.02, 0.2, 0.12, 0.2)); plot(c(0, 1), c(0, 1), type="n", axes=FALSE);
+text(0, 1, "Properties of mouse models that appear\nas neighbors (k=15) to human diseases",
+     Rcssclass=c("embedding", "label"), adj=c(0, 0.5))
+add_embedding_legend(legend_pos=c(0.0, 0.8),
+                     labels=c(owlsim="owlsim transl.",
+                              crossmap_phen_gt_0="crossmap transl."))
+add_embedding_legend(legend_pos=c(0.5, 0.8),
+                     labels=c(crossmap_phen_eq_0="descriptions only",
+                              all="All models"))
+multipanelLabel(panel.labels[6])
+wrap_disease_models(.info2)
+#
+#
+par(mai=rep(0.1, 4)); plot(c(0, 1), c(0, 1), type="n", axes=FALSE);
 #
 rm(.emb1, .emb1_models, .disease_ids, .qlim)
-rm(.emb2, .emb2_models, .emb2_diseases_k, .crossmap_search, .owlsim_search)
+rm(.emb2, .emb2_models, .emb2_diseases)
+rm(.crossmap_search, .owlsim_search, .disease_search_1)
+```
+
+\textbf{Analyses of diseases.} \textbf{(A)} Projection of human disease phenotype profiles (colored points) into an embedding of mouse models (gray dots). The embedding was created based on non-binary vectors with mouse model phenotypes, without information about diseases. Disease phenotype profiles were translated from the human phenotype (HP) into the mammalian phenotype (MP) ontology terms using owlsim, encoded into vectors, and projected into the embedding using UMAP. \textbf{(B)} Similar to (A), but with the translations between human and mammalian ontologies carried out using crossmap. \textbf{(C)} Comparison of the properties of mouse models identified during disease analysis to the properties of the entire mouse model cohort. Disease profiles were compared with all mouse models, recording 15 nearest mouse models for each disease. The set of thus selected models were stratified according to the mouse model data source, mutation zygosity, mouse strain/genetic background, and the number of phenotypes annotated to the mouse models. The same stratification was applied to the entire set of mouse models for comparison. \textbf{(D, E, F)} Analogous to panels (A, B, C), but with all analyses carried out using text-based similarities. Analysis in (F) includes a group of models identified during analysis of diseases that have text descriptions but are not annotated with formal ontology-based phenotypes.
+
+\clearpage
+
+
+```{r supfig.hpmp, eval=TRUE, echo=FALSE, fig.align="center", fig.width=5.2, fig.height=5.3, out.width="80%", fig.cap="\\textbf{Disease phenotypes in embeddings of mammalian and human phenotype ontologies.} \\textbf{(A)} Embedding of terms from the mammalian phenotype (MP) ontology; dots are colored by whether or not MP terms appear in (translated) disease definitions. \\textbf{(B)} Embedding of MP terms from (A) with additional points representing disease profiles computed through MP coordinate averaging. \\textbf{(C)} Embedding of terms from the human phenotype (HP) ontology; dots are colored by whether or not HP terms appear in disease annotation (without translation). \\textbf{(D)} Embedding of HP terms from (C) with additional points representing disease profiles computed by HP coordinate averaging."}
+layout(matrix(c(1,2,
+                3,3,
+                4,5),
+              ncol=2, nrow=3, byrow=T),
+       widths=c(2.6, 2.6), height=c(2.6, 0.1, 2.6))
+#
+.emb_mp <- mp_embedding$d2_R0
+.emb_hp <- hp_embedding$d2_R0
+#
+# panel with individual phenotypes
+plot_embedding(.emb_mp[label=="mp"],
+               main="", qlim=c(0.005, 0.995),
+               detail=1,
+               Rcssclass="mp")
+points_embedding(.emb_mp[id %in% disease_phenotypes$crossmap$phenotype],
+                 detail=1, Rcssclass="crossmap")
+add_embedding_legend("topleft",
+                     labels=c(crossmap="MP term appearing in a disease", mp="other MP term"))
+multipanelLabel(panel.labels[1])
+#
+# panel with disease profiles (by coordinate averaging)
+plot_embedding(.emb_mp[label=="mp"],
+               main="", qlim=c(0.005, 0.995),
+               detail=1,
+               Rcssclass="mp")
+points_embedding(.emb_mp[label=="crossmap"],
+                 detail=1, Rcssclass="crossmap")
+add_embedding_legend("topleft",
+                     labels=c(crossmap="disease profile", mp="MP term"))
+multipanelLabel(panel.labels[2])
+#
+par(mai=rep(0.01, 4)); plot.new();
+#
+#
+# panel with individual phenotypes
+plot_embedding(.emb_hp[label=="hp"], detail=1,
+               main="", qlim=c(0.005, 0.995),
+               Rcssclass="mp")
+points_embedding(.emb_hp[id %in% disease_phenotypes_hp$phenotype], detail=1,
+                 Rcssclass="disease_hp")
+add_embedding_legend("topleft",
+                     labels=c(disease_hp="HP term appearing in a disease", mp="other HP term"))
+multipanelLabel(panel.labels[3])
+#
+# panel with disease profiles (by coordinate averaging)
+plot_embedding(.emb_hp[label=="hp"], detail=1,
+               main="", qlim=c(0.005, 0.995),
+               Rcssclass="mp")
+points_embedding(.emb_hp[label=="disease"], detail=1,
+                 Rcssclass="disease_hp")
+add_embedding_legend("topleft",
+                     labels=c(disease_hp="disease profile", mp="HP term"))
+multipanelLabel(panel.labels[4])
+#
+rm(.emb_mp, .emb_hp)
 ```
 
