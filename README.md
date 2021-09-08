@@ -5,9 +5,9 @@ This repository holds an analysis of phenotypes associated with mouse models.
 The repository describes analyses of large datasets that are not included
 on github. A bundle that includes the datasets and a copy of the analysis
 code is available on 
-zenodo ([dataset 4916172](https://zenodo.org/record/4916172)).
+zenodo ([dataset 4916171](https://zenodo.org/record/4916171)).
 The bundle includes raw data files, processed data files, computed results, 
-figures, and source code.  
+figures, and source code.
 
 
 ## Setup

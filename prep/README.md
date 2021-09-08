@@ -9,7 +9,7 @@ The scripts rely on some pre-existing files under the `data` folder. Some of
 these files are simply downloaded (e.g. from orpha.net or from obofoundry.org). 
 Other files must be processed manually, e.g. converting from obo format to
 flat tables. A complete set of data files in the correct format are available
-in a data snapshot at zenodo ([dataset 4916172](https://zenodo.org/record/4916172))
+in a data snapshot at zenodo ([dataset 4916171](https://zenodo.org/record/4916171))
 
 Several scripts require access to executables, which are assumed to be present 
 under the repository root. 
